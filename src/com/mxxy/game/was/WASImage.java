@@ -1,12 +1,9 @@
 package com.mxxy.game.was;
 
-
-
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
 
 public class WASImage {
 	private RandomAcessInputStream in;
@@ -85,8 +82,8 @@ public class WASImage {
 	 * @param filename
 	 */
 	public synchronized void loadWAS(String filename) {
-		//System.out.print("loading WAS file: " + filename + " ...");
-		//long startTime = System.currentTimeMillis();
+		// System.out.print("loading WAS file: " + filename + " ...");
+		// long startTime = System.currentTimeMillis();
 		InputStream fileIn = null;
 		try {
 			File file = new File(filename);
@@ -99,14 +96,16 @@ public class WASImage {
 				a = fileIn.read(buf, count, fileIn.available());
 				count += a;
 			}
-			
+
 			// construct a new seekable stream
 			in = new RandomAcessInputStream(buf);
 			buf = new byte[2];
 			in.read(buf, 0, 2);
 			String flag = new String(buf, 0, 2);
-			if (!WAS_FILE_TAG.equals(flag)) { throw new Exception("文件头标志错误:" + flag); }
-			
+			if (!WAS_FILE_TAG.equals(flag)) {
+				throw new Exception("文件头标志错误:" + flag);
+			}
+
 			// was 信息
 			imageHeaderSize = readUnsignedShort();
 			spriteCount = readUnsignedShort();
@@ -176,7 +175,7 @@ public class WASImage {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			//System.out.println((System.currentTimeMillis() - startTime) + "ms");
+			// System.out.println((System.currentTimeMillis() - startTime) + "ms");
 		}
 	}
 
@@ -189,7 +188,7 @@ public class WASImage {
 	public void parse(WASFrame frame) throws IOException {
 		int frameWidth = frame.getWidth();
 		int frameHeight = frame.getHeight();
-		int[] pixels = new int[frameHeight *frameWidth];
+		int[] pixels = new int[frameHeight * frameWidth];
 		frame.setPixels(pixels);
 		int b;
 		int x;
@@ -204,13 +203,13 @@ public class WASImage {
 				case TYPE_ALPHA:
 					if ((b & TYPE_ALPHA_PIXEL) > 0) {
 						c = palette[in.read()];
-						pixels[y*width +x++] = c + ((b & 0x1F) << 16);
+						pixels[y * width + x++] = c + ((b & 0x1F) << 16);
 					} else if (b != 0) {// ???
 						count = b & 0x1F;// count
 						b = in.read();// alpha
 						c = palette[in.read()];
 						for (int i = 0; i < count; i++) {
-							pixels[y*width +x++] = c + ((b & 0x1F) << 16);
+							pixels[y * width + x++] = c + ((b & 0x1F) << 16);
 						}
 					} else {// block end
 						if (x > frameWidth) {
@@ -226,14 +225,14 @@ public class WASImage {
 				case TYPE_PIXELS:
 					count = b & 0x3F;
 					for (int i = 0; i < count; i++) {
-						pixels[y*width +x++] = palette[in.read()] + (0x1F << 16);
+						pixels[y * width + x++] = palette[in.read()] + (0x1F << 16);
 					}
 					break;
 				case TYPE_REPEAT:
 					count = b & 0x3F;
 					c = palette[in.read()];
 					for (int i = 0; i < count; i++) {
-						pixels[y*width +x++] = c + (0x1F << 16);
+						pixels[y * width + x++] = c + (0x1F << 16);
 					}
 					break;
 				case TYPE_SKIP:

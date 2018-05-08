@@ -9,8 +9,7 @@ import com.mxxy.game.base.IBaseView;
 
 /**
  * 字节码实例化工具
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class InstanceUtil {
 
@@ -30,11 +29,10 @@ public class InstanceUtil {
 		return (Class) params[index];
 	}
 
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <V> V bindView(IBaseView view,BasePresenter presenter){
-		if(view!=presenter.getView()){
-			if(presenter.getView()!=null){
+	public static <V> V bindView(IBaseView view, BasePresenter presenter) {
+		if (view != presenter.getView()) {
+			if (presenter.getView() != null) {
 				presenter.destoryView();
 			}
 			presenter.setView(view);
@@ -42,7 +40,7 @@ public class InstanceUtil {
 		return (V) view;
 	}
 
-	public static <T> T getInstance(Class<?> clazz){
+	public static <T> T getInstance(Class<?> clazz) {
 		try {
 			return create(clazz);
 		} catch (Exception e) {
@@ -50,32 +48,32 @@ public class InstanceUtil {
 		}
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	private static <T> T create(Class<?> clazz) {
-		T t=null;
+		T t = null;
 		try {
-			t=(T) clazz.newInstance();
+			t = (T) clazz.newInstance();
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
 		return t;
-	} 
+	}
 
 	/**
-	 * 实例化内部类
-	 * Class<?> class1=Class.forName("com.mxxy.extendpackage."+rootElement.attributeValue("handel"));
+	 * 实例化内部类 Class<?>
+	 * class1=Class.forName("com.mxxy.extendpackage."+rootElement.attributeValue("handel"));
 	 * imageComponents.get(count).addLoginListener(InstanceUtil.create(class1,Login.class));
+	 * 
 	 * @param classes
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T create(Class<?>...classes){
-		T t=null;
+	public static <T> T create(Class<?>... classes) {
+		T t = null;
 		try {
-			t=(T) classes[0].getConstructors()[0].newInstance(create(classes[1]));
+			t = (T) classes[0].getConstructors()[0].newInstance(create(classes[1]));
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {

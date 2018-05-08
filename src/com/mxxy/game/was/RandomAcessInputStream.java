@@ -3,9 +3,9 @@ package com.mxxy.game.was;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-public class RandomAcessInputStream extends ByteArrayInputStream{
-	
-	public RandomAcessInputStream(byte[] buf){
+public class RandomAcessInputStream extends ByteArrayInputStream {
+
+	public RandomAcessInputStream(byte[] buf) {
 		super(buf);
 	}
 
@@ -14,7 +14,8 @@ public class RandomAcessInputStream extends ByteArrayInputStream{
 	}
 
 	public void seek(int pos) {
-		if ((pos < 0) || (pos > this.count)) throw new IndexOutOfBoundsException(pos + ":" + this.count);
+		if ((pos < 0) || (pos > this.count))
+			throw new IndexOutOfBoundsException(pos + ":" + this.count);
 		this.pos = pos;
 	}
 
@@ -39,7 +40,7 @@ public class RandomAcessInputStream extends ByteArrayInputStream{
 	public short readUnsignedShort() throws IOException {
 		int ch1 = read();
 		int ch2 = read();
-		return (short)((ch2 << 8) + ch1);
+		return (short) ((ch2 << 8) + ch1);
 	}
 
 	public boolean readFully(byte[] buf) throws IOException {

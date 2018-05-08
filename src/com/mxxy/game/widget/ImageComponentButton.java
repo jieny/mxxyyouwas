@@ -1,6 +1,5 @@
 package com.mxxy.game.widget;
 
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -16,14 +15,12 @@ import javax.swing.plaf.basic.BasicButtonUI;
 
 import com.mxxy.game.sprite.Sprite;
 
-
-
 /**
  * 自定义Button
  * @author dell
  */
 @SuppressWarnings("serial")
-public class ImageComponentButton extends JButton{
+public class ImageComponentButton extends JButton {
 	/**
 	 * 按钮按下时是否自动向右下偏移
 	 */
@@ -45,14 +42,12 @@ public class ImageComponentButton extends JButton{
 		setSize(width, height);
 		loadAnimation(frames);
 	}
-	
-	
 
 	public ImageComponentButton(Sprite sprite) {
 		init(sprite);
 	}
-	
-	public void init(){
+
+	public void init() {
 		setUI(new CustomButtonUI());
 		setForeground(Color.WHITE);
 		setHorizontalTextPosition(JButton.CENTER);
@@ -65,6 +60,7 @@ public class ImageComponentButton extends JButton{
 		setBorder(null);
 		setFocusable(false);
 	}
+
 	private void loadAnimation(List<AnimationFrame> frames) {
 		init();
 		try {
@@ -87,8 +83,8 @@ public class ImageComponentButton extends JButton{
 			e.printStackTrace();
 		}
 	}
-	
-	public void loadAnimation(ImageIcon []arr) {
+
+	public void loadAnimation(ImageIcon[] arr) {
 		init();
 		try {
 			int frameCount = arr.length;
@@ -109,17 +105,15 @@ public class ImageComponentButton extends JButton{
 			e.printStackTrace();
 		}
 	}
-	
-	
-	public void start(int i){
+
+	public void start(int i) {
 		setIcon(new ImageIcon(frames.get(i).getImage()));
 	}
-	
+
 	public List<AnimationFrame> getFrames() {
 		return frames;
 	}
-	
-	
+
 	List<AnimationFrame> frames;
 
 	public void init(Sprite sprite) {
@@ -132,7 +126,6 @@ public class ImageComponentButton extends JButton{
 		return autoOffset;
 	}
 
-
 	/**
 	 * 按钮按下时是否自动向右下偏移
 	 */
@@ -140,9 +133,9 @@ public class ImageComponentButton extends JButton{
 		this.autoOffset = autoOffset;
 	}
 
-	
 	/**
 	 * 点击时效果
+	 * 
 	 * @author dell
 	 */
 	static class CustomButtonUI extends BasicButtonUI {
@@ -172,12 +165,18 @@ public class ImageComponentButton extends JButton{
 		}
 	}
 
-
-	//立即绘制
-	@Override
-	public void paintImmediately(int x, int y, int w, int h) {
-		
+	
+	private boolean isGroup;
+	
+	public void setGroup(boolean isGroup) {
+		this.isGroup = isGroup;
 	}
 	
-	
+	public boolean isGroup() {
+		return isGroup;
+	}
+	// 立即绘制
+	@Override
+	public void paintImmediately(int x, int y, int w, int h) {}
+
 }

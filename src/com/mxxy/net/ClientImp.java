@@ -10,27 +10,26 @@ import java.nio.channels.SocketChannel;
 
 import com.mxxy.protocol.Message;
 
-public class ClientImp implements IClient{
+public class ClientImp implements IClient {
 
-	private SocketChannel channel;   // 与服务器通信的通道
+	private SocketChannel channel; // 与服务器通信的通道
 
 	private InetSocketAddress clientAddress;
 
 	private Selector selector;
 
-	private String hostIp;  // 要连接的服务器Ip地址  
+	private String hostIp; // 要连接的服务器Ip地址
 
-	private int hostListenningPort;  // 要连接的远程服务器在监听的端口
-	
+	private int hostListenningPort; // 要连接的远程服务器在监听的端口
+
 	private Receiver mReceiver;
-	
-	
+
 	@Override
 	public void send(Message paramMessage) throws IOException {
 		ByteBuffer buffer = ByteBuffer.wrap(paramMessage.toBytes());
 		send(buffer);
 	}
-	
+
 	@Override
 	public void send(ByteBuffer bufOut) throws IOException {
 		try {
@@ -39,7 +38,7 @@ public class ClientImp implements IClient{
 				while (bufOut.hasRemaining())
 					channel.write(bufOut);
 				bufOut.clear();
-				channel.keyFor(selector).interestOps(SelectionKey.OP_READ);	
+				channel.keyFor(selector).interestOps(SelectionKey.OP_READ);
 			}
 		} catch (ClosedChannelException e) {
 			e.printStackTrace();
@@ -55,7 +54,7 @@ public class ClientImp implements IClient{
 
 	@Override
 	public void openReadThread() throws InterruptedException {
-		mReceiver=new Receiver(selector);
+		mReceiver = new Receiver(selector);
 		mReceiver.start();
 	}
 
@@ -76,20 +75,20 @@ public class ClientImp implements IClient{
 
 	@Override
 	public void connect(String HostIp, int HostListenningPort) {
-		this.hostIp = HostIp;  
-		this.hostListenningPort = HostListenningPort;  
-		clientAddress=new InetSocketAddress(hostIp,hostListenningPort);
+		this.hostIp = HostIp;
+		this.hostListenningPort = HostListenningPort;
+		clientAddress = new InetSocketAddress(hostIp, hostListenningPort);
 	}
 
 	@Override
-	public void initialize() throws IOException{
-		channel = SocketChannel.open(new InetSocketAddress(hostIp, hostListenningPort));  
-		channel.configureBlocking(false);  
+	public void initialize() throws IOException {
+		channel = SocketChannel.open(new InetSocketAddress(hostIp, hostListenningPort));
+		channel.configureBlocking(false);
 
-		// 打开并注册选择器到信道  
-		selector = Selector.open();  
+		// 打开并注册选择器到信道
+		selector = Selector.open();
 
-		channel.register(selector, SelectionKey.OP_READ,ByteBuffer.allocate(1024));  
+		channel.register(selector, SelectionKey.OP_READ, ByteBuffer.allocate(1024));
 	}
 
 	@Override

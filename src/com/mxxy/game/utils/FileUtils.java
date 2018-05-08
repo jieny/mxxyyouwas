@@ -1,6 +1,5 @@
 package com.mxxy.game.utils;
 
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -22,34 +21,35 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * 文件操作工具
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
 final public class FileUtils {
 
+	private static final String LS = System.getProperty("line.separator", "\n");
 
-	private static final String LS = System.getProperty("line.separator","\n");
-
-	private static final String FS = System.getProperty("file.separator","\\");
+	private static final String FS = System.getProperty("file.separator", "\\");
 	/**
 	 * 编码格式
 	 */
-	private static String encoding="UTF-8";
+	private static String encoding = "UTF-8";
 
 	/**
 	 * 写入数据到指定目标
-	 * 
 	 * @param fileName
 	 * @param context
 	 * @throws IOException
 	 */
-	public static void write(String fileName, String context)
-			throws IOException {
+	public static void write(String fileName, String context) throws IOException {
 		write(fileName, context, false);
 	}
 
@@ -60,8 +60,7 @@ final public class FileUtils {
 	 * @param context
 	 * @throws IOException
 	 */
-	public static void write(File file, String context, String coding)
-			throws IOException {
+	public static void write(File file, String context, String coding) throws IOException {
 		write(file, context.getBytes(coding), false);
 	}
 
@@ -72,8 +71,7 @@ final public class FileUtils {
 	 * @param context
 	 * @throws IOException
 	 */
-	public static void write(String fileName, String context, boolean append)
-			throws IOException {
+	public static void write(String fileName, String context, boolean append) throws IOException {
 		write(new File(fileName), context.getBytes(encoding), append);
 	}
 
@@ -96,8 +94,7 @@ final public class FileUtils {
 	 * @param append
 	 * @throws IOException
 	 */
-	public static void write(File file, byte[] bytes, boolean append)
-			throws IOException {
+	public static void write(File file, byte[] bytes, boolean append) throws IOException {
 		write(file, new ByteArrayInputStream(bytes), append);
 	}
 
@@ -120,14 +117,12 @@ final public class FileUtils {
 	 * @param append
 	 * @throws IOException
 	 */
-	public static void write(File file, InputStream input, boolean append)
-			throws IOException {
+	public static void write(File file, InputStream input, boolean append) throws IOException {
 		makedirs(file);
 		BufferedOutputStream output = null;
 		try {
 			int contentLength = input.available();
-			output = new BufferedOutputStream(
-					new FileOutputStream(file, append));
+			output = new BufferedOutputStream(new FileOutputStream(file, append));
 			while (contentLength-- > 0) {
 				output.write(input.read());
 			}
@@ -139,6 +134,7 @@ final public class FileUtils {
 
 	/**
 	 * 写入数据到指定目标
+	 * 
 	 * @param file
 	 * @param chars
 	 * @throws IOException
@@ -149,13 +145,13 @@ final public class FileUtils {
 
 	/**
 	 * 写入数据到指定目标
+	 * 
 	 * @param file
 	 * @param chars
 	 * @param append
 	 * @throws IOException
 	 */
-	public static void write(File file, char[] chars, boolean append)
-			throws IOException {
+	public static void write(File file, char[] chars, boolean append) throws IOException {
 		write(file, new CharArrayReader(chars), append);
 	}
 
@@ -178,8 +174,7 @@ final public class FileUtils {
 	 * @param append
 	 * @throws IOException
 	 */
-	public static void write(File file, String string, boolean append)
-			throws IOException {
+	public static void write(File file, String string, boolean append) throws IOException {
 		write(file, new CharArrayReader(string.toCharArray()), append);
 	}
 
@@ -197,13 +192,15 @@ final public class FileUtils {
 	/**
 	 * 写入数据到指定目标
 	 * 
-	 * @param file  指定文件名
-	 * @param reader    Reader流
-	 * @param append 是否需要覆盖之前内容
+	 * @param file
+	 *            指定文件名
+	 * @param reader
+	 *            Reader流
+	 * @param append
+	 *            是否需要覆盖之前内容
 	 * @throws IOException
 	 */
-	public static void write(File file, Reader reader, boolean append)
-			throws IOException {
+	public static void write(File file, Reader reader, boolean append) throws IOException {
 		makedirs(file);
 		BufferedWriter writer = null;
 		try {
@@ -220,23 +217,27 @@ final public class FileUtils {
 
 	/**
 	 * 写入数据到指定目标
+	 * 
 	 * @param file
 	 * @param records
 	 * @throws IOException
 	 */
-	public static void write(File file, ArrayList <String> records) throws IOException {
+	public static void write(File file, ArrayList<String> records) throws IOException {
 		write(file, records, false);
 	}
 
 	/**
 	 * 写入集合数据到指定文件
-	 * @param file 文件名
-	 * @param records 集合数据
-	 * @param append 是否需要覆盖
+	 * 
+	 * @param file
+	 *            文件名
+	 * @param records
+	 *            集合数据
+	 * @param append
+	 *            是否需要覆盖
 	 * @throws IOException
 	 */
-	public static void write(File file, ArrayList<String> records, boolean append)
-			throws IOException {
+	public static void write(File file, ArrayList<String> records, boolean append) throws IOException {
 		makedirs(file);
 		BufferedWriter writer = null;
 		try {
@@ -252,6 +253,7 @@ final public class FileUtils {
 
 	/**
 	 * 创建目录
+	 * 
 	 * @param fileName
 	 * @throws IOException
 	 */
@@ -261,6 +263,7 @@ final public class FileUtils {
 
 	/**
 	 * 创建目录
+	 * 
 	 * @param path
 	 * @return
 	 */
@@ -269,14 +272,14 @@ final public class FileUtils {
 		File parentFile = file.getParentFile();
 		if (parentFile != null) {
 			if (!parentFile.exists() && !parentFile.mkdirs()) {
-				throw new IOException("Creating directories "
-						+ parentFile.getPath() + " failed.");
+				throw new IOException("Creating directories " + parentFile.getPath() + " failed.");
 			}
 		}
 	}
 
 	/**
 	 * 剪切掉地址内反斜杆
+	 * 
 	 * @param str
 	 * @return
 	 */
@@ -295,12 +298,12 @@ final public class FileUtils {
 		}
 		return str;
 	}
-	
+
 	/**
 	 * 剪切绝对路劲的第一个反斜杠
 	 */
-	public static String getPath(String path){
-		if(path.charAt(0)=='/'){
+	public static String getPath(String path) {
+		if (path.charAt(0) == '/') {
 			path = path.substring(1);
 		}
 		return path;
@@ -332,14 +335,14 @@ final public class FileUtils {
 
 	/**
 	 * 检查文件是否存在
+	 * 
 	 * @param file
 	 * @throws IOException
 	 */
 	private static void checkFile(File file) throws IOException {
 		boolean exists = file.exists();
 		if (exists && !file.isFile()) {
-			throw new IOException("File " + file.getPath()
-					+ " is actually not a file.");
+			throw new IOException("File " + file.getPath() + " is actually not a file.");
 		}
 	}
 
@@ -452,8 +455,7 @@ final public class FileUtils {
 	 * @return
 	 * @throws IOException
 	 */
-	public static long copy(InputStream is, OutputStream os, long len)
-			throws IOException {
+	public static long copy(InputStream is, OutputStream os, long len) throws IOException {
 		byte[] buf = new byte[1024];
 		long copied = 0;
 		int read;
@@ -474,8 +476,7 @@ final public class FileUtils {
 	 * @return
 	 * @throws IOException
 	 */
-	public static long copy(InputStream in, OutputStream out)
-			throws IOException {
+	public static long copy(InputStream in, OutputStream out) throws IOException {
 		long written = 0;
 		byte[] buffer = new byte[4096];
 		while (true) {
@@ -531,6 +532,7 @@ final public class FileUtils {
 
 	/**
 	 * 消除文件扩展名
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -574,8 +576,7 @@ final public class FileUtils {
 	 * @param destEncoding
 	 * @return
 	 */
-	public static final boolean copyFile(final String sSource,
-			final String sDest, final String srcEncoding,
+	public static final boolean copyFile(final String sSource, final String sDest, final String srcEncoding,
 			final String destEncoding) {
 		try {
 			File src = new File(sSource);
@@ -598,8 +599,7 @@ final public class FileUtils {
 	 * @param sDest
 	 * @return
 	 */
-	public static final boolean copyFile(final String sSource,
-			final String sDest) {
+	public static final boolean copyFile(final String sSource, final String sDest) {
 		try {
 			File src = new File(sSource);
 			if (!src.exists()) {
@@ -608,8 +608,7 @@ final public class FileUtils {
 			File dest = new File(sDest);
 			FileUtils.makedirs(dest);
 			InputStream in = new BufferedInputStream(new FileInputStream(src));
-			OutputStream os = new BufferedOutputStream(new FileOutputStream(
-					dest));
+			OutputStream os = new BufferedOutputStream(new FileOutputStream(dest));
 			byte[] buffer = new byte[8 * 1024];
 			int len;
 			while ((len = in.read(buffer)) > 0) {
@@ -678,8 +677,7 @@ final public class FileUtils {
 	 * @return
 	 * @throws IOException
 	 */
-	public static String readFile(String filePath, String encode)
-			throws IOException {
+	public static String readFile(String filePath, String encode) throws IOException {
 		return readFile(new File(filePath), encode);
 	}
 
@@ -727,14 +725,12 @@ final public class FileUtils {
 	 * @throws IOException
 	 */
 	public static byte[] readBytesFromFile(File file) throws IOException {
-		InputStream is = new DataInputStream(new BufferedInputStream(
-				new FileInputStream(file)));
+		InputStream is = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
 		long length = file.length();
 		byte[] bytes = new byte[(int) length];
 		int offset = 0;
 		int numRead = 0;
-		while (offset < bytes.length
-				&& (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+		while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
 			offset += numRead;
 		}
 		if (offset < bytes.length) {
@@ -745,8 +741,7 @@ final public class FileUtils {
 	}
 
 	private static void extracted(File file) throws IOException {
-		throw new IOException("Could not completely read file "
-				+ file.getName());
+		throw new IOException("Could not completely read file " + file.getName());
 	}
 
 	/**
@@ -764,13 +759,13 @@ final public class FileUtils {
 	}
 
 	/**
-	 *将字节转换为字符串
+	 * 将字节转换为字符串
+	 * 
 	 * @param inputStream
 	 * @param encoding
 	 * @return
 	 */
-	public static final String readToString(InputStream inputStream,
-			String encoding) {
+	public static final String readToString(InputStream inputStream, String encoding) {
 		try {
 			byte[] buffer = getDataSource(inputStream);
 			return new String(buffer, encoding);
@@ -780,30 +775,30 @@ final public class FileUtils {
 	}
 
 	private static byte[] getDataSource(InputStream inputStream) {
-		if(inputStream==null){
+		if (inputStream == null) {
 			return null;
 		}
-		ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
-		byte[] bytes=new byte[1024*10];
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		byte[] bytes = new byte[1024 * 10];
 		int read;
 		try {
-			while((read=inputStream.read())>=0){
+			while ((read = inputStream.read()) >= 0) {
 				byteArrayOutputStream.write(bytes, 0, read);
 			}
-			bytes=byteArrayOutputStream.toByteArray();
+			bytes = byteArrayOutputStream.toByteArray();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
-				if(byteArrayOutputStream!=null){
+				if (byteArrayOutputStream != null) {
 					byteArrayOutputStream.flush();
-					byteArrayOutputStream=null;
+					byteArrayOutputStream = null;
 				}
-				
-				if(inputStream!=null){
+
+				if (inputStream != null) {
 					inputStream.close();
-					inputStream=null;
+					inputStream = null;
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -814,7 +809,8 @@ final public class FileUtils {
 	}
 
 	/**
-	 *将字节转换为字符串
+	 * 将字节转换为字符串
+	 * 
 	 * @param inputStream
 	 * @return
 	 */
@@ -822,9 +818,9 @@ final public class FileUtils {
 		return readToString(inputStream, encoding);
 	}
 
-
 	/**
 	 * 读取文件
+	 * 
 	 * @param reader
 	 * @return
 	 * @throws IOException
@@ -897,7 +893,9 @@ final public class FileUtils {
 
 	/**
 	 * 从文件名得到文件绝对路径。
-	 * @param fileName 文件名   
+	 * 
+	 * @param fileName
+	 *            文件名
 	 * @return 对应的文件路径
 	 * @version 0.1
 	 */
@@ -907,6 +905,7 @@ final public class FileUtils {
 
 	/**
 	 * 取得格式化的绝对路径
+	 * 
 	 * @param fileName
 	 * @return
 	 */
@@ -916,20 +915,22 @@ final public class FileUtils {
 
 	/**
 	 * @function 得到文件的类型。
-	 * @param fileName 文件名
+	 * @param fileName
+	 *            文件名
 	 * @return 文件名中的类型部分
 	 * @version 0.1
 	 */
 	public static String toTypePart(String fileName) {
 		int point = fileName.lastIndexOf('.');
 		int length = fileName.length();
-		return (point == -1 || point == length - 1) ? "" : fileName.substring(
-				point + 1, length);
+		return (point == -1 || point == length - 1) ? "" : fileName.substring(point + 1, length);
 	}
 
 	/**
 	 * 得到文件的类型。
-	 * @param file  文件
+	 * 
+	 * @param file
+	 *            文件
 	 * @return 文件名中的类型部分
 	 * @version 0.1
 	 */
@@ -1069,9 +1070,9 @@ final public class FileUtils {
 	 * @version 0.1
 	 */
 	public static String toSubpath(String pathName, String fileName) {
-		return (fileName.indexOf(pathName) != -1) ? fileName.substring(fileName
-				.indexOf(pathName)
-				+ pathName.length() + 1) : fileName;
+		return (fileName.indexOf(pathName) != -1)
+				? fileName.substring(fileName.indexOf(pathName) + pathName.length() + 1)
+						: fileName;
 	}
 
 	/**
@@ -1079,7 +1080,7 @@ final public class FileUtils {
 	 * 
 	 * @return
 	 */
-	public static final String toFileRoot() { 
+	public static final String toFileRoot() {
 		File[] dvs = File.listRoots();
 		String[] rootname = new String[dvs.length];
 		StringBuffer path = new StringBuffer();
@@ -1135,7 +1136,6 @@ final public class FileUtils {
 		return toDirList(new File(pathName));
 	}
 
-
 	/**
 	 * 获得指定路径下的所有文件名(包含全路径)
 	 * 
@@ -1173,7 +1173,7 @@ final public class FileUtils {
 	 * @return ArrayList 所有目录(包含全路径)
 	 * @throws IOException
 	 */
-	public static ArrayList<String> getAllDir(String path){
+	public static ArrayList<String> getAllDir(String path) {
 		File file = new File(path);
 		ArrayList<String> ret = new ArrayList<String>();
 		String[] listFile = file.list();
@@ -1204,8 +1204,7 @@ final public class FileUtils {
 	 * @return ArrayList 所有文件(包含全路径)
 	 * @throws IOException
 	 */
-	public static ArrayList<String> getAllFiles(String path, String ext)
-			throws IOException {
+	public static ArrayList<String> getAllFiles(String path, String ext) throws IOException {
 		File file = new File(path);
 		ArrayList<String> ret = new ArrayList<String>();
 		String[] exts = ext.split(",");
@@ -1220,8 +1219,7 @@ final public class FileUtils {
 					arr = null;
 				} else {
 					for (int j = 0; j < exts.length; j++) {
-						if (getExtension(tempfile.getAbsolutePath())
-								.equalsIgnoreCase(exts[j])) {
+						if (getExtension(tempfile.getAbsolutePath()).equalsIgnoreCase(exts[j])) {
 							ret.add(tempfile.getAbsolutePath());
 						}
 					}
@@ -1289,18 +1287,16 @@ final public class FileUtils {
 	 * @return ArrayList 文件名
 	 * @throws IOException
 	 */
-	public static ArrayList<String> getFiles(String path, String ext)
-			throws IOException {
+	public static ArrayList<String> getFiles(String path, String ext) throws IOException {
 		File file = new File(path);
 		ArrayList<String> ret = new ArrayList<String>();
 		String[] listFile = file.list();
 		if (listFile != null) {
 			for (int i = 0; i < listFile.length; i++) {
-				File tempfile = new File(path +FS + listFile[i]);
+				File tempfile = new File(path + FS + listFile[i]);
 
 				if (!tempfile.isDirectory()) {
-					if (getExtension(tempfile.getAbsolutePath())
-							.equalsIgnoreCase(ext))
+					if (getExtension(tempfile.getAbsolutePath()).equalsIgnoreCase(ext))
 						ret.add(tempfile.getAbsolutePath());
 
 				}
@@ -1370,10 +1366,8 @@ final public class FileUtils {
 		}
 	}
 
-
 	/**
 	 * 删除指定目录下的所有目录
-	 * 
 	 * @param path
 	 *            String 指定目录
 	 * @throws Exception
@@ -1396,7 +1390,6 @@ final public class FileUtils {
 
 	/**
 	 * 返回文件长度
-	 * 
 	 * @param filePath
 	 * @return
 	 */
@@ -1404,4 +1397,55 @@ final public class FileUtils {
 		return new File(filePath).length();
 	}
 
+	/**
+	 * 解压文件到指定目录
+	 * @param zipPath   .zip 压缩文件
+	 * @param descDir   目标文件夹
+	 * @return   解压是否成功   true  || false
+	 * @throws IOException
+	 */
+	public boolean unZipFiles(String zipPath, String descDir)throws IOException{
+		return unZipFiles(new File(zipPath), descDir);
+	}
+
+	public  boolean unZipFiles(File zipFile, String descDir){
+		File pathFile = new File(descDir);
+		if(!pathFile.exists()){
+			pathFile.mkdirs();
+		}
+		//解决zip文件中有中文目录或者中文文件
+		try {
+			ZipFile zip = new ZipFile(zipFile, Charset.forName("GBK"));
+			for(Enumeration entries = zip.entries(); entries.hasMoreElements();){
+				ZipEntry entry = (ZipEntry)entries.nextElement();
+				String zipEntryName = entry.getName();
+				InputStream in = zip.getInputStream(entry);
+				String outPath = (descDir+zipEntryName).replaceAll("\\*", "/");;
+				//判断路径是否存在,不存在则创建文件路径
+				File file = new File(outPath.substring(0, outPath.lastIndexOf('/')));
+				if(!file.exists()){
+					file.mkdirs();
+				}
+				//判断文件全路径是否为文件夹,如果是上面已经上传,不需要解压
+				if(new File(outPath).isDirectory()){
+					continue;
+				}
+				//输出文件路径信息
+//				System.out.println(outPath);
+				OutputStream out = new FileOutputStream(outPath);
+				byte[] buf1 = new byte[1024];
+				int len;
+				while((len=in.read(buf1))>0){
+					out.write(buf1,0,len);
+				}
+				in.close();
+				out.close();
+			}
+			System.out.println("******************解压完毕********************");
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

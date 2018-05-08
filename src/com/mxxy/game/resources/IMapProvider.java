@@ -1,10 +1,11 @@
 package com.mxxy.game.resources;
 
 import com.mxxy.game.widget.TileMap;
+
 /**
- * Provider  
+ * Provider
  */
-public interface IMapProvider extends ResourceProvider<TileMap>{
+public interface IMapProvider extends ResourceProvider<TileMap> {
 
 	public abstract int getWidth();
 

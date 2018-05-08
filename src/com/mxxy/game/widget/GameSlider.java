@@ -3,7 +3,7 @@ package com.mxxy.game.widget;
 import javax.swing.JSlider;
 
 @SuppressWarnings("serial")
-public class GameSlider extends JSlider{
+public class GameSlider extends JSlider {
 
 	public GameSlider() {
 		super();

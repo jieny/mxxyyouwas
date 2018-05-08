@@ -1,11 +1,12 @@
 package com.mxxy.game.event;
+
 @SuppressWarnings("serial")
 public class BaseEvent extends java.awt.event.ActionEvent {
-	
-	private Object[] arguments;   //数据
-	
-	private String command;  //指令(项目中指对应方法名字)
-	
+
+	private Object[] arguments; // 数据
+
+	private String command; // 指令(项目中指对应方法名字)
+
 	public BaseEvent(Object source, String command, Object[] args) {
 		super(source, java.awt.event.ActionEvent.ACTION_PERFORMED, command, 0, 0);
 		if (args == null) {
@@ -19,13 +20,14 @@ public class BaseEvent extends java.awt.event.ActionEvent {
 		super(source, java.awt.event.ActionEvent.ACTION_PERFORMED, command, 0, 0);
 		String[] strs = command.split(" ");
 		this.command = strs[0];
-		if(strs.length > 1) {
-			this.arguments = new String[strs.length-1];
-			for (int i = 0; i < strs.length-1; i++) {
-				this.arguments[i] = strs[i+1];
+		if (strs.length > 1) {
+			this.arguments = new String[strs.length - 1];
+			for (int i = 0; i < strs.length - 1; i++) {
+				this.arguments[i] = strs[i + 1];
 			}
 		}
 	}
+
 	/**
 	 * @param evt
 	 */
@@ -34,10 +36,10 @@ public class BaseEvent extends java.awt.event.ActionEvent {
 		String command = evt.getActionCommand();
 		String[] strs = command.split(" ");
 		this.command = strs[0];
-		if(strs.length > 1) {
-			this.arguments = new String[strs.length-1];
-			for (int i = 0; i < strs.length-1; i++) {
-				this.arguments[i] = strs[i+1];
+		if (strs.length > 1) {
+			this.arguments = new String[strs.length - 1];
+			for (int i = 0; i < strs.length - 1; i++) {
+				this.arguments[i] = strs[i + 1];
 			}
 		}
 	}
@@ -52,7 +54,9 @@ public class BaseEvent extends java.awt.event.ActionEvent {
 
 	/**
 	 * 获取指定参数
-	 * @param i  数组index
+	 * 
+	 * @param i
+	 *            数组index
 	 * @return
 	 */
 	public Object getArgument(int i) {
@@ -88,7 +92,7 @@ public class BaseEvent extends java.awt.event.ActionEvent {
 	public boolean isConsumed() {
 		return super.isConsumed();
 	}
-	
+
 	@Override
 	public void consume() {
 		super.consume();

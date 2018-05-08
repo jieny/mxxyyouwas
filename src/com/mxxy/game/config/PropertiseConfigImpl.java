@@ -1,6 +1,5 @@
 package com.mxxy.game.config;
 
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,7 +11,7 @@ import java.io.InputStreamReader;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-public class PropertiseConfigImpl implements IConfigManager{
+public class PropertiseConfigImpl implements IConfigManager {
 
 	private String filename;
 
@@ -27,14 +26,14 @@ public class PropertiseConfigImpl implements IConfigManager{
 	}
 
 	@Override
-	public void loadConfigs(){
-		File file=new File(filename);
+	public void loadConfigs() {
+		File file = new File(filename);
 		try {
-			if(!file.exists()){  
+			if (!file.exists()) {
 				file.createNewFile();
 			}
-			InputStream	in = new BufferedInputStream(new FileInputStream(file));  
-			properties.load(new InputStreamReader(in, "utf-8"));  
+			InputStream in = new BufferedInputStream(new FileInputStream(file));
+			properties.load(new InputStreamReader(in, "utf-8"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -54,7 +53,7 @@ public class PropertiseConfigImpl implements IConfigManager{
 
 	@Override
 	public void saveConfig() {
-		File file=new File(filename);
+		File file = new File(filename);
 		try {
 			properties.store(new FileOutputStream(file), "java");
 		} catch (FileNotFoundException e) {
@@ -70,9 +69,9 @@ public class PropertiseConfigImpl implements IConfigManager{
 	}
 
 	@Override
-	public boolean  loadCheckUser(String user,String cipher){
+	public boolean loadCheckUser(String user, String cipher) {
 		for (Entry<Object, Object> entrySet : properties.entrySet()) {
-			if(entrySet.getKey().equals(user)&&entrySet.getValue().equals(cipher)){
+			if (entrySet.getKey().equals(user) && entrySet.getValue().equals(cipher)) {
 				return true;
 			}
 		}
@@ -80,9 +79,10 @@ public class PropertiseConfigImpl implements IConfigManager{
 	}
 
 	@Override
-	public int getPropertiseSize(){
+	public int getPropertiseSize() {
 		return properties.size();
 	}
+
 	@Override
 	public String getType() {
 		return "properties";

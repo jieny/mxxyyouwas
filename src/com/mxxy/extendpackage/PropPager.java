@@ -1,18 +1,18 @@
 package com.mxxy.extendpackage;
 
-
 import java.awt.event.ActionEvent;
 
 import com.mxxy.game.base.Panel;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
+
 /**
  * PropPager (道具)
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
 @SuppressWarnings("rawtypes")
-final public class PropPager extends AbstractPanelHandler{
+final public class PropPager extends AbstractPanelHandler {
 
 	private Panel palyer;
 
@@ -22,33 +22,37 @@ final public class PropPager extends AbstractPanelHandler{
 	public void init(PanelEvent evt) {
 		super.init(evt);
 	}
-	
+
 	@Override
 	protected void initView() {
-		palyer=uihelp.getPanel("PlayerPager");
-		mount=uihelp.getPanel("MountPager");
+		palyer = uihelp.getPanel("PlayerPager");
+		mount = uihelp.getPanel("MountPager");
 	}
+
 	/**
 	 * 人物面板
+	 * 
 	 * @param e
 	 */
-	public void player(ActionEvent e){
+	public void player(ActionEvent e) {
 		show();
 	}
 
-	public void show(){
+	public void show() {
 		uihelp.hidePanel(mount);
 		uihelp.showPanel(palyer);
 	}
+
 	/**
 	 * 坐骑面板
+	 * 
 	 * @param e
 	 */
-	public void mount(ActionEvent e){
+	public void mount(ActionEvent e) {
 		uihelp.hidePanel(palyer);
 		uihelp.showPanel(mount);
 	}
-	
+
 	@Override
 	public void dispose(PanelEvent evt) {
 		super.dispose(evt);
@@ -56,5 +60,3 @@ final public class PropPager extends AbstractPanelHandler{
 		uihelp.hidePanel(mount);
 	}
 }
-
-

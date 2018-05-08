@@ -1,6 +1,5 @@
 package com.mxxy.game.sprite;
 
-
 import java.awt.Graphics2D;
 import java.awt.Point;
 
@@ -9,116 +8,121 @@ import com.mxxy.game.widget.SpriteImage;
 
 /**
  * 鼠标样式
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class Cursor {
-    public static final String DEFAULT_CURSOR = "默认";
-    public static final String TEXT_CURSOR = "文本";
-    public static final String FORBID_CURSOR = "禁止";
-    public static final String SELECT_CURSOR = "施法";
-    public static final String GIVE_CURSOR = "给予";
-    public static final String ATTACK_CURSOR = "攻击";
-    public static final String CATCH_CURSOR = "捕捉";
-    public static final String FRIENDS_CURSOR="好友";
-    
-    private SpriteImage pointer;
+	public static final String DEFAULT_CURSOR = "默认";
+	public static final String TEXT_CURSOR = "文本";
+	public static final String FORBID_CURSOR = "禁止";
+	public static final String SELECT_CURSOR = "施法";
+	public static final String GIVE_CURSOR = "给予";
+	public static final String ATTACK_CURSOR = "攻击";
+	public static final String CATCH_CURSOR = "捕捉";
+	public static final String FRIENDS_CURSOR = "好友";
 
-    private SpriteImage effect;  //水波纹图片
+	private SpriteImage pointer;
 
-    private int x;
+	private SpriteImage effect; // 水波纹图片
 
-    private int y;
+	private int x;
 
-    /** 点击的场景坐标 */
-    private int clickX;
+	private int y;
 
-    private int clickY;
+	/** 点击的场景坐标 */
+	private int clickX;
 
-    /** x偏移量(相对于clickX,为了精确显示点击的效果) */
-    private int offsetX;
+	private int clickY;
 
-    private int offsetY;
+	/** x偏移量(相对于clickX,为了精确显示点击的效果) */
+	private int offsetX;
 
-    public Cursor(String type, boolean effect) {
-        this.pointer = new SpriteImage(SpriteFactory.loadSprite("/wzife/cursor/"+type+".tcp"));
-        if(effect) {        	
-        	this.effect = new SpriteImage(SpriteFactory.loadSprite("/wzife/cursor/水波.tcp"));;
-        	this.effect.setVisible(false);
-        }    	
-    }
+	private int offsetY;
 
-    public SpriteImage getPointer() {
-        return pointer;
-    }
+	private String type;
+	
+	public Cursor(String type, boolean effect) {
+		this.type=type;
+		this.pointer = new SpriteImage(SpriteFactory.loadSprite("/wzife/cursor/"+type+".tcp"));
+		if (effect) {
+			this.effect = new SpriteImage(SpriteFactory.loadSprite("/wzife/cursor/水波.tcp"));
+			this.effect.setVisible(false);
+		}
+	}
 
-    public SpriteImage getEffect() {
-        return effect;
-    }
+	public SpriteImage getPointer() {
+		return pointer;
+	}
 
-    public void setClick(int x, int y) {
-        this.clickX = x;
-        this.clickY = y;
-        this.effect.setVisible(true);
-    }
+	public SpriteImage getEffect() {
+		return effect;
+	}
 
-    public int getClickX() {
-        return clickX;
-    }
+	public void setClick(int x, int y) {
+		this.clickX = x;
+		this.clickY = y;
+		this.effect.setVisible(true);
+	}
 
-    public int getClickY() {
-        return clickY;
-    }
+	public int getClickX() {
+		return clickX;
+	}
 
-    public Point getClickPosition() {
-        return new Point(this.clickX, this.clickY);
-    }
+	public int getClickY() {
+		return clickY;
+	}
 
-    public void setOffset(int x, int y) {
-        this.offsetX = x;
-        this.offsetY = y;
-    }
+	public Point getClickPosition() {
+		return new Point(this.clickX, this.clickY);
+	}
 
-    public int getOffsetX() {
-        return offsetX;
-    }
+	public void setOffset(int x, int y) {
+		this.offsetX = x;
+		this.offsetY = y;
+	}
 
-    public void setOffsetX(int offsetX) {
-        this.offsetX = offsetX;
-    }
+	public int getOffsetX() {
+		return offsetX;
+	}
 
-    public int getOffsetY() {
-        return offsetY;
-    }
+	public void setOffsetX(int offsetX) {
+		this.offsetX = offsetX;
+	}
 
-    public void setOffsetY(int offsetY) {
-        this.offsetY = offsetY;
-    }
+	public int getOffsetY() {
+		return offsetY;
+	}
 
-    public int getX() {
-        return x;
-    }
+	public void setOffsetY(int offsetY) {
+		this.offsetY = offsetY;
+	}
 
-    public int getY() {
-        return y;
-    }
+	public int getX() {
+		return x;
+	}
 
-    /**
-     * 设置指针在屏幕的位置
-     * @param x
-     * @param y
-     */
-    public void setLocation(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
+	public int getY() {
+		return y;
+	}
 
-    public void draw(Graphics2D g) {
-        this.pointer.drawBitmap(g, x, y);
-    }
+	/**
+	 * 设置指针在屏幕的位置
+	 * @param x
+	 * @param y
+	 */
+	public void setLocation(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 
-    public void update(long elapsedTime) {
-        this.pointer.update(elapsedTime);
-    }
-    
+	public void draw(Graphics2D g) {
+		this.pointer.drawBitmap(g, x, y);
+	}
+
+	public void update(long elapsedTime) {
+		this.pointer.update(elapsedTime);
+	}
+
+	public String getType() {
+		return type;
+	}
 }

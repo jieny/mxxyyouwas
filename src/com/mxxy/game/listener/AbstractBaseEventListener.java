@@ -20,57 +20,96 @@ import javax.swing.event.ChangeListener;
 import com.mxxy.game.event.BaseEvent;
 import com.mxxy.game.event.PanelEvent;
 
-abstract public class AbstractBaseEventListener<T extends ISetOnListener<?>>
-extends MouseAdapter  implements 
-KeyListener,/**键盘事件*/
-MouseWheelListener,/**鼠标滚轮*/
-MouseListener,/**鼠标*/
-ActionListener,/**点击事件*/
-FocusListener,/**焦点事件*/
-IPanelListener,  /**面板事件*/
-ItemListener,
-ChangeListener
-{
+abstract public class AbstractBaseEventListener<T extends ISetOnListener<?>> extends MouseAdapter
+		implements KeyListener, /** 键盘事件 */
+		MouseWheelListener, /** 鼠标滚轮 */
+		MouseListener, /** 鼠标 */
+		ActionListener, /** 点击事件 */
+		FocusListener, /** 焦点事件 */
+		IPanelListener, /** 面板事件 */
+		ItemListener, ChangeListener {
 	protected T mPanel;
-	public AbstractBaseEventListener() {}
+
+	public AbstractBaseEventListener() {
+	}
+
 	@Override
-	public void keyPressed(KeyEvent e) {}
+	public void keyPressed(KeyEvent e) {
+	}
+
 	@Override
-	public void keyReleased(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {
+	}
+
 	@Override
-	public void keyTyped(KeyEvent e) {}
+	public void keyTyped(KeyEvent e) {
+	}
+
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {}
+	public void mouseWheelMoved(MouseWheelEvent e) {
+	}
+
 	@Override
-	public void actionPerformed(ActionEvent arg0) {}
+	public void actionPerformed(ActionEvent arg0) {
+	}
+
 	@Override
-	public void focusGained(FocusEvent arg0) {}
+	public void focusGained(FocusEvent arg0) {
+	}
+
 	@Override
-	public void focusLost(FocusEvent arg0) {}
+	public void focusLost(FocusEvent arg0) {
+	}
+
 	@Override
-	public void mouseClicked(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+	}
+
 	@Override
-	public void mousePressed(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseMoved(MouseEvent e) {}
+	public void mouseMoved(MouseEvent e) {
+	}
+
 	@Override
-	public void init(PanelEvent evt) {}
+	public void init(PanelEvent evt) {
+	}
+
 	@Override
-	public void dispose(PanelEvent evt) {}
+	public void dispose(PanelEvent evt) {
+	}
+
 	@Override
-	public void update(PanelEvent evt) {}
+	public void update(PanelEvent evt) {
+	}
+
 	@Override
-	public void close(ActionEvent evt) {}
+	public void close(ActionEvent evt) {
+	}
+
 	@Override
-	public void help(BaseEvent evt) {}
+	public void help(BaseEvent evt) {
+	}
+
 	@Override
-	public void itemStateChanged(ItemEvent e) {}
+	public void itemStateChanged(ItemEvent e) {
+	}
+
 	@Override
-	public void stateChanged(ChangeEvent e) {}
+	public void stateChanged(ChangeEvent e) {
+	}
 }

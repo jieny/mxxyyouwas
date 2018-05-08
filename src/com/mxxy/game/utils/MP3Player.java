@@ -15,10 +15,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javazoom.jl.player.Player;
 
 import com.mxxy.game.was.Toolkit;
+
 /**
  * Mp3播放工具
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class MP3Player {
 
@@ -41,9 +42,9 @@ public class MP3Player {
 			player.close();
 	}
 
-
 	/**
 	 * 播放指定音乐
+	 * 
 	 * @param filename
 	 */
 	public static void play(String filename) {
@@ -67,22 +68,23 @@ public class MP3Player {
 
 	}
 
+	static AudioInputStream stream;
 
-	static AudioInputStream stream; 
-	public static  AudioInputStream loadSound(String filename){
-		URL ui=MP3Player.class.getResource(filename); 
+	public static AudioInputStream loadSound(String filename) {
+		URL ui = MP3Player.class.getResource(filename);
 		try {
-			stream=AudioSystem.getAudioInputStream(ui);
+			stream = AudioSystem.getAudioInputStream(ui);
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}   
-		return stream; 
+		}
+		return stream;
 	}
 
 	/**
 	 * 循环播放音乐
+	 * 
 	 * @param filename
 	 */
 	public static void loop(String filename) {
@@ -108,7 +110,7 @@ public class MP3Player {
 						}
 					}
 				};
-				isPlayer=true;
+				isPlayer = true;
 				loopThread.start();
 			}
 		} catch (Exception e) {
@@ -123,6 +125,6 @@ public class MP3Player {
 	public static void stopLoop() {
 		if (loopplayer != null)
 			loopplayer.close();
-		isPlayer=false;
+		isPlayer = false;
 	}
 }

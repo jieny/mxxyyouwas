@@ -2,8 +2,8 @@ package com.mxxy.game.utils;
 
 /**
  * 回调
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class Action {
 	/**
@@ -18,6 +18,7 @@ public class Action {
 
 	/**
 	 * 封装一个具有一个参数且没有返回值的方法。
+	 * 
 	 * @param <T>：此委托封装的方法的参数类型。
 	 */
 	public abstract class One<T> {
@@ -32,6 +33,7 @@ public class Action {
 
 	/**
 	 * 封装一个具有两个参数且没有返回值的方法。
+	 * 
 	 * @param <T1>：此委托封装的方法的第一个参数类型。
 	 * @param <T2>：此委托封装的方法的第二个参数类型。
 	 */
@@ -49,6 +51,7 @@ public class Action {
 
 	/**
 	 * 封装一个具有三个参数且没有返回值的方法。
+	 * 
 	 * @param <T1>：此委托封装的方法的第一个参数类型。
 	 * @param <T2>：此委托封装的方法的第二个参数类型。
 	 * @param <T3>：此委托封装的方法的第三个参数类型。
@@ -69,6 +72,7 @@ public class Action {
 
 	/**
 	 * 封装一个具有四个参数且没有返回值的方法。
+	 * 
 	 * @param <T1>：此委托封装的方法的第一个参数类型。
 	 * @param <T2>：此委托封装的方法的第二个参数类型。
 	 * @param <T3>：此委托封装的方法的第三个参数类型。
@@ -92,6 +96,7 @@ public class Action {
 
 	/**
 	 * 封装一个具有五个参数且没有返回值的方法。
+	 * 
 	 * @param <T1>：此委托封装的方法的第一个参数类型。
 	 * @param <T2>：此委托封装的方法的第二个参数类型。
 	 * @param <T3>：此委托封装的方法的第三个参数类型。

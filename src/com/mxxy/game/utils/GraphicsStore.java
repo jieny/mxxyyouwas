@@ -11,7 +11,7 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 
 public class GraphicsStore {
-	
+
 	private Paint paint;
 
 	private Font font;

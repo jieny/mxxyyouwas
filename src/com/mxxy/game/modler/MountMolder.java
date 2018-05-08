@@ -9,33 +9,36 @@ import com.mxxy.game.config.IConfigManager;
 import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.FileUtils;
 import com.mxxy.game.widget.ScrollList;
+
 /**
  * 坐骑数据处理
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class MountMolder {
 
 	/**
 	 * 列表数据
-	 * @param propertiesConfigManager 
+	 * 
+	 * @param propertiesConfigManager
 	 * @param mountName
 	 * @return
 	 */
 	public JList<String> getList(IConfigManager propertiesConfigManager) {
-		JList<String> list=new ScrollList<String>(new ListModler(getMountName(propertiesConfigManager)));
+		JList<String> list = new ScrollList<String>(new ListModler(getMountName(propertiesConfigManager)));
 		list.setFont(Constant.TEXT_MOUNT_FONT);
 		return list;
 	}
 
 	@SuppressWarnings("serial")
-	public class ListModler extends AbstractListModel<String>{
-		
+	public class ListModler extends AbstractListModel<String> {
+
 		private ArrayList<String> string;
-		
+
 		public ListModler(ArrayList<String> allDir) {
-			this.string=allDir;
+			this.string = allDir;
 		}
+
 		@Override
 		public String getElementAt(int index) {
 			return string.get(index);
@@ -49,28 +52,31 @@ public class MountMolder {
 
 	/**
 	 * 获取坐骑名字
-	 * @param propertiesConfigManager 
+	 * 
+	 * @param propertiesConfigManager
 	 * @return
 	 */
-	public ArrayList<String> getMountName(IConfigManager propertiesConfigManager){
-		ArrayList<String> mountName=new ArrayList<String>();
+	public ArrayList<String> getMountName(IConfigManager propertiesConfigManager) {
+		ArrayList<String> mountName = new ArrayList<String>();
 		ArrayList<String> allDir = getAllDir(fileName);
-		for (int i=0;i<allDir.size();i++) {
+		for (int i = 0; i < allDir.size(); i++) {
 			String string = allDir.get(i);
-			String substring = string.substring(string.lastIndexOf(Constant.flie_spance)+1, string.length());
-			mountName.add(propertiesConfigManager.get(substring));			
+			String substring = string.substring(string.lastIndexOf(Constant.flie_spance) + 1, string.length());
+			mountName.add(propertiesConfigManager.get(substring));
 		}
 		return mountName;
 	}
-	
+
 	private String fileName;
+
 	/**
 	 * 获取文件层级
+	 * 
 	 * @param string
 	 * @return
 	 */
 	public ArrayList<String> getAllDir(String string) {
-		this.fileName=string;
-		return  FileUtils.getAllDir(string);
+		this.fileName = string;
+		return FileUtils.getAllDir(string);
 	}
 }

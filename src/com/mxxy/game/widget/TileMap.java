@@ -1,6 +1,5 @@
 package com.mxxy.game.widget;
 
-
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -9,19 +8,19 @@ import java.lang.ref.SoftReference;
 import com.mxxy.game.config.MapConfig;
 import com.mxxy.game.resources.DefaultTileMapProvider;
 
-public class TileMap extends AbstractCanvas{
+public class TileMap extends AbstractCanvas {
 	private static final int MAP_BLOCK_WIDTH = 320;
 	private static final int MAP_BLOCK_HEIGHT = 240;
 	private DefaultTileMapProvider provider;
-	private SoftReference<Image>[][] blockTable;  //软引用对象
-	private int xBlockCount;  
+	private SoftReference<Image>[][] blockTable; // 软引用对象
+	private int xBlockCount;
 	private int yBlockCount;
 	private int width;
 	private int height;
 	private MapConfig config;
 
 	@SuppressWarnings("unchecked")
-	public TileMap(DefaultTileMapProvider provider, MapConfig cfg){
+	public TileMap(DefaultTileMapProvider provider, MapConfig cfg) {
 		this.config = cfg;
 		this.xBlockCount = provider.getXBlockCount();
 		this.yBlockCount = provider.getYBlockCount();
@@ -31,9 +30,8 @@ public class TileMap extends AbstractCanvas{
 		this.provider = provider;
 	}
 
-
 	@Override
-	protected void draw(Graphics2D g2, int x, int y, int width, int height){
+	protected void draw(Graphics2D g2, int x, int y, int width, int height) {
 		Point pFirstBlock = viewToBlock(x, y);
 		int dx = pFirstBlock.x * MAP_BLOCK_WIDTH - x;
 		int dy = pFirstBlock.y * MAP_BLOCK_HEIGHT - y;
@@ -49,7 +47,7 @@ public class TileMap extends AbstractCanvas{
 			}
 	}
 
-	public void prepare(int x, int y, int width, int height){
+	public void prepare(int x, int y, int width, int height) {
 		Point pFirstBlock = viewToBlock(x, y);
 
 		int dx = pFirstBlock.x * MAP_BLOCK_WIDTH - x;
@@ -66,8 +64,7 @@ public class TileMap extends AbstractCanvas{
 			}
 	}
 
-	private int checkTable()
-	{
+	private int checkTable() {
 		int count = 0;
 		int width = this.blockTable.length;
 		int height = this.blockTable[0].length;
@@ -89,7 +86,7 @@ public class TileMap extends AbstractCanvas{
 			this.blockTable[x][y] = reference;
 		}
 		checkTable();
-		return (Image)reference.get();
+		return (Image) reference.get();
 	}
 
 	public int getXBlockCount() {
@@ -108,7 +105,7 @@ public class TileMap extends AbstractCanvas{
 		this.yBlockCount = blockCount;
 	}
 
-	private Point viewToBlock(int x, int y){
+	private Point viewToBlock(int x, int y) {
 		Point p = new Point();
 		p.x = (x / MAP_BLOCK_WIDTH);
 		p.y = (y / MAP_BLOCK_HEIGHT);
@@ -160,5 +157,4 @@ public class TileMap extends AbstractCanvas{
 	public boolean contains(int x, int y) {
 		return true;
 	}
-
 }

@@ -1,14 +1,12 @@
 package com.mxxy.game.was;
 
-
-
-
 import java.awt.Image;
 import java.io.OutputStream;
 import java.util.Vector;
 
 /**
  * 游戏资源文件-WAS格式编码器
+ * 
  * @date
  */
 public class WASEncoder {

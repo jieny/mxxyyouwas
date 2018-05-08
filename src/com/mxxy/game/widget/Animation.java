@@ -1,33 +1,37 @@
 package com.mxxy.game.widget;
 
-
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.Vector;
 
 import com.mxxy.game.utils.GraphicsUtils;
 
-public class Animation extends AbstractCanvas{
+public class Animation extends AbstractCanvas {
+	/** 帧集合 */
+	private Vector<AnimationFrame> frames;
+	
+	/** 当前帧 */
+	public AnimationFrame currFrame;
+	
+	/** 动画总时间 */
+	private long totalDuration;
+	
+	/** 一个动画周期内动画已播放时间 */
+	public long animTime;
+	
+	/** 当前帧序号 */
+	private int currentFrameIndex;
 
-	private Vector<AnimationFrame> frames;/**帧集合*/
-
-	public AnimationFrame currFrame;/** 当前帧*/
-
-	private long totalDuration;/**动画总时间*/
-
-	public long animTime;/**一个动画周期内动画已播放时间*/
-
-	private int currentFrameIndex;/**当前帧序号*/
-
+	/**播放次数  -1代表循环*/
 	private int repeat = -1;
 
-	private int frameCount;  
+	private int frameCount;
 
-	public Animation(){
-		frames=new Vector<AnimationFrame>();
+	public Animation() {
+		frames = new Vector<AnimationFrame>();
 	}
 
-	public synchronized void addFrame(Image image,long duration){
+	public synchronized void addFrame(Image image, long duration) {
 		this.totalDuration += duration;
 		AnimationFrame frame = new AnimationFrame(image, this.totalDuration);
 		this.frames.add(frame);
@@ -35,7 +39,7 @@ public class Animation extends AbstractCanvas{
 		frameCount = frames.size();
 	}
 
-	public synchronized void addFrame(Image image,long duration,int centerX,int centerY){
+	public synchronized void addFrame(Image image, long duration, int centerX, int centerY) {
 		this.totalDuration += duration;
 		AnimationFrame frame = new AnimationFrame(image, this.totalDuration, centerX, centerY);
 		this.frames.add(frame);
@@ -46,23 +50,24 @@ public class Animation extends AbstractCanvas{
 	/**
 	 * 重置动画
 	 */
-	public void reset(){
-		animTime=0;
-		currentFrameIndex=0;
+	public void reset() {
+		animTime = 0;
+		currentFrameIndex = 0;
 	}
 
 	/**
 	 * 获取动画帧
+	 * 
 	 * @param i
 	 * @return
 	 */
-	public AnimationFrame getFrame(int index){
-		if(index<0){
+	public AnimationFrame getFrame(int index) {
+		if (index < 0) {
 			return frames.get(0);
-		}else if(index>=frames.size()){
-			return frames.get(frames.size()-1);
+		} else if (index >= frames.size()) {
+			return frames.get(frames.size() - 1);
 		}
-		return (AnimationFrame)frames.get(index);
+		return (AnimationFrame) frames.get(index);
 	}
 
 	public Vector<AnimationFrame> getFrames() {
@@ -74,36 +79,38 @@ public class Animation extends AbstractCanvas{
 	@Override
 	protected void draw(Graphics2D g, int x, int y, int width, int hight) {
 		g.drawImage(getFrame(currentFrameIndex).getImage(), x, y, null);
-		this.currFrame.draw(g, x, y, width,hight);
+		this.currFrame.draw(g, x, y, width, hight);
 	}
+
 	/**
 	 * 修改图片索引
+	 * 
 	 * @param elapsedTime
 	 */
-	public synchronized void update(long elapsedTime){   	
+	public synchronized void update(long elapsedTime) {
 		if (repeat == 0) {
 			return;
 		}
-		
-//		if(frames.size()>1){
-//			animTime+=elapsedTime;
-//			if(animTime>=totalDuration){
-//				animTime=animTime%totalDuration;
-//				currentFrameIndex=0;
-//				currFrame=frames.get(0);
-//			}
-//			while(animTime>getFrame(currentFrameIndex).getEndTime()){
-//				currentFrameIndex++;
-//				currFrame=frames.get(currentFrameIndex);
-//			}
-//		}
-		
+		// if(frames.size()>1){
+		// animTime+=elapsedTime;
+		// if(animTime>=totalDuration){
+		// animTime=animTime%totalDuration;
+		// currentFrameIndex=0;
+		// currFrame=frames.get(0);
+		// }
+		// while(animTime>getFrame(currentFrameIndex).getEndTime()){
+		// currentFrameIndex++;
+		// currFrame=frames.get(currentFrameIndex);
+		// }
+		// }
+
 		animTime += elapsedTime;
 		this.updateToTime(animTime);
 	}
 
 	/**
 	 * 动画是一帧 表现 所以 加锁等待更新结束唤醒锁
+	 * 
 	 * @param playTime
 	 */
 	public void updateToTime(long tiem) {
@@ -129,9 +136,7 @@ public class Animation extends AbstractCanvas{
 			} else {
 				currFrame = null;
 			}
-			UPDATE_LOCK.notifyAll();  
-			
-		
+			UPDATE_LOCK.notifyAll();
 		}
 	}
 
@@ -157,31 +162,30 @@ public class Animation extends AbstractCanvas{
 
 	/**
 	 * 指定文件转换为动画图像
-	 * @param fileName  文件名
-	 * @param row  行
+	 * @param fileName 文件名
+	 * @param row 行
 	 * @param col 列
-	 * @param timer  动画时长
+	 * @param timer 动画时长
 	 * @return
 	 */
-	public Animation getDefaultAnimation(String fileName,int maxFrame,int row,int col,int timer){
-		return	getDefaultAnimation(GraphicsUtils.getSplitImages(fileName, row, col, false), maxFrame, timer);
+	public Animation getDefaultAnimation(String fileName, int maxFrame, int row, int col, int timer) {
+		return getDefaultAnimation(GraphicsUtils.getSplitImages(fileName, row, col, false), maxFrame, timer);
 	}
 
-	//TODO
-	public  Animation getDefaultAnimation(Image[] images, int maxFrame,int timer){
-		Animation animation=new Animation();
-		if(maxFrame!=-1){
+	// TODO
+	public Animation getDefaultAnimation(Image[] images, int maxFrame, int timer) {
+		Animation animation = new Animation();
+		if (maxFrame != -1) {
 			for (int i = 0; i < maxFrame; i++) {
-				//				animation.addFrame(, timer);
+				// animation.addFrame(, timer);
 			}
-		}else{
+		} else {
 			for (int i = 0; i < images.length; i++) {
-				//				animation.addFrame(, timer);
+				// animation.addFrame(, timer);
 			}
 		}
 		return animation;
 	}
-
 
 	public synchronized Image getImage() {
 		return this.currFrame == null ? null : this.currFrame.getImage();
@@ -190,6 +194,7 @@ public class Animation extends AbstractCanvas{
 	public int getRepeat() {
 		return repeat;
 	}
+
 	public synchronized int getWidth() {
 		return this.currFrame == null ? 0 : this.currFrame.getImage().getWidth(null);
 	}
@@ -213,5 +218,22 @@ public class Animation extends AbstractCanvas{
 	public int getCurrentFrameIndex() {
 		return currentFrameIndex;
 	}
+	
+	/**
+	 * 判断是否播放结束
+	 */
+	public void waitFor() {
+		synchronized (UPDATE_LOCK) {
+			while (true) {
+				if(repeat==0 && currentFrameIndex == frameCount-1 || repeat ==-1) {
+					break;
+				}
+				try {
+					UPDATE_LOCK.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 }
-

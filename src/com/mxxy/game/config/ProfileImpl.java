@@ -13,32 +13,32 @@ import java.util.List;
 
 import com.mxxy.game.utils.FilterByJava;
 
-public class ProfileImpl implements IProfileManager{
+public class ProfileImpl implements IProfileManager {
 
 	@Override
 	public void save(Profile proflie) {
-		File file=getProfileFile(proflie.getFilename(),true);
+		File file = getProfileFile(proflie.getFilename(), true);
 		ObjectOutputStream oos = null;
 		try {
 			oos = new ObjectOutputStream(new FileOutputStream(file));
-			//创建时间
+			// 创建时间
 			oos.writeObject(new java.util.Date());
-			//创建时间
-			//场景
-//			oos.writeUTF(proflie.getSceneId());
-			//人物数据
+			// 创建时间
+			// 场景
+			// oos.writeUTF(proflie.getSceneId());
+			// 人物数据
 			oos.writeObject(proflie.getPlayerVO());
 			oos.close();
 			proflie.setFilename(file.getAbsolutePath());
-			System.err.println("游戏存档完毕: "+file.getAbsolutePath());
+			System.err.println("游戏存档完毕: " + file.getAbsolutePath());
 		} catch (FileNotFoundException e) {
-			System.err.println("游戏存档失败,找不到文件！"+proflie.getFilename());
+			System.err.println("游戏存档失败,找不到文件！" + proflie.getFilename());
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("游戏存档失败，IO错误！"+e.getMessage());
+			System.err.println("游戏存档失败，IO错误！" + e.getMessage());
 			e.printStackTrace();
-		}finally{
-			if(oos!=null){
+		} finally {
+			if (oos != null) {
 				try {
 					oos.close();
 				} catch (IOException e) {
@@ -54,30 +54,27 @@ public class ProfileImpl implements IProfileManager{
 		return loadProfile(file);
 	}
 
-
-	
 	@Override
 	public void romeve(String filename) {
 
 	}
 
-	
 	private Profile loadProfile(File file) {
-		if(file==null || !file.exists() || file.length()==0) {
+		if (file == null || !file.exists() || file.length() == 0) {
 			return null;
 		}
 		try {
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 			Date createDate = (Date) ois.readObject();
-//			String sceneId = ois.readUTF();
+			// String sceneId = ois.readUTF();
 			PlayerVO playerData = (PlayerVO) ois.readObject();
 			ois.close();
-			Profile	 profile = new Profile();
-			//			profile.setName(trimSuffix(file.getName()));
+			Profile profile = new Profile();
+			// profile.setName(trimSuffix(file.getName()));
 			profile.setFilename(file.getAbsolutePath());
 			profile.setCreateDate(createDate);
 			profile.setPlayerVO(playerData);
-//			profile.setSceneId(sceneId);
+			// profile.setSceneId(sceneId);
 			return profile;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -90,9 +87,9 @@ public class ProfileImpl implements IProfileManager{
 	}
 
 	private File getProfileFile(String name, boolean create) {
-		String path="save/"+name+".jxd";
+		String path = "save/" + name + ".jxd";
 		File file = new File(path);
-		if((file == null || !file.exists() )&& create) {
+		if ((file == null || !file.exists()) && create) {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
@@ -105,10 +102,10 @@ public class ProfileImpl implements IProfileManager{
 	@Override
 	public List<Profile> listProfiles() {
 		List<Profile> profiles = new ArrayList<Profile>();
-		File dir =new File("save");
+		File dir = new File("save");
 		if (dir != null && dir.isDirectory()) {
 			File[] files = dir.listFiles(new FilterByJava(".jxd"));
-			for(int i=0; (files!=null && i<files.length); i++) {
+			for (int i = 0; (files != null && i < files.length); i++) {
 				try {
 					Profile profile = loadProfile(files[i]);
 					profiles.add(profile);

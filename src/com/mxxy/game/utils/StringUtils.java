@@ -4,27 +4,27 @@ import java.util.StringTokenizer;
 
 /**
  * 字符串操作
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class StringUtils {
 
 	public static final String EMPTY = "";
 
 	/**
-	 * 获取自定字符后面的字符串
-	 * StringUtils.afterLast("akcb","k") =cb
+	 * 获取自定字符后面的字符串 StringUtils.afterLast("akcb","k") =cb
+	 * 
 	 * @param str
 	 * @param delimiter
 	 * @return
 	 */
-	public static String afterLast(String str,String delimiter) {
+	public static String afterLast(String str, String delimiter) {
 		int p = str.lastIndexOf(delimiter);
-		return (p>=0&&p<str.length()-1)?str.substring(p+delimiter.length()):null;
+		return (p >= 0 && p < str.length() - 1) ? str.substring(p + delimiter.length()) : null;
 	}
 
 	/**
 	 * 将指定字符,插入到字符串中间
+	 * 
 	 * @param str
 	 * @param open
 	 * @param close
@@ -42,12 +42,12 @@ public class StringUtils {
 			}
 		}
 		return null;
-	}	
+	}
 
 	/**
-	 * 比较两个字符串
-	 * StringUtils.equals("s","s")  =true;
-	 * StringUtils.equals("s","q")  =false;
+	 * 比较两个字符串 StringUtils.equals("s","s") =true; StringUtils.equals("s","q")
+	 * =false;
+	 * 
 	 * @param str1
 	 * @param str2
 	 * @return
@@ -57,8 +57,8 @@ public class StringUtils {
 	}
 
 	/**
-	 *  StringUtils.isBlank("")  =true;
-	 *  StringUtils.isBlank("f")=false;
+	 * StringUtils.isBlank("") =true; StringUtils.isBlank("f")=false;
+	 * 
 	 * @param str
 	 * @return
 	 */
@@ -76,23 +76,22 @@ public class StringUtils {
 	}
 
 	/**
-	 * <p>判断字符串是否有值</p>
-	 * StringUtils.isNotBlank(null)      = false
-	 * StringUtils.isNotBlank("")        = false
-	 * StringUtils.isNotBlank(" ")       = false
-	 * StringUtils.isNotBlank("bob")     = true
-	 * StringUtils.isNotBlank("  bob  ") = true
+	 * <p>
+	 * 判断字符串是否有值
+	 * </p>
+	 * StringUtils.isNotBlank(null) = false StringUtils.isNotBlank("") = false
+	 * StringUtils.isNotBlank(" ") = false StringUtils.isNotBlank("bob") = true
+	 * StringUtils.isNotBlank(" bob ") = true
 	 * </pre>
 	 */
 	public static boolean isNotBlank(String str) {
 		return !StringUtils.isBlank(str);
 	}
 
-
 	/**
-	 * 判断字符串中是否有汉字
-	 * StringUtils.isEnglishAndNumeric("123sdsd")=true
+	 * 判断字符串中是否有汉字 StringUtils.isEnglishAndNumeric("123sdsd")=true
 	 * StringUtils.isEnglishAndNumeric("123你") =flase
+	 * 
 	 * @param string
 	 * @return
 	 */
@@ -104,8 +103,7 @@ public class StringUtils {
 		int size = chars.length;
 		for (int j = 0; j < size; j++) {
 			char letter = chars[j];
-			if ((97 > letter || letter > 122) && (65 > letter || letter > 90)
-					&& (48 > letter || letter > 57)) {
+			if ((97 > letter || letter > 122) && (65 > letter || letter > 90) && (48 > letter || letter > 57)) {
 				return false;
 			}
 		}
@@ -113,9 +111,8 @@ public class StringUtils {
 	}
 
 	/**
-	 * 截取字符串
-	 * StringUtils.splits("z:k",":")
-	 * string[0]=z,string[1]=k;
+	 * 截取字符串 StringUtils.splits("z:k",":") string[0]=z,string[1]=k;
+	 * 
 	 * @param string
 	 * @param tag
 	 * @return
@@ -131,15 +128,17 @@ public class StringUtils {
 	}
 
 	/**
-	 * 替换指定字符
-	 * StringUtils.replace("bbba", "bbb", "a")=aa
-	 * @param string 指定字符串
-	 * @param oldString 需要替换的字符
-	 * @param newString 替换成的字符
+	 * 替换指定字符 StringUtils.replace("bbba", "bbb", "a")=aa
+	 * 
+	 * @param string
+	 *            指定字符串
+	 * @param oldString
+	 *            需要替换的字符
+	 * @param newString
+	 *            替换成的字符
 	 * @return
 	 */
-	public static final String replace(String string, String oldString,
-			String newString) {
+	public static final String replace(String string, String oldString, String newString) {
 		if (string == null)
 			return null;
 		if (newString == null)
@@ -163,15 +162,15 @@ public class StringUtils {
 			return string;
 		}
 	}
+
 	/**
-	 * 过滤指定字符
-	 *String[] parseString = StringUtils.parseString("你H我",'H');
-	 *string[0]=你
-	 *string[1]=我
+	 * 过滤指定字符 String[] parseString = StringUtils.parseString("你H我",'H'); string[0]=你
+	 * string[1]=我
+	 * 
 	 * @param text
 	 * @return
 	 */
-	public static String[] parseString(String text,char c) {
+	public static String[] parseString(String text, char c) {
 		int token, index, index2;
 		token = index = index2 = 0;
 		while ((index = text.indexOf(c, index)) != -1) {
@@ -195,6 +194,7 @@ public class StringUtils {
 
 	/**
 	 * 检查一组字符串是否完全由中文组成
+	 * 
 	 * @param str
 	 * @return
 	 */
@@ -209,8 +209,7 @@ public class StringUtils {
 			if (bytes.length == 2) {
 				ints[0] = bytes[0] & 0xff;
 				ints[1] = bytes[1] & 0xff;
-				if (ints[0] >= 0x81 && ints[0] <= 0xFE && ints[1] >= 0x40
-						&& ints[1] <= 0xFE) {
+				if (ints[0] >= 0x81 && ints[0] <= 0xFE && ints[1] >= 0x40 && ints[1] <= 0xFE) {
 					isChinese = true;
 				}
 			} else {
@@ -221,9 +220,9 @@ public class StringUtils {
 	}
 
 	/**
-	 * 检查是否为纯字母
-	 * StringUtils.isAlphabet("aaa")  =true;
+	 * 检查是否为纯字母 StringUtils.isAlphabet("aaa") =true;
 	 * StringUtils.isAlphabet("aaa1s")=false;
+	 * 
 	 * @param value
 	 * @return
 	 */
@@ -238,51 +237,79 @@ public class StringUtils {
 		return false;
 	}
 
-	public static String string2Unicode(String string) {  
+	public static String string2Unicode(String string) {
 
-		StringBuffer unicode = new StringBuffer();  
+		StringBuffer unicode = new StringBuffer();
 
-		for (int i = 0; i < string.length(); i++) {  
+		for (int i = 0; i < string.length(); i++) {
 
-			// 取出每一个字符  
-			char c = string.charAt(i);  
+			// 取出每一个字符
+			char c = string.charAt(i);
 
-			// 转换为unicode  
-			unicode.append("\\u" + Integer.toHexString(c));  
-		}  
+			// 转换为unicode
+			unicode.append("\\u" + Integer.toHexString(c));
+		}
 
-		return unicode.toString();  
+		return unicode.toString();
 	}
 
-	public static String unicode2String(String unicode) {  
+	public static String unicode2String(String unicode) {
 
-		StringBuffer string = new StringBuffer();  
+		StringBuffer string = new StringBuffer();
 
-		String[] hex = unicode.split("\\\\u");  
+		String[] hex = unicode.split("\\\\u");
 
-		for (int i = 1; i < hex.length; i++) {  
+		for (int i = 1; i < hex.length; i++) {
 
-			// 转换出每一个代码点  
-			int data = Integer.parseInt(hex[i], 16);  
+			// 转换出每一个代码点
+			int data = Integer.parseInt(hex[i], 16);
 
-			// 追加成string  
-			string.append((char) data);  
-		}  
+			// 追加成string
+			string.append((char) data);
+		}
 
-		return string.toString();  
-	}  
-
+		return string.toString();
+	}
 
 	/**
 	 * 插入字符
+	 * 
 	 * @param s1
 	 * @param s2
 	 * @param l
 	 * @return
 	 */
-	public static String insertString(String s1,String s2,int index){
-		StringBuilder sb=new StringBuilder();
+	public static String insertString(String s1, String s2, int index) {
+		StringBuilder sb = new StringBuilder();
 		sb.append(s1).insert(index, s2);
 		return sb.toString();
+	}
+	
+	/** 
+	 * @param min 指定范围最小值 
+	 * @param max 指定范围最大值 
+	 * @param n 随机数个数 
+	 */ 
+	public static int[] randomCommon(int min, int max, int n){  
+	    if (n > (max - min + 1) || max < min) {  
+	           return null;  
+	       }  
+	    int[] result = new int[n];  
+	    int count = 0;  
+	    while(count < n) {  
+	        int num = (int) (Math.random() * (max - min)) + min;  
+	        boolean flag = true;  
+	        for (int j = 0; j < n; j++) {  
+	            if(num == result[j]){  
+	                flag = false;  
+	                break;  
+	            }  
+	        }  
+	        if(flag){  
+	            result[count] = num;  
+	            count++;  
+	        }  
+	    }  
+	    return result;  
 	}
 }

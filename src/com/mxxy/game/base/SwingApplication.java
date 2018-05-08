@@ -4,17 +4,22 @@ import java.awt.Container;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import com.mxxy.game.config.DataStoreManager;
 import com.mxxy.game.config.PlayerVO;
 import com.mxxy.game.config.PropertiseConfigImpl;
+import com.mxxy.game.handler.BattlePanelController;
 import com.mxxy.game.handler.GamePanelController;
+import com.mxxy.game.ui.BattlePanel;
 import com.mxxy.game.ui.GameFrame;
 import com.mxxy.game.ui.GamePanel;
 import com.mxxy.game.ui.IWindows;
 import com.mxxy.game.ui.LoadingPanel;
 import com.mxxy.game.ui.LoginPanel;
+import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.PanelManager;
+import com.mxxy.game.widget.TileMap;
 
 public class SwingApplication extends Application {
 
@@ -24,12 +29,14 @@ public class SwingApplication extends Application {
 
 	@Override
 	protected IWindows createWindows() {
-		gameFrame=new GameFrame();
+		gameFrame = new GameFrame();
 		gameFrame.initContent(context);
-		loadingPanel=new LoadingPanel(312, 104);
+		loadingPanel = new LoadingPanel(312, 104);
 		return gameFrame;
 	}
+
 	private PropertiseConfigImpl config;
+
 	@Override
 	protected void loadeResourceProgress(int i) {
 		loadingPanel.getjProgressBar().setMinimum(0);
@@ -37,6 +44,7 @@ public class SwingApplication extends Application {
 		loadingPanel.getjProgressBar().setMaximum(config.getPropertiseSize());
 		loadingPanel.getjProgressBar().setValue(i);
 	}
+
 	@Override
 	protected void loadingpanel() {
 		gameFrame.showPanel(loadingPanel);
@@ -47,8 +55,8 @@ public class SwingApplication extends Application {
 		showHomePager();
 	}
 
-	public void showHomePager(){
-		LoginPanel loginPanel=new LoginPanel();
+	public void showHomePager() {
+		LoginPanel loginPanel = new LoginPanel();
 		Panel panel = PanelManager.getPanel("HomePager");
 		loginPanel.setUIhelp(getUiHelp());
 		loginPanel.setConfigManager(config);
@@ -58,13 +66,17 @@ public class SwingApplication extends Application {
 	}
 
 	
+	private GamePanel gamePanel;
+	/**
+	 * 进入游戏
+	 */
 	@Override
 	public void enterGame(PlayerVO data) {
 		gameFrame.setIsfristApplication(false);
-		GamePanel gamePanel=new GamePanel();
+		GamePanel gamePanel = new GamePanel();
 		Panel gamePager = PanelManager.getPanel("GamePager");
 		gamePanel.setConfigManager(config);
-		/** 由于是覆盖在上面的 所以需要将事件传递给父容器*/
+		/** 由于是覆盖在上面的 所以需要将事件传递给父容器 */
 		gamePager.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -72,12 +84,12 @@ public class SwingApplication extends Application {
 				Point p = e.getPoint();
 				int x = gamePager.getX();
 				int y = gamePager.getY();
-				MouseEvent event = new MouseEvent(parent, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), e
-						.getModifiers(), x + p.x, y + p.y, e.getClickCount(), false);
+				MouseEvent event = new MouseEvent(parent, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(),
+						e.getModifiers(), x + p.x, y + p.y, e.getClickCount(), false);
 				parent.dispatchEvent(event);
 			}
 		});
-		DataStoreManager dataStore = (DataStoreManager)objects[0];
+		DataStoreManager dataStore = (DataStoreManager) objects[0];
 		dataStore.initData(data);
 		dataStore.loadSceneNpc();
 		dataStore.loadSceneTeleporter();
@@ -90,13 +102,47 @@ public class SwingApplication extends Application {
 		new GamePanelController(gamePanel);
 		getUiHelp().showPanel(gamePager);
 	}
+	
+	/**
+	 * 进入战争模块
+	 */
+	@Override
+	public void enterTheWar(Object[] args) {
+		IWindows windows=context.getWindows();
+		GamePanel gamePanel = (GamePanel) windows.getPanel();
+		this.gamePanel=gamePanel;
+		TileMap map = gamePanel.getMap(gamePanel.getContext().getScene());  //获取当前
+		Point viewPosition = gamePanel.getViewPosition();
+		BattlePanel battlePanel = new BattlePanel(map, viewPosition, gamePanel);
+		battlePanel.setUIhelp(getUiHelp());
+		battlePanel.setConfigManager(config);
+		battlePanel.setBounds(0, 0, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
+		battlePanel.setHostileTead((List)args[1]); //设置敌方队伍
+		battlePanel.setOwnsideTeam((List)args[0]); //设置己方队伍
+		battlePanel.playMusic();
+		gameFrame.showPanel(battlePanel);
+		new BattlePanelController(battlePanel);
+		battlePanel.initComponetn();
+	}
+	
+	/**
+	 * 退出战争页面
+	 */
+	@Override
+	public void quitWar() {
+		GamePanel gamePanel=this.gamePanel;
+		gamePanel.setPlayerLocation(context.getPlayer().getSceneLocation());
+		gamePanel.initGameDate();
+		gameFrame.showPanel(gamePanel);
+		gamePanel.playMusic();
+		Constant.setProps(Constant.LAST_PATROL_TIME, System.currentTimeMillis());
+	}
 
 	/**
 	 * main 程序入口
 	 */
 	public static void main(String[] args) {
-		Application application=new SwingApplication();
+		Application application = new SwingApplication();
 		application.startGame();
 	}
 }
-

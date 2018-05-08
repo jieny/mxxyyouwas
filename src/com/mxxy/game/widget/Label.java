@@ -19,18 +19,18 @@ import com.mxxy.game.utils.GraphicsUtils;
 
 @SuppressWarnings("serial")
 public class Label extends JLabel {
-	
+
 	private Animation animation;
-	
+
 	private long lastUpdateTime;
-	
-	private  Rectangle bounds;  //矩形范围   bounds;  //矩形范围  
-	
+
+	private Rectangle bounds; // 矩形范围 bounds; //矩形范围
+
 	public Label(Animation anim) {
-		this(null, anim!=null?new ImageIcon(anim.getImage()):null, LEFT);
+		this(null, anim != null ? new ImageIcon(anim.getImage()) : null, LEFT);
 		setAnim(anim);
 	}
-	
+
 	public Label(String text, Icon icon, int horizontalAlignment) {
 		super(text, icon, horizontalAlignment);
 		setIgnoreRepaint(true);
@@ -38,24 +38,24 @@ public class Label extends JLabel {
 		setFont(new Font("黑体", Font.PLAIN, 13));
 		setForeground(Color.WHITE);
 	}
-	
+
 	public Label(Sprite s) {
 		this(null, null, LEFT);
 	}
-	
-	public void setRectangleBounds(int x,int y){
-		this.bounds=new Rectangle(x, y, getWidth(), getHeight());
+
+	public void setRectangleBounds(int x, int y) {
+		this.bounds = new Rectangle(x, y, getWidth(), getHeight());
 	}
 
 	public boolean hit(Point p) {
 		return this.bounds.contains(p);
 	}
-	
-	public void setBorder(){
+
+	public void setBorder() {
 		setForeground(GameColor.decode("#F8E890"));
-		setBorder(new CompoundBorder(new RoundLineBorder(Color.WHITE,1, 8, 8),new EmptyBorder(10, 10, 10, 10)));
+		setBorder(new CompoundBorder(new RoundLineBorder(Color.WHITE, 1, 8, 8), new EmptyBorder(10, 10, 10, 10)));
 	}
-	
+
 	public void setAnim(Animation anim) {
 		this.animation = anim;
 		if (anim != null) {
@@ -63,15 +63,17 @@ public class Label extends JLabel {
 			this.setSize(anim.getWidth(), anim.getHeight());
 			this.setHorizontalAlignment(SwingConstants.CENTER);
 			this.setVerticalAlignment(SwingConstants.CENTER);
-		}else {
+		} else {
 			setIcon(null);
 		}
 	}
-	
+
 	private Color color;
-	public void setColor(Color p){
-		this.color=p;
+
+	public void setColor(Color p) {
+		this.color = p;
 	}
+
 	@Override
 	public void paint(Graphics g) {
 		GraphicsUtils.setAntialiasAll(g, true);
@@ -84,11 +86,10 @@ public class Label extends JLabel {
 //		drawToolTipText(g);
 		super.paint(g);
 	}
-	
+
 //	private String text;
 //	public void setToolTipTexts(String text){
 //		this.text=text;
-//		
 //	}
 //	public void drawToolTipText(Graphics g){
 //		g.setFont(Constant.PROMPT_FONT);
@@ -96,13 +97,18 @@ public class Label extends JLabel {
 //			g.drawString(text, getX(), getY());
 //		}
 //	}
-	public void drawLenvl(Graphics g){
-		if(color!=null){
+
+
+
+	public void drawLenvl(Graphics g) {
+		if (color != null) {
 			g.setColor(color);
-			g.fillRect(5, getHeight()-4, getWidth()-10, 2);
+			g.fillRect(5, getHeight() - 4, getWidth() - 10, 2);
 			g.setColor(null);
 		}
 	}
+
 	@Override
-	public void paintImmediately(int x, int y, int w, int h) {}
+	public void paintImmediately(int x, int y, int w, int h) {
+	}
 }

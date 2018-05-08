@@ -50,10 +50,10 @@ public class AStarNode {
 		int dy = this.y - node.y;
 		return (int) Math.sqrt(dx * dx + dy * dy);
 	}
-	
-	public int getDistance(AStarNode node){
-		int dx = 10*(this.x - node.x);
-		int dy = 10*(this.y - node.y);
+
+	public int getDistance(AStarNode node) {
+		int dx = 10 * (this.x - node.x);
+		int dy = 10 * (this.y - node.y);
 		return (int) Math.sqrt(dx * dx + dy * dy);
 	}
 

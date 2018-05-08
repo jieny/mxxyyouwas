@@ -34,23 +34,24 @@ abstract public class Application {
 	private IDataManager dataStore;
 
 	private IConfigManager configmanager;
-	
+
 	private IProfileManager profileManager;
-	
-	private ExtendScript extendScript;
+
+//	private ExtendScript extendScript;
 
 	protected Object[] objects;
 
 	public static Application application;
-	
+
 	public Application() {
-		application=this;
+		application = this;
 	}
-	public void startGame(){
+
+	public void startGame() {
 
 		runLoadingWork();
 
-		iWindows=createWindows();
+		iWindows = createWindows();
 
 		loadingpanel();
 
@@ -73,9 +74,9 @@ abstract public class Application {
 
 	}
 
-	protected abstract IWindows createWindows() ;
+	protected abstract IWindows createWindows();
 
-	public void showHomePager(){
+	public void showHomePager() {
 		try {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -86,8 +87,9 @@ abstract public class Application {
 		} catch (Exception e) {
 		}
 	}
-	public void runLoadingWork(){
-		LoadingsWork loadingWork=new LoadingsWork();
+
+	public void runLoadingWork() {
+		LoadingsWork loadingWork = new LoadingsWork();
 		loadingWork.execute();
 		try {
 			objects = loadingWork.get();
@@ -98,55 +100,57 @@ abstract public class Application {
 		}
 	}
 
-	
 	protected Context createContext() {
 		Context context = new Context();
-//		IClient iClient=new ClientImp();
-//		iClient.connect("127.0.0.1", 8888);
-//		try {
-//			iClient.initialize();
-//			iClient.openReadThread();
-//		} catch (InterruptedException | IOException e) {
-//			e.printStackTrace();
-//		}
-//		context.setClient(iClient);
+		// IClient iClient=new ClientImp();
+		// iClient.connect("127.0.0.1", 8888);
+		// try {
+		// iClient.initialize();
+		// iClient.openReadThread();
+		// } catch (InterruptedException | IOException e) {
+		// e.printStackTrace();
+		// }
+		// context.setClient(iClient);
 		return context;
 	}
-	
+
 	public Context getContext() {
 		return context;
 	}
-	
+
 	/**
 	 * 配置数据线程
+	 * 
 	 * @author dell
 	 */
-	private class LoadingsWork extends SwingWorker<Object[], Void>{
+	private class LoadingsWork extends SwingWorker<Object[], Void> {
 		@Override
 		protected Object[] doInBackground() throws Exception {
 			FileUtils.deleteAll(new File("script/panel"));
-			context=createContext();
-			dataStore=new DataStoreManager(context);
-			configmanager=new PropertiseConfigImpl();
+			context = createContext();
+			dataStore = new DataStoreManager(context);
+			configmanager = new PropertiseConfigImpl();
 			configmanager.setFilename("layout/ui.properties");
 			configmanager.loadConfigs();
-			profileManager=new ProfileImpl();
-			extendScript=new ExtendScript();
-			return new Object[]{dataStore,configmanager,context,profileManager};
+			profileManager = new ProfileImpl();
+//			extendScript = new ExtendScript();
+			return new Object[] { dataStore, configmanager, context, profileManager };
 		}
 	}
+
 	/**
 	 * 加载UI 脚本资源
 	 */
 	protected int i;
-	public void loadLayoutResources(){
+
+	public void loadLayoutResources() {
 		loader = new XMLoader();
-		File dir =new File("script");
+		File dir = new File("script");
 		File[] files = dir.listFiles(new FilterByJava(".java"));
 		for (int i = 0; i < configmanager.getPropertiseSize(); i++) {
 			try {
-				loader.loadUI(FileUtils.getPath("layout/"+configmanager.get(String.valueOf(i))));
-//				extendScript.compile(files[i].getAbsolutePath());
+				loader.loadUI(FileUtils.getPath("layout/" + configmanager.get(String.valueOf(i))));
+//				 extendScript.compile(files[i].getAbsolutePath());
 				loadeResourceProgress(i);
 			} catch (DocumentException e) {
 				e.printStackTrace();
@@ -156,16 +160,17 @@ abstract public class Application {
 
 	/**
 	 * 加载资源进度
+	 * 
 	 * @param i
 	 */
 	protected void loadeResourceProgress(int i) {
 
 	}
 
-	public UIHelp getUiHelp(){
+	public UIHelp getUiHelp() {
 		return iWindows.getUiHelp();
 	}
-	
+
 	public IWindows getiWindows() {
 		return iWindows;
 	}
@@ -173,8 +178,7 @@ abstract public class Application {
 	public IConfigManager getConfigmanager() {
 		return (IConfigManager) objects[1];
 	}
-	
-	
+
 	public Object[] getObjects() {
 		return objects;
 	}
@@ -182,10 +186,19 @@ abstract public class Application {
 	public void enterGame(PlayerVO data) {
 
 	}
+	
+	public void enterTheWar(Object object[]) {
+		
+	}
+	
+	public void quitWar() {
+		
+	}
+	
 	/**
 	 * 退出游戏
 	 */
-	public void exitGame(){
+	public void exitGame() {
 		System.exit(0);
 	}
 }

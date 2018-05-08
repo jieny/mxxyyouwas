@@ -1,18 +1,14 @@
 package com.mxxy.game.utils;
 
-
-
 import java.awt.Color;
+
 /**
  * 游戏取色器
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class GameColor extends Color {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public final static GameColor white = new GameColor(255, 255, 255);
@@ -42,11 +38,11 @@ public class GameColor extends Color {
 	public final static GameColor blue = new GameColor(0, 0, 255);
 
 	public final static int transparent = 0xff000000;
-	
+
 	public GameColor(Color c) {
-		super(c.getRed(),c.getGreen(),c.getBlue(),c.getAlpha());
+		super(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
 	}
-	
+
 	public GameColor(int r, int g, int b) {
 		super(r, g, b, 255);
 	}
@@ -160,6 +156,7 @@ public class GameColor extends Color {
 
 	/**
 	 * 像素前乘
+	 * 
 	 * @param argbColor
 	 * @return
 	 */
@@ -182,6 +179,7 @@ public class GameColor extends Color {
 
 	/**
 	 * 像素前乘
+	 * 
 	 * @param rgbColor
 	 * @param alpha
 	 * @return
@@ -205,6 +203,7 @@ public class GameColor extends Color {
 
 	/**
 	 * 消除前乘像素
+	 * 
 	 * @param preARGBColor
 	 * @return
 	 */
@@ -228,6 +227,7 @@ public class GameColor extends Color {
 
 	/**
 	 * 获得r,g,b
+	 * 
 	 * @param pixel
 	 * @return
 	 */

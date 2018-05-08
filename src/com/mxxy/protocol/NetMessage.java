@@ -1,4 +1,5 @@
 package com.mxxy.protocol;
-public enum NetMessage{
+
+public enum NetMessage {
 	Login,
 }

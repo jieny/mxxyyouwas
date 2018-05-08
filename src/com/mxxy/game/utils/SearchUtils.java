@@ -10,14 +10,15 @@ package com.mxxy.game.utils;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+
 public class SearchUtils {
 
 	/**
 	 * 计算两点间的直线路径
 	 * @param x1 目前人物所在的x
 	 * @param y1 目前人物所在的y
-	 * @param x2  点击的x
-	 * @param y2  点击的y
+	 * @param x2 点击的x
+	 * @param y2 点击的y
 	 * @return
 	 */
 	public static List<Point> getLinePath(int x1, int y1, int x2, int y2) {

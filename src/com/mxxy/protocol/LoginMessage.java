@@ -10,14 +10,14 @@ import java.nio.channels.SocketChannel;
 
 import com.mxxy.net.Server;
 
-public class LoginMessage extends Message{
+public class LoginMessage extends Message {
 
 	public static final NetMessage TYPE = NetMessage.Login;
 
 	@Override
 	public byte[] toBytes() {
 		ByteArrayOutputStream baos = null;
-		DataOutputStream dos = null; 
+		DataOutputStream dos = null;
 		byte[] bytes = null;
 		try {
 			baos = new ByteArrayOutputStream();
@@ -30,14 +30,14 @@ public class LoginMessage extends Message{
 			e.printStackTrace();
 		} finally {
 			try {
-				if(baos != null) {
+				if (baos != null) {
 					baos.close();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			try {
-				if(dos != null) {
+				if (dos != null) {
 					dos.close();
 				}
 			} catch (IOException e) {
@@ -47,8 +47,6 @@ public class LoginMessage extends Message{
 		return bytes;
 	}
 
-
-
 	private int log;
 
 	private String string;
@@ -57,8 +55,8 @@ public class LoginMessage extends Message{
 	public void parse(byte[] bytes) {
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));
 		try {
-			this.log=dis.readInt();
-			this.string=dis.readUTF();
+			this.log = dis.readInt();
+			this.string = dis.readUTF();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -78,7 +76,7 @@ public class LoginMessage extends Message{
 
 	@Override
 	public void serverHandle(Server server, SocketChannel sc) {
-		LoginMessage loginMessage=new LoginMessage();
+		LoginMessage loginMessage = new LoginMessage();
 		try {
 			sc.write((ByteBuffer.wrap(loginMessage.toBytes(), 0, loginMessage.toBytes().length)));
 			sc.close();

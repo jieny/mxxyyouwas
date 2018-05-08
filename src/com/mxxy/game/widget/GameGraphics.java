@@ -28,12 +28,11 @@ import java.util.Map;
 import com.mxxy.game.utils.GraphicsStore;
 import com.mxxy.game.utils.GraphicsUtils;
 
-
-public class GameGraphics extends Graphics2D{
+public class GameGraphics extends Graphics2D {
 
 	private Graphics2D g2d;
 
-	private GraphicsStore store=new GraphicsStore();
+	private GraphicsStore store = new GraphicsStore();
 
 	private int width, height;
 
@@ -99,13 +98,13 @@ public class GameGraphics extends Graphics2D{
 
 	@Override
 	public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
-		g2d.drawImage(img, xform,obs);
+		g2d.drawImage(img, xform, obs);
 		return false;
 	}
 
 	@Override
 	public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
-		g2d.drawImage(img,op,x,y);
+		g2d.drawImage(img, op, x, y);
 	}
 
 	@Override
@@ -120,7 +119,7 @@ public class GameGraphics extends Graphics2D{
 
 	@Override
 	public void drawString(String str, int x, int y) {
-		g2d.drawString(str,x,y);
+		g2d.drawString(str, x, y);
 	}
 
 	@Override
@@ -288,7 +287,7 @@ public class GameGraphics extends Graphics2D{
 	@Override
 	public void dispose() {
 		g2d.dispose();
-		isClose = true;		
+		isClose = true;
 	}
 
 	@Override
@@ -346,7 +345,7 @@ public class GameGraphics extends Graphics2D{
 
 	@Override
 	public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-		g2d.drawPolygon(xPoints,yPoints,nPoints);
+		g2d.drawPolygon(xPoints, yPoints, nPoints);
 	}
 
 	@Override
@@ -361,7 +360,7 @@ public class GameGraphics extends Graphics2D{
 
 	@Override
 	public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-		g2d.fillArc(x, y, width, height,startAngle,arcAngle);
+		g2d.fillArc(x, y, width, height, startAngle, arcAngle);
 	}
 
 	@Override
@@ -421,6 +420,7 @@ public class GameGraphics extends Graphics2D{
 
 	/**
 	 * ���ƾ�������
+	 * 
 	 * @param s
 	 * @param x
 	 * @param y
@@ -434,15 +434,15 @@ public class GameGraphics extends Graphics2D{
 
 	/***
 	 * ������Ӱ����
+	 * 
 	 * @param s
 	 * @param x
 	 * @param y
-	 * @param color   
+	 * @param color
 	 * @param color1
 	 * @param k
 	 */
-	public void drawShadeString(String s, int x, int y, Color color,
-			Color color1, int k) {
+	public void drawShadeString(String s, int x, int y, Color color, Color color1, int k) {
 		g2d.setColor(color);
 		g2d.drawString(s, x + k, y + k);
 		g2d.setColor(color1);
@@ -451,6 +451,7 @@ public class GameGraphics extends Graphics2D{
 
 	/**
 	 * ���ƾ�����Ӱ����
+	 * 
 	 * @param s
 	 * @param x
 	 * @param y
@@ -458,8 +459,7 @@ public class GameGraphics extends Graphics2D{
 	 * @param color1
 	 * @param k
 	 */
-	public void drawCenterShadeString(String s, int x, int y, Color color,
-			Color color1, int k) {
+	public void drawCenterShadeString(String s, int x, int y, Color color, Color color1, int k) {
 		FontMetrics fontmetrics = g2d.getFontMetrics();
 		x -= fontmetrics.stringWidth(s) >> 1;
 		y += fontmetrics.getAscent() - fontmetrics.getDescent() >> 1;
@@ -468,6 +468,7 @@ public class GameGraphics extends Graphics2D{
 
 	/**
 	 * ����3D
+	 * 
 	 * @param s
 	 * @param x
 	 * @param y
@@ -488,18 +489,15 @@ public class GameGraphics extends Graphics2D{
 		GraphicsUtils.setAntialiasAll(g2d, flag);
 	}
 
-
 	public void setAntiAlias(boolean flag) {
 		GraphicsUtils.setAntialias(g2d, flag);
 	}
-
 
 	public void setAlpha(double alpha) {
 		GraphicsUtils.setAlpha(g2d, (float) alpha);
 	}
 
-	public void drawSubString(String str, int offset, int len, int x, int y,
-			int anchor) {
+	public void drawSubString(String str, int offset, int len, int x, int y, int anchor) {
 		drawString(str.substring(offset, offset + len), x, y, anchor);
 	}
 
@@ -522,13 +520,11 @@ public class GameGraphics extends Graphics2D{
 		g2d.drawString(str, newx, newy);
 	}
 
+	public void drawRegion(Image img, int x_src, int y_src, int width, int height, int transform, int x_dst, int y_dst,
+			int anchor) {
 
-	public void drawRegion(Image img, int x_src, int y_src, int width,
-			int height, int transform, int x_dst, int y_dst, int anchor) {
-
-		if (x_src + width > img.getWidth(null)
-				|| y_src + height > img.getHeight(null) || width <= 0
-				|| height <= 0 || x_src < 0 || y_src < 0) {
+		if (x_src + width > img.getWidth(null) || y_src + height > img.getHeight(null) || width <= 0 || height <= 0
+				|| x_src < 0 || y_src < 0) {
 			throw new IllegalArgumentException("Image size Exception !");
 		}
 
@@ -635,8 +631,7 @@ public class GameGraphics extends Graphics2D{
 		g2d.translate(x_dst, y_dst);
 		g2d.transform(t);
 
-		g2d.drawImage(img, 0, 0, width, height, x_src, y_src, x_src + width,
-				y_src + height, null);
+		g2d.drawImage(img, 0, 0, width, height, x_src, y_src, x_src + width, y_src + height, null);
 
 		g2d.setTransform(savedT);
 	}

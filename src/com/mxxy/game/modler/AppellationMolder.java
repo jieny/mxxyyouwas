@@ -5,17 +5,18 @@ import javax.swing.JList;
 
 import com.mxxy.game.utils.Constant;
 import com.mxxy.game.widget.ScrollList;
+
 /**
  * 称谓数据
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class AppellationMolder {
 
-	public String[] appllation={"护城小兵","英雄会天科状元"};
-	
+	public String[] appllation = { "护城小兵", "英雄会天科状元" };
+
 	@SuppressWarnings("serial")
-	class AppellationList extends AbstractListModel<String>{
+	class AppellationList extends AbstractListModel<String> {
 
 		@Override
 		public String getElementAt(int arg0) {
@@ -29,7 +30,7 @@ public class AppellationMolder {
 	}
 
 	public JList<String> getList() {
-		JList<String> list=new ScrollList<String>(new AppellationList());
+		JList<String> list = new ScrollList<String>(new AppellationList());
 		list.setFont(Constant.TEXT_MOUNT_FONT);
 		return list;
 	}

@@ -25,43 +25,45 @@ import com.mxxy.game.utils.MP3Player;
 import com.mxxy.game.utils.ResourceStores;
 import com.mxxy.game.utils.UIHelp;
 import com.mxxy.game.was.Toolkit;
+
 /**
  * 绘制面板基类
+ * 
  * @author dell
  *
  */
 @SuppressWarnings("serial")
-abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
+abstract public class DrawPaneImp extends JPanel implements IPanelDraw {
 
 	private int screenWidth;
 
 	private int screenHeight;
 
-	protected long lastTime,elapsedTime;
+	protected long lastTime, elapsedTime;
 
 	private BufferedImage bufferedImage;
 
 	protected Graphics2D graphics2d;
 
-	public transient boolean isDraw=true;   
+	public transient boolean isDraw = true;
 
 	private Cursor gameCursor;
 
-	private int mapWidth;  
+	private int mapWidth;
 
 	private int mapHeight;
 
-	private int viewportY;   //当前视图X
+	private int viewportY; // 当前视图X
 
-	private int viewportX;	 //当前视图Y
+	private int viewportX; // 当前视图Y
 
-	private Players player;  
+	private Players player;
 
 	public static final Object UPDATE_LOCK = new Object();
 
 	public static final Object MOVEMENT_LOCK = new Object();
 
-	protected List<Players> npcList=new ArrayList<Players>();  
+	protected List<Players> npcList = new ArrayList<Players>();
 
 	protected Context context;
 
@@ -69,7 +71,7 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 
 	private FPSController fpsListen;
 
-	private DrawThread drawThread=new DrawThread();
+	private DrawThread drawThread = new DrawThread();
 
 	public DrawPaneImp() {
 		super(null);
@@ -77,9 +79,10 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 		setIgnoreRepaint(true);
 		setFocusable(true);
 		requestFocus(true);
-		this.bufferedImage = new BufferedImage(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT, BufferedImage.TYPE_USHORT_565_RGB);
-		graphics2d=(Graphics2D) bufferedImage.getGraphics();
-		fpsListen=new FPSController();
+		this.bufferedImage = new BufferedImage(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT,
+				BufferedImage.TYPE_USHORT_565_RGB);
+		graphics2d = (Graphics2D) bufferedImage.getGraphics();
+		fpsListen = new FPSController();
 		init();
 		this.drawThread.start();
 	}
@@ -89,17 +92,17 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 	 */
 	public abstract void init();
 
-	private synchronized void drawGame(){//将游戏内容绘制二次缓冲图片上
-		Graphics g=getGraphics();
-		long currTime=System.currentTimeMillis();//程序现在时间
-		if(lastTime==0L)
-			lastTime=currTime;//如果lastTime=0.则它等于程序第一次编译时间
-		this.elapsedTime = (currTime - this.lastTime);//elapsedTime前后两次绘制时间差
-		this.lastTime=currTime;//使用完毕后把现在时间等于持续时间，方便上一步计算前后两次绘制中间时间差
-		if(g!=null){
+	private synchronized void drawGame() {// 将游戏内容绘制二次缓冲图片上
+		Graphics g = getGraphics();
+		long currTime = System.currentTimeMillis();// 程序现在时间
+		if (lastTime == 0L)
+			lastTime = currTime;// 如果lastTime=0.则它等于程序第一次编译时间
+		this.elapsedTime = (currTime - this.lastTime);// elapsedTime前后两次绘制时间差
+		this.lastTime = currTime;// 使用完毕后把现在时间等于持续时间，方便上一步计算前后两次绘制中间时间差
+		if (g != null) {
 			this.draw(graphics2d, elapsedTime);
-			g.drawImage(bufferedImage,0,0,null);//把缓冲图片绘制到屏幕上
-			g.dispose();//使用完Graphics后要清除绘制内容方便下一步的绘制
+			g.drawImage(bufferedImage, 0, 0, null);// 把缓冲图片绘制到屏幕上
+			g.dispose();// 使用完Graphics后要清除绘制内容方便下一步的绘制
 		}
 	}
 
@@ -109,22 +112,26 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 		}
 		try {
 			g.setColor(Color.BLACK);
-			GraphicsUtils.setRenderingHints(g, true,true);
+			GraphicsUtils.setRenderingHints(g, true, true);
 			drawBitmap(g, elapsedTime);
 			drawComponent(g, elapsedTime);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * 绘制
+	 * 
 	 * @param g
 	 * @param elapsedTime
 	 */
-	public void drawBitmap(Graphics2D g,long elapsedTime){};	
+	public void drawBitmap(Graphics2D g, long elapsedTime) {
+	};
 
 	/**
 	 * 绘制Component
+	 * 
 	 * @param g
 	 * @param elapsedTime
 	 */
@@ -138,8 +145,10 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 		}
 		drawCursor(g, elapsedTime);
 	}
+
 	/**
 	 * drawCursor (绘制鼠标)
+	 * 
 	 * @param g
 	 * @param elapsedTime
 	 */
@@ -156,9 +165,10 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 
 	/**
 	 * drawMemory (绘制内存)
+	 * 
 	 * @param g
-	 */	
-	protected void drawMemory(Graphics2D g){
+	 */
+	protected void drawMemory(Graphics2D g) {
 		g.setFont(new Font("黑体", Font.PLAIN, 13));
 		double mb = 1024 * 1024;
 		double maxMem = Runtime.getRuntime().maxMemory() / mb;
@@ -166,30 +176,32 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 		int x = 130, y = 20;
 		g.setColor(Color.decode("#00FFFF"));
 		g.drawString(String.format("运行内存：%.2f/%.2f MB", freeMem, maxMem), x, y);
-		g.drawString("FPS：" + fpsListen.getFPS(), x+31, y+19);
+		g.drawString("FPS：" + fpsListen.getFPS(), x + 31, y + 19);
 	}
 
 	@Override
-	public void setScreenSize(int width,int height) {
-		this.screenHeight=height;
-		this.screenWidth=width;
+	public void setScreenSize(int width, int height) {
+		this.screenHeight = height;
+		this.screenWidth = width;
 		setIgnoreRepaint(true);
 		setFocusable(true);
 		requestFocus(true);
 		setSize(width, height);
 		setPreferredSize(new Dimension(width, height));
 	}
+
 	@Override
 	public void setGameCursor(String type) {
 		Cursor cursor = ResourceStores.getInstance().getCursor(type);
-		if(cursor!=null) {
+		if (cursor != null) {
 			this.gameCursor = cursor;
 		}
 	}
 
 	private IConfigManager configManager;
-	public void setConfigManager(IConfigManager configManager){
-		this.configManager=configManager;
+
+	public void setConfigManager(IConfigManager configManager) {
+		this.configManager = configManager;
 	}
 
 	public IConfigManager getConfigManager() {
@@ -199,21 +211,25 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 	public Point getPointCursor() {
 		return super.getMousePosition();
 	}
+
 	@Override
 	public Cursor getGameCursor() {
 		return gameCursor;
 	}
+
 	@Override
 	public void playMusic() {
-		if(configManager!=null){
+		if (configManager != null) {
 			configManager.setFilename("save/setting.properties");
 			configManager.loadConfigs();
-			if(Boolean.parseBoolean(configManager.get("music"))) {
+			if (Boolean.parseBoolean(configManager.get("music"))) {
 				final String filename = getMusic();
 				if (filename != null) {
 					Thread mp3play = new Thread(new Runnable() {
 						@Override
 						public void run() {
+							
+							System.out.println(filename);
 							MP3Player.loop(filename);
 						}
 					});
@@ -241,6 +257,7 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 	public int getScreenWidth() {
 		return screenWidth;
 	}
+
 	/**
 	 * deleteAllComponent(清空面板所有组件)
 	 */
@@ -249,25 +266,31 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 	}
 
 	@Override
-	public JComponent getComponent(){
+	public JComponent getComponent() {
 		return this;
 	}
+
 	/***
 	 * addComponent(添加组件)
+	 * 
 	 * @param comp
 	 */
 	protected void addComponent(JComponent comp) {
 		this.add(comp);
 	}
+
 	/**
 	 * addComponent to up(添加组件到最上层)
+	 * 
 	 * @param comp
 	 */
 	protected void addComponents(JComponent comp) {
-		this.add(comp,0);
+		this.add(comp, 0);
 	}
+
 	/**
 	 * deleteComponent(删除组件)
+	 * 
 	 * @param comp
 	 */
 	protected void romveComponent(JComponent comp) {
@@ -277,6 +300,7 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 	public void setMaxHeight(int maxHeight) {
 		this.mapHeight = maxHeight;
 	}
+
 	public void setMaxWidth(int maxWidth) {
 		this.mapWidth = maxWidth;
 	}
@@ -296,8 +320,10 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 	protected int getViewportX() {
 		return viewportX;
 	}
+
 	/**
 	 * 获取到当前视图的XY
+	 * 
 	 * @return
 	 */
 	public Point getViewPosition() {
@@ -305,7 +331,8 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 	}
 
 	/**
-	 * 设置地图的坐标  (移动地图)
+	 * 设置地图的坐标 (移动地图)
+	 * 
 	 * @param x
 	 * @param y
 	 */
@@ -316,7 +343,7 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 	}
 
 	/**
-	 * 判断是否超越屏幕宽高   
+	 * 判断是否超越屏幕宽高
 	 */
 	private void judgeViewport() {
 		int canvasWidth = getWidth();
@@ -333,12 +360,12 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 		}
 	}
 
-	public void stopDraw(){
-		this.isDraw=false;
+	public void stopDraw() {
+		this.isDraw = false;
 	}
 
-	public void startDraw(){
-		this.isDraw=true;
+	public void startDraw() {
+		this.isDraw = true;
 	}
 
 	public void setPlayer(Players player) {
@@ -349,72 +376,84 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw{
 		return player;
 	}
 
-	public Point localToView(Point p){
+	public Point localToView(Point p) {
 		return new Point(p.x - this.viewportX, p.y - this.viewportY);
 	}
 
 	public Point viewToLocal(Point p) {
 		return new Point(p.x + getViewportX(), p.y + getViewportY());
-	}	
-
-	protected UIHelp UIHelp;
-	@Override
-	public void setUIhelp(UIHelp UIHelp) {
-		this.UIHelp=UIHelp;
 	}
 
+	protected UIHelp UIHelp;
+
+	@Override
+	public void setUIhelp(UIHelp UIHelp) {
+		this.UIHelp = UIHelp;
+	}
+
+	public UIHelp getUIHelp() {
+		return UIHelp;
+	}
 	@Override
 	public void setContext(Context context) {
 		this.context = context;
+	}
+	
+	public Context getContext() {
+		return context;
 	}
 
 	public void setDataStore(DataStoreManager dataStore) {
 		this.dataStore = dataStore;
 	}
+	
+	public DataStoreManager getDataStore() {
+		return dataStore;
+	}
 
-	//	protected IWindows windows;
-	//	@Override
-	//	public void setWindows(IWindows windows) {
-	//		this.windows=windows;
-	//	}
+	// protected IWindows windows;
+	// @Override
+	// public void setWindows(IWindows windows) {
+	// this.windows=windows;
+	// }
 
 	/**
 	 * 绘制线程
 	 */
-	private final class DrawThread extends Thread{
+	private final class DrawThread extends Thread {
 
 		public DrawThread() {
 			this.setName("DrawThread");
-			this.setDaemon(true);  
+			this.setDaemon(true);
 		}
 
 		@Override
 		public void run() {
-			long beforeTime,timeNow,timeDiff,sleepTime;
-			long overSleepTime=0L;
-			int noDelays=0;
-			beforeTime=System.nanoTime();
+			long beforeTime, timeNow, timeDiff, sleepTime;
+			long overSleepTime = 0L;
+			int noDelays = 0;
+			beforeTime = System.nanoTime();
 			fpsListen.setTime(beforeTime);
-			while(isDraw){
+			while (isDraw) {
 				synchronized (UPDATE_LOCK) {
 					if (isShowing() && isVisible()) {
 						drawGame();
 					}
 				}
-				timeNow=System.nanoTime();
-				timeDiff=timeNow-beforeTime;
-				sleepTime=(FPSController.PERIOD-timeDiff)-overSleepTime;
-				if(sleepTime>0){
-					Toolkit.sleep(sleepTime/1000000L);
-					overSleepTime=(System.nanoTime()-timeNow)-sleepTime;
-				}else{
-					overSleepTime=0L;
-					if(++noDelays>=16){
+				timeNow = System.nanoTime();
+				timeDiff = timeNow - beforeTime;
+				sleepTime = (FPSController.PERIOD - timeDiff) - overSleepTime;
+				if (sleepTime > 0) {
+					Toolkit.sleep(sleepTime / 1000000L);
+					overSleepTime = (System.nanoTime() - timeNow) - sleepTime;
+				} else {
+					overSleepTime = 0L;
+					if (++noDelays >= 16) {
 						Thread.yield();
-						noDelays=0;
+						noDelays = 0;
 					}
 				}
-				beforeTime=System.nanoTime();
+				beforeTime = System.nanoTime();
 				fpsListen.makeFPS();
 			}
 		}

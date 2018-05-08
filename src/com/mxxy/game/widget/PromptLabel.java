@@ -13,7 +13,8 @@ import com.mxxy.game.event.ComponentMove;
 import com.mxxy.game.utils.Constant;
 
 /**
- *提示框
+ * 提示框
+ * 
  * @author ZAB
  */
 @SuppressWarnings("serial")
@@ -24,18 +25,20 @@ public class PromptLabel extends JLabel {
 		setBounds(0, 0, 320, 36);
 		setFont(Constant.PROMPT_FONT);
 		setForeground(Color.YELLOW);
-		setBorder(new CompoundBorder(new RoundLineBorder(Color.WHITE,1, 8, 8),new EmptyBorder(10, 10, 10, 10)));
+		setBorder(new CompoundBorder(new RoundLineBorder(Color.WHITE, 1, 8, 8), new EmptyBorder(10, 10, 10, 10)));
 		setIgnoreRepaint(false);
 		setFocusable(false);
 		setToolTipText(null);
-		ComponentMove componentMove=new ComponentMove();
+		ComponentMove componentMove = new ComponentMove();
 		this.addMouseListener(componentMove);
 		this.addMouseMotionListener(componentMove);
 	}
+
 	@Override
 	public void paintImmediately(int x, int y, int w, int h) {
 
 	}
+
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();

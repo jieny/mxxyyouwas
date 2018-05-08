@@ -15,31 +15,31 @@ import com.mxxy.protocol.NetMessage;
 
 public class Receiver extends Thread {
 
-	private Selector selectors;  
+	private Selector selectors;
 
-	public Receiver(Selector selector) {  
-		this.selectors = selector;  
-	}  
+	public Receiver(Selector selector) {
+		this.selectors = selector;
+	}
 
 	@Override
 	public void run() {
-		try {  
-			while (selectors.select() > 0) {  
-				// 遍历每个有可用IO操作Channel对应的SelectionKey  
-				for (SelectionKey sk : selectors.selectedKeys()) {  
+		try {
+			while (selectors.select() > 0) {
+				// 遍历每个有可用IO操作Channel对应的SelectionKey
+				for (SelectionKey sk : selectors.selectedKeys()) {
 
-					// 如果该SelectionKey对应的Channel中有可读的数据  
-					if (sk.isReadable()) {  
-						// 使用NIO读取Channel中的数据  
-						SocketChannel sc = (SocketChannel) sk.channel();  
+					// 如果该SelectionKey对应的Channel中有可读的数据
+					if (sk.isReadable()) {
+						// 使用NIO读取Channel中的数据
+						SocketChannel sc = (SocketChannel) sk.channel();
 
-						ByteBuffer buffer = (ByteBuffer) sk.attachment();  
+						ByteBuffer buffer = (ByteBuffer) sk.attachment();
 
-						buffer.clear();  
+						buffer.clear();
 
-						int len = sc.read(buffer);  
+						int len = sc.read(buffer);
 
-						if(len!=-1){
+						if (len != -1) {
 
 							buffer.flip();
 
@@ -49,7 +49,8 @@ public class Receiver extends Thread {
 
 							Message msg;
 							try {
-								msg = InstanceUtil.getInstance(Class.forName("com.mxxy.protocol."+messageState+"Message"));
+								msg = InstanceUtil
+										.getInstance(Class.forName("com.mxxy.protocol." + messageState + "Message"));
 
 								msg.parse(buffer.array());
 
@@ -59,18 +60,18 @@ public class Receiver extends Thread {
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
-							
-	                        sk.interestOps(SelectionKey.OP_READ);  
-						}else{
+
+							sk.interestOps(SelectionKey.OP_READ);
+						} else {
 							sc.close();
 						}
-					}  
-					// 删除正在处理的SelectionKey  
-					selectors.selectedKeys().remove(sk);  
-				}  
-			}  
-		} catch (IOException ex) {  
-			ex.printStackTrace();  
-		}  
+					}
+					// 删除正在处理的SelectionKey
+					selectors.selectedKeys().remove(sk);
+				}
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 }

@@ -1,6 +1,5 @@
 package com.mxxy.extendpackage;
 
-
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -19,12 +18,13 @@ import com.mxxy.game.utils.GameColor;
 import com.mxxy.game.widget.Label;
 import com.mxxy.game.widget.ListScrollPanel;
 import com.mxxy.game.widget.ListScrollPanel.IScrollPanelListItem;
+
 /**
  * SummonPager (召唤兽)
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
-final public class SummonPager extends AbstractPanelHandler<SummonMolder> implements IScrollPanelListItem{
+final public class SummonPager extends AbstractPanelHandler<SummonMolder> implements IScrollPanelListItem {
 
 	private ListScrollPanel listscrollpanel;
 
@@ -33,27 +33,27 @@ final public class SummonPager extends AbstractPanelHandler<SummonMolder> implem
 	public Label summonName;
 
 	private static int summonIndex;
-	
+
 	@Override
 	public void init(PanelEvent evt) {
 		super.init(evt);
 	}
-	
+
 	@Override
 	protected void initView() {
 		JList<String> list = modler.getList(propertiesConfigManager);
-		listscrollpanel=new ListScrollPanel(125, 110, list);
+		listscrollpanel = new ListScrollPanel(125, 110, list);
 		list.setSelectedIndex(summonIndex);
 		list.setBounds(0, 0, 100, 100);
 		list.setSelectionForeground(GameColor.yellow);
 		listscrollpanel.setLocation(15, 47);
 		listscrollpanel.setScrollPanelListItem(this);
-		summonName=panel.findViewById("petName");
+		summonName = panel.findViewById("petName");
 		summonName.setText(list.getSelectedValue());
-		Label number=panel.findViewById("number");
-		number.setText(list.getModel().getSize()+"/9");
-		panel.add(listscrollpanel,0);
-		period=4000;
+		Label number = panel.findViewById("number");
+		number.setText(list.getModel().getSize() + "/9");
+		panel.add(listscrollpanel, 0);
+		period = 4000;
 		setAutoUpdate(true);
 	}
 
@@ -63,39 +63,45 @@ final public class SummonPager extends AbstractPanelHandler<SummonMolder> implem
 	}
 
 	@Override
-	public void getListValue(int index,String value) {
-		stateInex=0;
-		summonIndex=index;
+	public void getListValue(int index, String value) {
+		stateInex = 0;
+		summonIndex = index;
 		ArrayList<String> godPet = modler.getGodPet();
-		summonPlayers=new Players(godPet.get((int)index),true);
+		summonPlayers=new Players();
+		summonPlayers.setCharacter(godPet.get((int) index));
+		summonPlayers.setShadow(true);
 		summonPlayers.setState("stand");
 		summonPlayers.setDirection(Sprite.DIRECTION_BOTTOM);
 		summonName.setText(value);
 	}
-	
-	public String[] state={"stand","walk","attack","magic"};
+
+	public String[] state = { "stand", "walk", "attack", "magic" };
 	/**
 	 * 控制宠物状态
 	 */
-	int stateInex=0;
+	int stateInex = 0;
+
 	@Override
 	public void update(PanelEvent evt) {
 		super.update(evt);
-		if(summonPlayers!=null){
+		if (summonPlayers != null) {
 			summonPlayers.setState(state[stateInex]);
 		}
-		if(stateInex>=state.length-1){
-			stateInex=0;
-		}else{
+		if (stateInex >= state.length - 1) {
+			stateInex = 0;
+		} else {
 			stateInex++;
 		}
 	}
+
 	/**
 	 * 查看召唤兽资质
+	 * 
 	 * @param event
 	 */
 	private Panel summonAttrbute;
-	public void seeAttrbute(ActionEvent event){
+
+	public void seeAttrbute(ActionEvent event) {
 		summonAttrbute = uihelp.getPanel(event);
 		showOrHide(summonAttrbute);
 	}
@@ -104,17 +110,17 @@ final public class SummonPager extends AbstractPanelHandler<SummonMolder> implem
 	public void dispose(PanelEvent evt) {
 		super.dispose(evt);
 		panel.remove(listscrollpanel);
-		if(summonAttrbute!=null)
+		if (summonAttrbute != null)
 			uihelp.hidePanel(summonAttrbute);
 	}
-	
+
 	@SuppressWarnings("serial")
 	@Override
 	public JPanel getContainersPanel() {
 		return new ContainersPanel(105, 0, 300, 150) {
 			@Override
 			protected void draw(Graphics2D g, long elapsedTime) {
-				if(summonPlayers!=null&&g!=null){
+				if (summonPlayers != null && g != null) {
 					summonPlayers.draw(g, 100, 110);
 					summonPlayers.update(elapsedTime);
 				}

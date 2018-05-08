@@ -1,17 +1,17 @@
 package com.mxxy.game.utils;
 
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+
 /**
  * Cmd 指令
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
 public final class RuntimeUtil {
 
 	public static String exec(String command) {
-		System.err.println(command+"command");
+		System.err.println(command + "command");
 		StringBuilder sb = new StringBuilder();
 		try {
 			Process process = Runtime.getRuntime().exec(command);

@@ -9,20 +9,22 @@ import java.io.InputStream;
 import com.mxxy.game.utils.FileUtils;
 import com.mxxy.game.widget.RichLabel;
 
-public class Toolkit{
+public class Toolkit {
 	private static Toolkit instance = new Toolkit();
+
 	public static Toolkit getInstance() {
 		return instance;
 	}
 
 	/**
 	 * 创建流
-	 * @param filename  路径
+	 * @param filename
+	 *            路径
 	 * @return
 	 */
 	public static InputStream getInputStream(String filename) {
 		InputStream is = Toolkit.class.getResourceAsStream(filename);
-		if(is==null){
+		if (is == null) {
 			try {
 				is = new FileInputStream(FileUtils.getPath(filename));
 			} catch (FileNotFoundException e) {
@@ -32,20 +34,18 @@ public class Toolkit{
 		}
 		return is;
 	}
-	
-	public RichLabel createRichLabel(int x, int y, int width, int height, String text) {
-        RichLabel label = new RichLabel(text);
-        label.setLocation(x, y);
-        label.computeSize(width);
-        label.setSize(width, 100);
-        return label;
-    }
-	
-	
 
-	
+	public RichLabel createRichLabel(int x, int y, int width, int height, String text) {
+		RichLabel label = new RichLabel(text);
+		label.setLocation(x, y);
+		label.computeSize(width);
+		label.setSize(width, 100);
+		return label;
+	}
+
 	/**
 	 * 读取字节到byte
+	 * 
 	 * @param filename
 	 * @return
 	 * @throws IOException
@@ -65,11 +65,12 @@ public class Toolkit{
 
 	/**
 	 * 根据字节创建Image 对象
+	 * 
 	 * @param filename
 	 * @return Image
 	 */
 	public static Image createImageFromResource(String filename) {
-		byte[] data = (byte[])null;
+		byte[] data = (byte[]) null;
 		try {
 			data = getResourceData(filename);
 		} catch (IOException e) {
@@ -80,8 +81,8 @@ public class Toolkit{
 		}
 		return java.awt.Toolkit.getDefaultToolkit().createImage(data);
 	}
-	
-	public static void sleep(long sleep){
+
+	public static void sleep(long sleep) {
 		try {
 			Thread.sleep(sleep);
 		} catch (InterruptedException e) {
@@ -89,7 +90,8 @@ public class Toolkit{
 			e.printStackTrace();
 		}
 	}
-	public static void sleep(int sleep){
+
+	public static void sleep(int sleep) {
 		try {
 			Thread.sleep(sleep);
 		} catch (InterruptedException e) {

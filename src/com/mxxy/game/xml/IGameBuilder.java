@@ -5,6 +5,7 @@ import com.mxxy.game.base.Panel;
 public interface IGameBuilder {
 	/**
 	 * 实例化JPanel
+	 * 
 	 * @param id
 	 * @param res
 	 * @return

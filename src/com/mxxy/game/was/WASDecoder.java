@@ -1,7 +1,5 @@
 package com.mxxy.game.was;
 
-
-
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -50,16 +48,16 @@ public class WASDecoder {
 
 	/** 动画的帧数 */
 	private int frameCount;
-	
+
 	/** 文件头大小 */
 	private int headerSize;
-	
+
 	/** 原始调色板 */
 	private short[] originPalette;
-	
+
 	/** 当前调色板 */
 	private short[] palette;
-	
+
 	/** 精灵宽度 */
 	private int width;
 	/** 精灵高度 */
@@ -149,6 +147,7 @@ public class WASDecoder {
 
 	/**
 	 * 修改某个区段的着色
+	 * 
 	 * @param sectionIndex
 	 * @param schemeIndex
 	 */
@@ -175,13 +174,13 @@ public class WASDecoder {
 		for (int y1 = 0; y1 < h && y1 + y < height; y1++) {
 			for (int x1 = 0; x1 < w && x1 + x < width; x1++) {
 				// red 5
-				iArray[0] = ((pixels[y1*w +x1] >>> 11) & 0x1F) << 3;
+				iArray[0] = ((pixels[y1 * w + x1] >>> 11) & 0x1F) << 3;
 				// green 6
-				iArray[1] = ((pixels[y1*w +x1] >>> 5) & 0x3f) << 2;
+				iArray[1] = ((pixels[y1 * w + x1] >>> 5) & 0x3f) << 2;
 				// blue 5
-				iArray[2] = (pixels[y1*w +x1] & 0x1F) << 3;
+				iArray[2] = (pixels[y1 * w + x1] & 0x1F) << 3;
 				// alpha 5
-				iArray[3] = ((pixels[y1*w +x1] >>> 16) & 0x1f) << 3;
+				iArray[3] = ((pixels[y1 * w + x1] >>> 16) & 0x1f) << 3;
 				// iArray[3] = ((pixels[y1][x1] >>> 16) & 0x1f) *0xff/0x1f;
 				// if(iArray[3]>0)iArray[3] += 7;
 				try {
@@ -196,16 +195,16 @@ public class WASDecoder {
 	}
 
 	private int[] convert(int[] pixels) {
-		int[] data = new int[pixels.length*4];
+		int[] data = new int[pixels.length * 4];
 		for (int i = 0; i < pixels.length; i++) {
-				// red 5
-				data[i*4] = ((pixels[i] >>> 11) & 0x1F) << 3;
-				// green 6
-				data[i*4+1] = ((pixels[i] >>> 5) & 0x3f) << 2;
-				// blue 5
-				data[i*4+2] = (pixels[i] & 0x1F) << 3;
-				// alpha 5
-				data[i*4+3] = ((pixels[i] >>> 16) & 0x1f) << 3;
+			// red 5
+			data[i * 4] = ((pixels[i] >>> 11) & 0x1F) << 3;
+			// green 6
+			data[i * 4 + 1] = ((pixels[i] >>> 5) & 0x3f) << 2;
+			// blue 5
+			data[i * 4 + 2] = (pixels[i] & 0x1F) << 3;
+			// alpha 5
+			data[i * 4 + 3] = ((pixels[i] >>> 16) & 0x1f) << 3;
 		}
 		return data;
 	}
@@ -273,8 +272,8 @@ public class WASDecoder {
 	}
 
 	private int[] parse(WASFrame frame) throws IOException {
-		return this
-				.parse(randomIn, frame.getFrameOffset(), frame.getLineOffsets(), frame.getWidth(), frame.getHeight());
+		return this.parse(randomIn, frame.getFrameOffset(), frame.getLineOffsets(), frame.getWidth(),
+				frame.getHeight());
 	}
 
 	public Vector<Image> getFrames() {
@@ -380,34 +379,31 @@ public class WASDecoder {
 
 	public BufferedImage createImage(int x, int y, int frameWidth, int frameHeight, int[] pixels) {
 		// use sprite's width & height
-		 BufferedImage image = new BufferedImage(this.width, this.height,
-		 BufferedImage.TYPE_INT_ARGB);
-		 draw(pixels, image.getRaster(), refPixelX - x, refPixelY - y, frameWidth,
-		 frameHeight);
-		 return image;
-//		return createDirectImage(x, y, frameWidth, frameHeight, pixels);
+		BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
+		draw(pixels, image.getRaster(), refPixelX - x, refPixelY - y, frameWidth, frameHeight);
+		return image;
+		// return createDirectImage(x, y, frameWidth, frameHeight, pixels);
 	}
-	
+
 	public BufferedImage createDirectImage(int x, int y, int frameWidth, int frameHeight, int[] pixels) {
 		ColorModel colorModel;
 		WritableRaster raster;
-//		colorModel = new DirectColorModel(21, DCM_565_RED_MASK, DCM_565_GRN_MASK, DCM_565_BLU_MASK, DCM_565_ALPHA_MASK);
+		// colorModel = new DirectColorModel(21, DCM_565_RED_MASK, DCM_565_GRN_MASK,
+		// DCM_565_BLU_MASK, DCM_565_ALPHA_MASK);
 		colorModel = new DirectColorModel(32, 0xff0000, 0xff00, 0xff, 0xff000000);
 		raster = colorModel.createCompatibleWritableRaster(width, height);
 		x = refPixelX - x;
 		y = refPixelY - y;
-		frameWidth = Math.min(frameWidth,width-x);
-		frameHeight = Math.min(frameHeight,height-y);
-		
-		//raster.setDataElements(x, y, frameWidth, frameHeight, pixels);
+		frameWidth = Math.min(frameWidth, width - x);
+		frameHeight = Math.min(frameHeight, height - y);
+
+		// raster.setDataElements(x, y, frameWidth, frameHeight, pixels);
 		raster.setPixels(x, y, frameWidth, frameHeight, convert(pixels));
 		boolean isRasterPremultiplied = true;
 
 		BufferedImage image = new BufferedImage(colorModel, raster, isRasterPremultiplied, null);
 		return image;
 	}
-	
-	
 
 	private RandomAcessInputStream prepareInputStream(InputStream in) throws IOException, IllegalStateException {
 		byte[] buf;
@@ -416,7 +412,7 @@ public class WASDecoder {
 		in.mark(10);
 		in.read(buf, 0, 2);
 		String flag = new String(buf, 0, 2);
-		if (!WAS_FILE_TAG.equals(flag)) {  
+		if (!WAS_FILE_TAG.equals(flag)) {
 			throw new IllegalStateException("文件头标志错误:" + print(buf));
 		}
 		if (in instanceof RandomAcessInputStream) {
@@ -454,14 +450,14 @@ public class WASDecoder {
 		// InputStream fileIn = new FileInputStream(file);
 		load(Toolkit.getInputStream(filename));
 	}
-	
+
 	public void load(File file) throws IllegalStateException, FileNotFoundException, IOException {
 		load(new FileInputStream(file));
 	}
-	
+
 	private int[] parse(RandomAcessInputStream in, int frameOffset, int[] lineOffsets, int frameWidth, int frameHeight)
 			throws IOException {
-		int[] pixels = new int[frameHeight*frameWidth];
+		int[] pixels = new int[frameHeight * frameWidth];
 		int b, x, c;
 		int index;
 		int count;
@@ -476,7 +472,7 @@ public class WASDecoder {
 						index = in.read();
 						c = palette[index];
 						// palette[index]=0;
-						pixels[y*frameWidth+ x++] = c + ((b & 0x1F) << 16);
+						pixels[y * frameWidth + x++] = c + ((b & 0x1F) << 16);
 					} else if (b != 0) {// ???
 						count = b & 0x1F;// count
 						b = in.read();// alpha
@@ -485,7 +481,7 @@ public class WASDecoder {
 						// palette[index]=0;
 
 						for (int i = 0; i < count; i++) {
-							pixels[y*frameWidth+ x++] = c + ((b & 0x1F) << 16);
+							pixels[y * frameWidth + x++] = c + ((b & 0x1F) << 16);
 						}
 					} else {// block end
 						if (x > frameWidth) {
@@ -503,7 +499,7 @@ public class WASDecoder {
 					count = b & 0x3F;
 					for (int i = 0; i < count; i++) {
 						index = in.read();
-						pixels[y*frameWidth+ x++] = palette[index] + (0x1F << 16);
+						pixels[y * frameWidth + x++] = palette[index] + (0x1F << 16);
 						// palette[index]=0;
 					}
 					break;
@@ -513,7 +509,7 @@ public class WASDecoder {
 					c = palette[index];
 					// palette[index]=0;
 					for (int i = 0; i < count; i++) {
-						pixels[y*frameWidth+ x++] = c + (0x1F << 16);
+						pixels[y * frameWidth + x++] = c + (0x1F << 16);
 					}
 					break;
 				case TYPE_SKIP:

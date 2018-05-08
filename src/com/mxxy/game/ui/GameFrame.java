@@ -26,24 +26,25 @@ import com.mxxy.game.config.Context;
 import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.SpriteFactory;
 import com.mxxy.game.utils.UIHelp;
+
 /**
  * 游戏主窗体
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
 @SuppressWarnings("serial")
-public class GameFrame extends JFrame implements IWindows{
+public class GameFrame extends JFrame implements IWindows {
 	private Dimension preferredSize;
 	private Image cursorImage;
 	private TrayIcon trayIcon;
 	private UIHelp uihelp;
 	private Image icon;
-	
+
 	@Override
 	public void initContent(Context context) {
 		context.setWindows(this);
-		this.uihelp=new UIHelp(this);
-		icon=new ImageIcon(SpriteFactory.loadImage("componentsRes/title.png")).getImage();
+		this.uihelp = new UIHelp(this);
+		icon = new ImageIcon(SpriteFactory.loadImage("componentsRes/title.png")).getImage();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIconImage(icon);
 		super.setTitle(Constant.getString("MainTitle"));
@@ -65,17 +66,21 @@ public class GameFrame extends JFrame implements IWindows{
 
 	@Override
 	public void setTitle(String title) {
-		super.setTitle(Constant.getString("MainTitle")+title);
+		super.setTitle(Constant.getString("MainTitle") + title);
 	}
-	
+
 	private IPanelDraw draw;
 	
+	@Override
 	public void showPanel(IPanelDraw panel) {
-		this.draw=panel;
-		int width=panel.getClass().getSimpleName().equals("LoadingPanel")?panel.getScreenWidth():Constant.WINDOW_WIDTH;
-		int height=panel.getClass().getSimpleName().equals("LoadingPanel")?panel.getScernHeight():Constant.WINDOW_HEIGHT;
-		preferredSize=new Dimension(width,height);
-		if(isfristApplication){
+		this.draw = panel;
+		System.out.println("showPanel>>>>> \t"+panel);
+		int width = panel.getClass().getSimpleName().equals("LoadingPanel") ? panel.getScreenWidth()
+				: Constant.WINDOW_WIDTH;
+		int height = panel.getClass().getSimpleName().equals("LoadingPanel") ? panel.getScernHeight()
+				: Constant.WINDOW_HEIGHT;
+		preferredSize = new Dimension(width, height);
+		if (isfristApplication) {
 			dispose();
 			setSize(preferredSize);
 			setUndecorated(panel.getClass().getSimpleName().equals("LoadingPanel"));
@@ -87,11 +92,12 @@ public class GameFrame extends JFrame implements IWindows{
 		component.requestFocusInWindow();
 	}
 
-	public  boolean isfristApplication=true;
-	
+	public boolean isfristApplication = true;
+
 	public void setIsfristApplication(boolean isfristApplication) {
 		this.isfristApplication = isfristApplication;
 	}
+
 	@Override
 	public UIHelp getUiHelp() {
 		return uihelp;
@@ -99,45 +105,45 @@ public class GameFrame extends JFrame implements IWindows{
 
 	@Override
 	public void hideCursor() {
-		cursorImage=Toolkit.getDefaultToolkit().getImage("");
-		setCursor(Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0,0),"CURSOR"));
+		cursorImage = Toolkit.getDefaultToolkit().getImage("");
+		setCursor(Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "CURSOR"));
 	}
 
 	@Override
 	public void showSystemtTray() {
-		if(SystemTray.isSupported()){  
+		if (SystemTray.isSupported()) {
 			try {
-				trayIcon=new TrayIcon(icon,Constant.getString("MainTitle"),createPopupMenu());
+				trayIcon = new TrayIcon(icon, Constant.getString("MainTitle"), createPopupMenu());
 				trayIcon.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						if((e.getModifiers()&InputEvent.BUTTON1_MASK)!=0){	 
-							if(getExtendedState()==JFrame.ICONIFIED){  
+						if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
+							if (getExtendedState() == JFrame.ICONIFIED) {
 								setVisible(true);
-								setAlwaysOnTop(true); 
+								setAlwaysOnTop(true);
 								setExtendedState(JFrame.NORMAL);
-							}else{
+							} else {
 								setExtendedState(JFrame.ICONIFIED);
 							}
-						}else if((e.getModifiers()&InputEvent.BUTTON3_MASK)!=0){  
+						} else if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
 						}
 					}
 				});
-				trayIcon.setImageAutoSize(true);  
-				SystemTray systemTray=SystemTray.getSystemTray(); 
-				systemTray.add(trayIcon);   
-				trayIcon.displayMessage(Constant.getString("MainTitle"), "梦想", MessageType.INFO);    
+				trayIcon.setImageAutoSize(true);
+				SystemTray systemTray = SystemTray.getSystemTray();
+				systemTray.add(trayIcon);
+				trayIcon.displayMessage(Constant.getString("MainTitle"), "梦想", MessageType.INFO);
 			} catch (AWTException e) {
 				e.printStackTrace();
 			}
-		}else{
+		} else {
 			return;
 		}
 	}
 
 	private PopupMenu createPopupMenu() {
-		PopupMenu popup=new PopupMenu(); 
-		MenuItem open=new MenuItem("打开");
+		PopupMenu popup = new PopupMenu();
+		MenuItem open = new MenuItem("打开");
 		open.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -145,7 +151,7 @@ public class GameFrame extends JFrame implements IWindows{
 				setExtendedState(JFrame.NORMAL);
 			}
 		});
-		MenuItem close=new MenuItem("关闭");
+		MenuItem close = new MenuItem("关闭");
 		close.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

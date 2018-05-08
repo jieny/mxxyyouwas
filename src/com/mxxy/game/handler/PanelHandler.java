@@ -23,68 +23,67 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 
 	protected Panel panel;
 
-	protected  Application application;
+	protected Application application;
 
-	protected  UIHelp uihelp ;
+	protected UIHelp uihelp;
 
-	protected  Object[] object;
+	protected Object[] object;
 
 	private Timer timer;
-	/**数据更新频率*/  
+	/** 数据更新频率 */
 	protected long period = 1000;
 
-	private boolean autoUpdate; 
-	
+	private boolean autoUpdate;
+
 	protected IWindows iWindows;
 
 	protected Players player;
 
 	protected Context context;
-	
+
 	protected IClient client;
-	
+
 	@Override
 	public void init(PanelEvent evt) {
-		application=Application.application;
-		uihelp=application.getUiHelp();
-		object=application.getObjects();
-		iWindows=application.getiWindows();
-		context=(Context) object[2];
-		client=context.getClient();
-		panel=(Panel) evt.getSource();
-		player=context.getPlayer();
-		if(getContainersPanel()!=null)
-			panel.add(getContainersPanel(),0);
+		application = Application.application;
+		uihelp = application.getUiHelp();
+		object = application.getObjects();
+		iWindows = application.getiWindows();
+		context = (Context) object[2];
+		client = context.getClient();
+		panel = (Panel) evt.getSource();
+		player = context.getPlayer();
+		if (getContainersPanel() != null)
+			panel.add(getContainersPanel(), 0);
 		initModler();
 		initView();
 	}
+
 	/**
 	 * 初始化View
 	 */
 	abstract protected void initView();
-	
+
 	/**
 	 * 初始化Modler
 	 * @return
 	 */
-	
-	protected <T extends Component> T findViewById(String id){
+	protected <T extends Component> T findViewById(String id) {
 		return panel.findViewById(id);
 	}
-	
+
 	abstract public Object initModler();
-	
-	public JPanel getContainersPanel(){
+
+	public JPanel getContainersPanel() {
 		return null;
 	}
-
 
 	@Override
 	public void dispose(PanelEvent evt) {
 		setAutoUpdate(false);
 		panel.close();
 		uihelp.hidePanel(panel);
-		if(getContainersPanel()!=null)
+		if (getContainersPanel() != null)
 			panel.remove(getContainersPanel());
 	}
 
@@ -92,24 +91,26 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 	public void update(PanelEvent evt) {
 
 	}
+
 	/**
 	 * 开启数据更新开关
-	 * @param on  
+	 * @param on
 	 */
 	protected long lastTime;
+
 	synchronized public void setAutoUpdate(boolean on) {
-		if(on) {
-			if(timer == null) {
-				timer = new Timer("update-"+this.getClass().getName(), true) ;
+		if (on) {
+			if (timer == null) {
+				timer = new Timer("update-" + this.getClass().getName(), true);
 				timer.schedule(new TimerTask() {
 					@Override
 					public void run() {
 						update(null);
 					}
-				}, 0, period );
+				}, 0, period);
 			}
-		}else {
-			if(timer!=null) {
+		} else {
+			if (timer != null) {
 				timer.cancel();
 				timer = null;
 			}
@@ -122,38 +123,36 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 		setAutoUpdate(false);
 		panel.close();
 		uihelp.hidePanel(panel);
-		if(getContainersPanel()!=null)
+		if (getContainersPanel() != null)
 			panel.remove(getContainersPanel());
 	}
 
-
-	public void removeCompont(){
-		//		Component[] components = panel.getComponents();
-		//		for (Component component : components) {
-		//			if(component instanceof Label){
-		//				panel.remove(component);
-		//			}
-		//		}
+	public void removeCompont() {
+		// Component[] components = panel.getComponents();
+		// for (Component component : components) {
+		// if(component instanceof Label){
+		// panel.remove(component);
+		// }
+		// }
 	}
 
 	@Override
 	public void help(BaseEvent evt) {
-		
+
 	}
 
-
-	protected void showOrHide(Panel panel){
-		if(panel!=null){
-			if(panel.isShowing()){
+	protected void showOrHide(Panel panel) {
+		if (panel != null) {
+			if (panel.isShowing()) {
 				uihelp.hidePanel(panel);
-			}else{
+			} else {
 				uihelp.showPanel(panel);
 			}
 		}
 	}
-	
-	protected void showHide(Panel panels){
-		if(panel!=null){
+
+	protected void showHide(Panel panels) {
+		if (panel != null) {
 			uihelp.hidePanel(panel);
 			uihelp.showPanel(panels);
 		}
@@ -163,21 +162,22 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 	public void actionPerformed(ActionEvent evt) {
 		try {
 			String cmd = evt.getActionCommand();
-			if(cmd.length()>0)
-				this.invokeMethod(cmd,evt);
+			if (cmd.length() > 0)
+				this.invokeMethod(cmd, evt);
 		} catch (NoSuchMethodException e) {
-			System.err.println("\n[PanelHandler]该类找不到事件的处理方法："+e.getMessage());
+			System.err.println("\n[PanelHandler]该类找不到事件的处理方法：" + e.getMessage());
 		} catch (Exception e) {
-			System.err.println("\n[PanelHandler]执行事件时发生异常："+evt);
+			System.err.println("\n[PanelHandler]执行事件时发生异常：" + evt);
 			e.printStackTrace();
 		}
 	}
 
-	protected Object invokeMethod(String mName, Object arg) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, SecurityException, NoSuchMethodException {
+	protected Object invokeMethod(String mName, Object arg) throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException, SecurityException, NoSuchMethodException {
 		Method m = this.getClass().getMethod(mName, arg.getClass());
 		return m.invoke(this, arg);
 	}
-	
+
 	public boolean isAutoUpdate() {
 		return autoUpdate;
 	}

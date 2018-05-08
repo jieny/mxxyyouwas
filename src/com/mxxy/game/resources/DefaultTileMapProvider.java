@@ -1,6 +1,5 @@
 package com.mxxy.game.resources;
 
-
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.MediaTracker;
@@ -15,12 +14,13 @@ import java.io.RandomAccessFile;
 import com.mxxy.game.config.MapConfig;
 import com.mxxy.game.utils.ResourceStores;
 import com.mxxy.game.widget.TileMap;
+
 /**
  * 地图提供者
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
-public class DefaultTileMapProvider implements IMapProvider{
+public class DefaultTileMapProvider implements IMapProvider {
 	private MyRandomAccessFile mapFile;
 	private int[][] blockOffsetTable;
 	private int width;
@@ -28,11 +28,12 @@ public class DefaultTileMapProvider implements IMapProvider{
 	private int xBlockCount;
 	private int yBlockCount;
 	private ImageLoadThread imageLoader;
-	
-	public DefaultTileMapProvider(){
+
+	public DefaultTileMapProvider() {
 		this.imageLoader = new ImageLoadThread();
 		this.imageLoader.start();
 	}
+
 	/**
 	 * 加载JPG图片
 	 */
@@ -43,7 +44,6 @@ public class DefaultTileMapProvider implements IMapProvider{
 		return image;
 	}
 
-	
 	@Override
 	public int getHeight() {
 		return this.height;
@@ -51,15 +51,14 @@ public class DefaultTileMapProvider implements IMapProvider{
 
 	/**
 	 * 获取JPG图片
+	 * 
 	 * @param x
 	 * @param y
 	 * @return
 	 */
-	public byte[] getJpegData(int x, int y)
-	{
-		byte[] jpegBuf = (byte[])null;
-		try
-		{
+	public byte[] getJpegData(int x, int y) {
+		byte[] jpegBuf = (byte[]) null;
+		try {
 			int len = 0;
 			this.mapFile.seek(this.blockOffsetTable[x][y]);
 			if (isJPEGData()) {
@@ -73,19 +72,22 @@ public class DefaultTileMapProvider implements IMapProvider{
 			bos.reset();
 			bos.write(jpegBuf, 0, 2);
 			isFilled = false;
-			int p = 4; 
+			int p = 4;
 			int start;
-			for ( start = 4; p < jpegBuf.length - 2; p++) {
-				if ((!isFilled) && (jpegBuf[p] == -1)) { p++; if (jpegBuf[p] == -38) {
-					isFilled = true;
-					jpegBuf[(p + 2)] = 12;
-					bos.write(jpegBuf, start, p + 10 - start);
-					bos.write(0);
-					bos.write(63);
-					bos.write(0);
-					start = p + 10;
-					p += 9;
-				} }
+			for (start = 4; p < jpegBuf.length - 2; p++) {
+				if ((!isFilled) && (jpegBuf[p] == -1)) {
+					p++;
+					if (jpegBuf[p] == -38) {
+						isFilled = true;
+						jpegBuf[(p + 2)] = 12;
+						bos.write(jpegBuf, start, p + 10 - start);
+						bos.write(0);
+						bos.write(63);
+						bos.write(0);
+						start = p + 10;
+						p += 9;
+					}
+				}
 				if ((isFilled) && (jpegBuf[p] == -1)) {
 					bos.write(jpegBuf, start, p + 1 - start);
 					bos.write(0);
@@ -104,11 +106,10 @@ public class DefaultTileMapProvider implements IMapProvider{
 	/**
 	 * 获取地图资源
 	 */
-	public TileMap getResource(String resId){
+	public TileMap getResource(String resId) {
 		return loadMap(resId);
 	}
 
-	
 	@Override
 	public int getWidth() {
 		return this.width;
@@ -148,32 +149,32 @@ public class DefaultTileMapProvider implements IMapProvider{
 		return false;
 	}
 
-	private void loadHeader(){
+	private void loadHeader() {
 		if (!isValidMapFile()) {
 			throw new IllegalArgumentException("非梦幻地图格式文件!");
 		}
-		try
-		{
+		try {
 			this.width = this.mapFile.readInt2();
 			this.height = this.mapFile.readInt2();
-			this.xBlockCount = (int)Math.ceil(this.width / 320.0D);
-			this.yBlockCount = (int)Math.ceil(this.height / 240.0D);
+			this.xBlockCount = (int) Math.ceil(this.width / 320.0D);
+			this.yBlockCount = (int) Math.ceil(this.height / 240.0D);
 			this.blockOffsetTable = new int[this.xBlockCount][this.yBlockCount];
 			for (int y = 0; y < this.yBlockCount; y++) {
 				for (int x = 0; x < this.xBlockCount; x++)
 					this.blockOffsetTable[x][y] = this.mapFile.readInt2();
 			}
-		}catch (Exception e){
+		} catch (Exception e) {
 			throw new IllegalArgumentException("地图解码失败:" + e.getMessage());
 		}
 	}
 
 	/**
 	 * 加载地图
+	 * 
 	 * @param id
 	 * @return
 	 */
-	private TileMap loadMap(String id){
+	private TileMap loadMap(String id) {
 		if (this.mapFile != null) {
 			try {
 				this.mapFile.close();
@@ -182,7 +183,7 @@ public class DefaultTileMapProvider implements IMapProvider{
 			}
 			this.blockOffsetTable = null;
 		}
-		MapConfig cfg = (MapConfig)ResourceStores.getInstance().getMapConfig(id);
+		MapConfig cfg = (MapConfig) ResourceStores.getInstance().getMapConfig(id);
 		if (cfg != null) {
 			try {
 				File file = new File(cfg.getPath());
@@ -196,7 +197,6 @@ public class DefaultTileMapProvider implements IMapProvider{
 		}
 		return null;
 	}
-
 
 	@SuppressWarnings("deprecation")
 	public void dispose() {
@@ -212,20 +212,22 @@ public class DefaultTileMapProvider implements IMapProvider{
 	/**
 	 * 图像加载线程
 	 */
-	public class ImageLoadThread extends Thread{
+	public class ImageLoadThread extends Thread {
 		@SuppressWarnings("serial")
-		protected Component component = new Component() {} ;
+		protected Component component = new Component() {
+		};
 		private Image image;
 		private boolean isCompleted;
 		private boolean isFinished;
 		private int mediaTrackerID;
-		protected MediaTracker tracker = new MediaTracker(this.component);  //图像跟踪器
+		protected MediaTracker tracker = new MediaTracker(this.component); // 图像跟踪器
+
 		public ImageLoadThread() {
 			setDaemon(true);
 			setName("ImageLoadThread");
 		}
 
-		private int getNextID(){
+		private int getNextID() {
 			return ++this.mediaTrackerID;
 		}
 
@@ -237,9 +239,9 @@ public class DefaultTileMapProvider implements IMapProvider{
 			return this.isFinished;
 		}
 
-		public void run(){
+		public void run() {
 			synchronized (this) {
-				if (this.image != null){
+				if (this.image != null) {
 					this.isFinished = false;
 					this.isCompleted = false;
 					int id = getNextID();
@@ -263,7 +265,7 @@ public class DefaultTileMapProvider implements IMapProvider{
 			}
 		}
 
-		public void loadImage(Image image){
+		public void loadImage(Image image) {
 			this.image = image;
 			synchronized (this) {
 				notifyAll();

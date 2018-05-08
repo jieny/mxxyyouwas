@@ -33,234 +33,250 @@ import com.mxxy.game.widget.Label;
 /**
  * 扩展性引擎
  */
-public class GameBuild implements IGameBuilder{
+public class GameBuild implements IGameBuilder {
 
 	private ExtendScript extendScript;
-	
-	public  ArrayList<ImageComponent> imageComponents=new ArrayList<ImageComponent>();
+
+	public ArrayList<ImageComponent> imageComponents = new ArrayList<ImageComponent>();
 
 	private SAXReader saxReader;
 
 	public GameBuild() {
 		saxReader = new SAXReader();
-		extendScript=new ExtendScript();
+		extendScript = new ExtendScript();
 	}
+
 	@Override
 	public Panel createPanel(String id, String fileName) {
-		System.out.println("createPanel"+fileName);
+		System.out.println("createPanel" + fileName);
 		Panel functionPanel = null;
 		try {
 			Document read = saxReader.read(fileName);
 			Element rootElement = read.getRootElement();
-			functionPanel=parsePanel(rootElement);
+			functionPanel = parsePanel(rootElement);
 			new PaneListener(functionPanel);
-			parseComponent(functionPanel,rootElement);
+			parseComponent(functionPanel, rootElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return functionPanel;
 	}
-	/*** 解析配置文件里面的控件*/
+
+	/*** 解析配置文件里面的控件 */
 	@SuppressWarnings("unchecked")
 	public void parseComponent(Panel panel, Element rootElement) {
 		List<Element> elements = rootElement.elements();
 		for (Element sElement : elements) {
 			try {
-				this.invokeMethod ("parse"+sElement.getName(),panel,sElement);
+				this.invokeMethod("parse" + sElement.getName(), panel, sElement);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
+
 	/**
 	 * 解析ImageComPonent(该方法通过反射调用)
 	 * @param panel
 	 * @param rootElement
 	 */
-	public void parseImageComPonent(Panel panel,DefaultElement rootElement) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, SecurityException {
+	public void parseImageComPonent(Panel panel, DefaultElement rootElement)
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, SecurityException {
 		int x = Integer.parseInt(rootElement.attributeValue("x"));
 		int y = Integer.parseInt(rootElement.attributeValue("y"));
 		String path = rootElement.attributeValue("path");
 		String attributeValue = rootElement.attributeValue("width");
-		String heightAttributeValue=rootElement.attributeValue("height");
+		String heightAttributeValue = rootElement.attributeValue("height");
 		int width = 0;
-		int height=0;
-		if(StringUtils.isNotBlank(attributeValue)||StringUtils.isNotBlank(heightAttributeValue)){
-			width=Integer.parseInt(attributeValue);
-			height=Integer.parseInt(heightAttributeValue);
+		int height = 0;
+		if (StringUtils.isNotBlank(attributeValue) || StringUtils.isNotBlank(heightAttributeValue)) {
+			width = Integer.parseInt(attributeValue);
+			height = Integer.parseInt(heightAttributeValue);
 		}
-		ImageComponent imageComponent = new ImageComponent(path, x, y,new Point(width, height));
+		ImageComponent imageComponent = new ImageComponent(path, x, y, new Point(width, height));
 		imageComponents.add(imageComponent);
 		panel.setImageComponents(imageComponents);
 	}
+
 	/**
 	 * 构造精灵图片(该方法通过反射调用)
 	 * @param panel
 	 * @param rootElement
 	 */
-	public final int grivate[]={SwingConstants.CENTER,SwingConstants.LEFT,SwingConstants.RIGHT,SwingConstants.BOTTOM};
-	public void parseSprite(Panel panel,DefaultElement rootElement) {
-		Label label=null;
-		String isBorder=rootElement.attributeValue("isBorder");
-		String text=rootElement.attributeValue("text");
-		String isImageIcon=rootElement.attributeValue("isImageIcon");
-		String spritename=rootElement.attributeValue("spritename");
-		String path=rootElement.attributeValue("path");
-		String griva=rootElement.attributeValue("grivate");
-		String color=rootElement.attributeValue("color");
-		String direction=rootElement.attributeValue("direction");
-		if(StringUtils.isNotBlank(isImageIcon)){
-			ImageIcon icon=new ImageIcon(path);
-			label=new Label(null,icon,0);
-		}else{
-			label=new Label(SpriteFactory.loadAnimation(path));
+	public final int grivate[] = { SwingConstants.CENTER, SwingConstants.LEFT, SwingConstants.RIGHT,SwingConstants.BOTTOM };
+
+	public void parseSprite(Panel panel, DefaultElement rootElement) {
+		Label label = null;
+		String isBorder = rootElement.attributeValue("isBorder");
+		String text = rootElement.attributeValue("text");
+		String isImageIcon = rootElement.attributeValue("isImageIcon");
+		String spritename = rootElement.attributeValue("spritename");
+		String path = rootElement.attributeValue("path");
+		String griva = rootElement.attributeValue("grivate");
+		String color = rootElement.attributeValue("color");
+		String direction = rootElement.attributeValue("direction");
+		if (StringUtils.isNotBlank(isImageIcon)) {
+			ImageIcon icon = new ImageIcon(path);
+			label = new Label(null, icon, 0);
+		} else {
+			label = new Label(SpriteFactory.loadAnimation(path));
 		}
-		if(StringUtils.isNotBlank(direction)){
-			
+		if (StringUtils.isNotBlank(direction)) {
+
 		}
-		if(StringUtils.isNotBlank(color)){
-			if(color.equals("black")){
+		if (StringUtils.isNotBlank(color)) {
+			if (color.equals("black")) {
 				label.setForeground(GameColor.BLACK);
-			}else if(color.equals("red")){
+			} else if (color.equals("red")) {
 				label.setForeground(GameColor.RED);
+			} else if(color.equals("green")){
+				label.setForeground(GameColor.green);
 			}
 		}
-		if(StringUtils.isNotBlank(griva)){
+		if (StringUtils.isNotBlank(griva)) {
 			label.setHorizontalAlignment(grivate[Integer.parseInt(griva)]);
 		}
-		if(StringUtils.isNotBlank(isBorder)){
+		if (StringUtils.isNotBlank(isBorder)) {
 			label.setBorder();
 		}
 		label.setText(text);
 		label.setName(spritename);
-		String x=rootElement.attributeValue("x");
-		String y=rootElement.attributeValue("y");
-		if(StringUtils.isNotBlank(x) && StringUtils.isNotBlank(y)){
+		String x = rootElement.attributeValue("x");
+		String y = rootElement.attributeValue("y");
+		if (StringUtils.isNotBlank(x) && StringUtils.isNotBlank(y)) {
 			label.setLocation(Integer.parseInt(x), Integer.parseInt(y));
 		}
-		String width=rootElement.attributeValue("width");
-		String height=rootElement.attributeValue("height");
-		if(StringUtils.isNotBlank(width)||StringUtils.isNotBlank(height)){
+		String width = rootElement.attributeValue("width");
+		String height = rootElement.attributeValue("height");
+		if (StringUtils.isNotBlank(width) || StringUtils.isNotBlank(height)) {
 			label.setSize(Integer.valueOf(width), Integer.valueOf(height));
 		}
 		panel.add(label);
 	}
+
 	/**
 	 * 构造Button (该方法通过反射调用)
+	 * 
 	 * @param panel
 	 * @param rootElement
 	 */
-	public void parseImageComponentButton(Panel panel,DefaultElement rootElement){
-		String text=rootElement.attributeValue("text");
-		String name= rootElement.attributeValue("buttonname");
-		String enable= rootElement.attributeValue("enable");
+	public void parseImageComponentButton(Panel panel, DefaultElement rootElement) {
+		String text = rootElement.attributeValue("text");
+		String name = rootElement.attributeValue("buttonname");
+		String enable = rootElement.attributeValue("enable");
 		int x = Integer.parseInt(rootElement.attributeValue("x"));
 		int y = Integer.parseInt(rootElement.attributeValue("y"));
-		String actionId=rootElement.attributeValue("actionId");
+		String actionId = rootElement.attributeValue("actionId");
 		String path = rootElement.attributeValue("path");
-		String paths=rootElement.attributeValue("paths");
-		ImageComponentButton imageComponentButton=new ImageComponentButton();
+		String paths = rootElement.attributeValue("paths");
+		ImageComponentButton imageComponentButton = new ImageComponentButton();
 		imageComponentButton.setName(name);
 		imageComponentButton.addActionListener(panel);
-		if(StringUtils.isNotBlank(actionId)){
+		if (StringUtils.isNotBlank(actionId)) {
 			imageComponentButton.setActionCommand(actionId);
 		}
-		if(StringUtils.isNotBlank(path)){
+		if (StringUtils.isNotBlank(path)) {
 			imageComponentButton.init(SpriteFactory.loadSprite(path));
 		}
-		if(StringUtils.isNotBlank(text)){
+		if (StringUtils.isNotBlank(text)) {
 			imageComponentButton.setText(text);
 		}
-		imageComponentButton.setEnabled(enable==null);	
-		if(StringUtils.isNotBlank(paths)){
+		imageComponentButton.setEnabled(enable == null);
+		if (StringUtils.isNotBlank(paths)) {
 			int width = Integer.valueOf(rootElement.attributeValue("width"));
 			int height = Integer.valueOf(rootElement.attributeValue("height"));
-			int index=paths.lastIndexOf('.');
+			int index = paths.lastIndexOf('.');
 			imageComponentButton.loadAnimation(
-					new ImageIcon[]{new ImageIcon(paths),
-					new ImageIcon(StringUtils.insertString(paths, "3", index)),
-					new ImageIcon(StringUtils.insertString(paths, "2", index))});
+					new ImageIcon[] { new ImageIcon(paths), new ImageIcon(StringUtils.insertString(paths, "3", index)),
+							new ImageIcon(StringUtils.insertString(paths, "2", index)) });
 			imageComponentButton.setSize(width, height);
 		}
 		imageComponentButton.setLocation(x, y);
-		panel.add(imageComponentButton,0);
+		panel.add(imageComponentButton, 0);
 	}
+
 	/**
 	 * 解析面板 (该方法通过反射调用)
+	 * 
 	 * @param rootElement
 	 * @return
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 */
 	public Panel parsePanel(Element rootElement) throws ClassNotFoundException {
 		imageComponents.clear();
-		int width=Integer.parseInt(rootElement.attributeValue("width"));
-		int height=Integer.parseInt(rootElement.attributeValue("height"));
-		int x=Integer.parseInt(rootElement.attributeValue("x"));
-		int y=Integer.parseInt(rootElement.attributeValue("y"));
-		String transparency=rootElement.attributeValue("transparency");
-		Panel panel=new Panel(width, height);
-		if(StringUtils.isNotBlank(transparency)){
+		int width = Integer.parseInt(rootElement.attributeValue("width"));
+		int height = Integer.parseInt(rootElement.attributeValue("height"));
+		int x = Integer.parseInt(rootElement.attributeValue("x"));
+		int y = Integer.parseInt(rootElement.attributeValue("y"));
+		String transparency = rootElement.attributeValue("transparency");
+		Panel panel = new Panel(width, height);
+		if (StringUtils.isNotBlank(transparency)) {
 			panel.setTransparency(Float.parseFloat(transparency));
 		}
 		panel.setBackground(Color.black);
-		panel.setMove(rootElement.attributeValue("move")!=null);
-		panel.setRightClickClose(rootElement.attributeValue("isReightClose")!=null);
+		panel.setMove(rootElement.attributeValue("move") != null);
+		panel.setRightClickClose(rootElement.attributeValue("isReightClose") != null);
 		panel.setLocation(x, y);
 		panel.setName(rootElement.attributeValue("id"));
-		Class<?> class1=Class.forName("com.mxxy.extendpackage."+panel.getName());
-		IPanelListener iPanelListener=InstanceUtil.getInstance(class1);
-//		IPanelListener iPanelListener=(IPanelListener) extendScript.loadUIScript(panel.getName());
-		if(iPanelListener!=null)
+		Class<?> class1 = Class.forName("com.mxxy.extendpackage." + panel.getName());
+		IPanelListener iPanelListener = InstanceUtil.getInstance(class1);
+//		 IPanelListener iPanelListener=(IPanelListener)
+//		 extendScript.loadUIScript(panel.getName());
+		if (iPanelListener != null)
 			panel.addPanelListener(iPanelListener);
 		return panel;
 	}
+
 	/**
 	 * 解析文本(通过反射调用)
 	 */
-	private int i=0;
-	public void parseTextField(Panel panel,DefaultElement rootElement){
+	private int i = 0;
+
+	public void parseTextField(Panel panel, DefaultElement rootElement) {
 		String name = rootElement.attributeValue("compontname");
-		int x=Integer.parseInt(rootElement.attributeValue("x"));
-		int y=Integer.parseInt(rootElement.attributeValue("y"));
-		int width=Integer.parseInt(rootElement.attributeValue("width"));
-		int height=Integer.parseInt(rootElement.attributeValue("height"));
-		JTextField jTextField=null;
-		if(i==0){
-			jTextField=ComponentFactory.regitsTextField();
-		}else{
-			jTextField=new JTextField();
+		int x = Integer.parseInt(rootElement.attributeValue("x"));
+		int y = Integer.parseInt(rootElement.attributeValue("y"));
+		int width = Integer.parseInt(rootElement.attributeValue("width"));
+		int height = Integer.parseInt(rootElement.attributeValue("height"));
+		JTextField jTextField = null;
+		if (i == 0) {
+			jTextField = ComponentFactory.regitsTextField();
+		} else {
+			jTextField = new JTextField();
 		}
 		i++;
 		jTextField.setName(name);
 		jTextField.setOpaque(false);
 		jTextField.setBorder(null);
 		jTextField.setBounds(x, y, width, height);
-		panel.add(jTextField,0);
+		panel.add(jTextField, 0);
 	}
+
 	/**
 	 * 解析CheckBox(通过反射调用)
+	 * 
 	 * @param panel
 	 * @param rootElement
 	 */
-	public void parseCheckBox(Panel panel,DefaultElement rootElement){
+	public void parseCheckBox(Panel panel, DefaultElement rootElement) {
 		String name = rootElement.attributeValue("compontname");
-		int x=Integer.parseInt(rootElement.attributeValue("x"));
-		int y=Integer.parseInt(rootElement.attributeValue("y"));
-		int width=Integer.parseInt(rootElement.attributeValue("width"));
-		int height=Integer.parseInt(rootElement.attributeValue("height"));
-		ImageIcon defaultIcon=new ImageIcon(rootElement.attributeValue("defaultIcon"));
-		ImageIcon selectIcon=new ImageIcon(rootElement.attributeValue("selectIcon"));
-		ImageCheckBox imageCheckBox=new ImageCheckBox(defaultIcon);
+		int x = Integer.parseInt(rootElement.attributeValue("x"));
+		int y = Integer.parseInt(rootElement.attributeValue("y"));
+		int width = Integer.parseInt(rootElement.attributeValue("width"));
+		int height = Integer.parseInt(rootElement.attributeValue("height"));
+		ImageIcon defaultIcon = new ImageIcon(rootElement.attributeValue("defaultIcon"));
+		ImageIcon selectIcon = new ImageIcon(rootElement.attributeValue("selectIcon"));
+		ImageCheckBox imageCheckBox = new ImageCheckBox(defaultIcon);
 		imageCheckBox.setSelectedIcon(selectIcon);
 		imageCheckBox.setOpaque(false);
 		imageCheckBox.setSize(width, height);
 		imageCheckBox.setLocation(x, y);
 		imageCheckBox.setName(name);
-		panel.add(imageCheckBox,0);
+		panel.add(imageCheckBox, 0);
 	}
-	
-	
-	public void processAction(Panel dialog,DefaultElement el) {
+
+	public void processAction(Panel dialog, DefaultElement el) {
 		String actionId = (String) el.attributeValue("id");
 		String className = (String) el.attributeValue("class");
 		try {
@@ -274,13 +290,15 @@ public class GameBuild implements IGameBuilder{
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-				
+
 	}
 
 	/**
 	 * 反射
-	 * @param mName    方法名
-	 * @param arg  对应方法的参数
+	 * @param mName
+	 *            方法名
+	 * @param arg
+	 *            对应方法的参数
 	 * @return
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
@@ -288,8 +306,9 @@ public class GameBuild implements IGameBuilder{
 	 * @throws SecurityException
 	 * @throws NoSuchMethodException
 	 */
-	public Object invokeMethod(String mName, Object ...arg) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, SecurityException, NoSuchMethodException {
-		Method method=this.getClass().getDeclaredMethod(mName, arg[0].getClass(),arg[1].getClass());
+	public Object invokeMethod(String mName, Object... arg) throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException, SecurityException, NoSuchMethodException {
+		Method method = this.getClass().getDeclaredMethod(mName, arg[0].getClass(), arg[1].getClass());
 		return method.invoke(this, arg);
-	}	
+	}
 }

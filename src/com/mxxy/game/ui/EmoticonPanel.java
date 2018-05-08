@@ -13,26 +13,28 @@ import com.mxxy.game.widget.BorderUi;
 import com.mxxy.game.widget.Label;
 
 @SuppressWarnings("serial")
-public class EmoticonPanel extends AbstactPanel{
+public class EmoticonPanel extends AbstactPanel {
 
-	private Label [] emoticonSymbol;
+	private Label[] emoticonSymbol;
+
 	@Override
 	public void init() {
 		super.stopDraw();
-		emoticonSymbol=new Label[60];
+		emoticonSymbol = new Label[60];
 		initEmoticonSymbol();
 	}
-	public void initEmoticonSymbol(){
+
+	public void initEmoticonSymbol() {
 		for (int i = 0; i < emoticonSymbol.length; i++) {
-			emoticonSymbol[i]=new Label(SpriteFactory.loadAnimation("/wzife/emoticons/#"+i+".was"));
+			emoticonSymbol[i] = new Label(SpriteFactory.loadAnimation("/wzife/emoticons/#" + i + ".was"));
 		}
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 10; j++) {
-				emoticonSymbol[i*10+j].setLocation(10+j*44, 18+i*44);
-				emoticonSymbol[i*10+j].setHorizontalAlignment(SwingConstants.CENTER);
-				emoticonSymbol[i*10+j].setSize(45, 45);
-				emoticonSymbol[i*10+j].setName(String.valueOf(i*10+j));
-				add(emoticonSymbol[i*10+j]);
+				emoticonSymbol[i * 10 + j].setLocation(10 + j * 44, 18 + i * 44);
+				emoticonSymbol[i * 10 + j].setHorizontalAlignment(SwingConstants.CENTER);
+				emoticonSymbol[i * 10 + j].setSize(45, 45);
+				emoticonSymbol[i * 10 + j].setName(String.valueOf(i * 10 + j));
+				add(emoticonSymbol[i * 10 + j]);
 			}
 		}
 		setBorder(new BorderUi(Color.decode("#808080"), 5, true));
@@ -40,11 +42,13 @@ public class EmoticonPanel extends AbstactPanel{
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		Graphics2D graphics2d = (Graphics2D) g.create();  
+		Graphics2D graphics2d = (Graphics2D) g.create();
 		GraphicsUtils.setAlpha(graphics2d, 0.5f);
-		graphics2d.fillRect(0, 0, getWidth(), getHeight());  
+		graphics2d.fillRect(0, 0, getWidth(), getHeight());
 		super.paintComponent(g);
 	}
+
 	@Override
-	public void paintImmediately(int x, int y, int w, int h) {}
+	public void paintImmediately(int x, int y, int w, int h) {
+	}
 }

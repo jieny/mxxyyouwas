@@ -22,6 +22,7 @@ public interface Searcher {
 
 	/**
 	 * 搜索两点的路径
+	 * 
 	 * @param x1
 	 * @param y1
 	 * @param x2

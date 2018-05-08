@@ -9,11 +9,11 @@ import com.mxxy.game.sprite.Players;
 @SuppressWarnings("serial")
 abstract public class AbstactPanel extends DrawPaneImp {
 	/**
-	 *drawPlayer (绘制人物)
+	 * drawPlayer (绘制人物)
 	 */
-	public void drawPlayers(Graphics2D g, long elapsedTime){
-		Players players=getPlayer();
-		if(players!=null){
+	public void drawPlayers(Graphics2D g, long elapsedTime) {
+		Players players = getPlayer();
+		if (players != null) {
 			players.setHover(isHover(players));
 			Point p = players.getLocation();
 			p = localToView(p);
@@ -21,11 +21,12 @@ abstract public class AbstactPanel extends DrawPaneImp {
 			players.draw(g, p.x, p.y);
 		}
 	}
+
 	/**
 	 * drawNPC (绘制NPC)
 	 */
-	public void drawNpc(Graphics2D g, long elapsedTime){
-		if(npcList==null){
+	public void drawNpc(Graphics2D g, long elapsedTime) {
+		if (npcList == null) {
 			return;
 		}
 		for (int i = 0; i < npcList.size(); i++) {
@@ -37,13 +38,15 @@ abstract public class AbstactPanel extends DrawPaneImp {
 			npc.draw(g, p.x, p.y);
 		}
 	}
+
 	/**
-	 * judge mouse hover  (判断鼠标悬停)
+	 * judge mouse hover (判断鼠标悬停)
+	 * 
 	 * @param players
 	 * @return
 	 */
-	public boolean isHover(Players players){
-		Point point=getPointCursor();
+	public boolean isHover(Players players) {
+		Point point = getPointCursor();
 		if (point == null) {
 			return false;
 		}
@@ -52,25 +55,27 @@ abstract public class AbstactPanel extends DrawPaneImp {
 		return hover;
 	}
 
-	public void romveNpc(int index){
-		npcList.remove(index);
+	public void romveNpc(Players players) {
+		npcList.remove(players);
 	}
-	public void clearNpc(){
+
+	public void clearNpc() {
 		npcList.clear();
 	}
-//	private TalkAction talkAction =new TalkAction();
+
+	// private TalkAction talkAction =new TalkAction();
 	/**
 	 * addNpcAndListener
+	 * 
 	 * @param players
 	 */
-	public void addNpc(Players players){
+	public void addNpc(Players players) {
 		npcList.add(players);
 		players.removeAllListeners();
-//		players.addPlayerListener(talkAction);
+		// players.addPlayerListener(talkAction);
 	}
-	
+
 	public List<Players> getNpcList() {
 		return npcList;
 	}
 }
-

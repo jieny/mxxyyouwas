@@ -11,16 +11,16 @@ public class ImageComponent extends AbstractCanvas {
 	private Image image;
 	public Rectangle rect;
 	public String path;
-	
-	public ImageComponent(String path,int x,int y,Point p){
-		this.path=path;
-		this.image=SpriteFactory.loadImage("componentsRes/"+path+".png");
-		if(p!=null)
-			this.rect=new Rectangle(x,y,p.x,p.y);  //构造矩形对象
+
+	public ImageComponent(String path, int x, int y, Point p) {
+		this.path = path;
+		this.image = SpriteFactory.loadImage("componentsRes/" + path + ".png");
+		if (p != null)
+			this.rect = new Rectangle(x, y, p.x, p.y); // 构造矩形对象
 		super.setLocation(x, y);
 	}
-	
-	public ImageComponent(String path,int x,int y){
+
+	public ImageComponent(String path, int x, int y) {
 		this(path, x, y, null);
 	}
 
@@ -31,7 +31,7 @@ public class ImageComponent extends AbstractCanvas {
 
 	@Override
 	protected void draw(Graphics2D g, int x, int y, int width, int hight) {
-		g.drawImage(image,getX(),getY(),null);		
+		g.drawImage(image, getX(), getY(), null);
 	}
 
 	@Override

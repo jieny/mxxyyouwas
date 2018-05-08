@@ -25,24 +25,31 @@ import com.mxxy.game.listener.PaneListener;
 import com.mxxy.game.utils.GraphicsUtils;
 import com.mxxy.game.widget.ImageComponent;
 import com.mxxy.game.widget.SpriteImage;
+
 /**
  * 功能面板
+ * 
  * @author dell
  */
 @SuppressWarnings("serial")
-public class Panel extends JPanel implements IEventTask,ActionListener,ISetOnListener<PaneListener>{
+public class Panel extends JPanel implements IEventTask, ActionListener, ISetOnListener<PaneListener> {
 
-	private EventListenerList listener=new EventListenerList();  
+	private EventListenerList listener = new EventListenerList();
 
-	private float transparency; /*** 透明度*/
+	private float transparency;
+	/*** 透明度 */
 
-	private boolean isRightClickClose;/**右键关闭*/
+	private boolean isRightClickClose;
+	/** 右键关闭 */
 
-	private SpriteImage smapImage;/**小地图或者背景图片**/
+	private SpriteImage smapImage;
+	/** 小地图或者背景图片 **/
 
-	private boolean isMove;/**面板是否移动*/
+	private boolean isMove;
 
-	public Panel(int width,int height){
+	/** 面板是否移动 */
+
+	public Panel(int width, int height) {
 		super(null);
 		setSize(width, height);
 		setIgnoreRepaint(true);
@@ -54,15 +61,15 @@ public class Panel extends JPanel implements IEventTask,ActionListener,ISetOnLis
 
 	@Override
 	public boolean handleEvent(EventObject evt) throws EventException {
-		if(evt instanceof BaseEvent){
+		if (evt instanceof BaseEvent) {
 			handleActionEvent((BaseEvent) evt);
 		}
 		return false;
 	}
 
-	public void handleActionEvent(ActionEvent evt){
+	public void handleActionEvent(ActionEvent evt) {
 		IPanelListener[] listeners = listener.getListeners(IPanelListener.class);
-		for (int i = 0; i < listeners.length ; i++) {
+		for (int i = 0; i < listeners.length; i++) {
 			listeners[i].actionPerformed(evt);
 		}
 	}
@@ -70,17 +77,16 @@ public class Panel extends JPanel implements IEventTask,ActionListener,ISetOnLis
 	/**
 	 * 面板初始化事件
 	 */
-	public void init(){
+	public void init() {
 		fireEvent(new PanelEvent(this, PanelEvent.INITIAL));
 	}
-	
-	
+
 	/**
 	 * 关闭面板
 	 */
-	public void close(){
+	public void close() {
 		System.out.println(this);
-		if(getParent()!=null){
+		if (getParent() != null) {
 			getParent().remove(this);
 			fireEvent(new PanelEvent(this, PanelEvent.DISPOSE));
 		}
@@ -88,25 +94,29 @@ public class Panel extends JPanel implements IEventTask,ActionListener,ISetOnLis
 
 	@Override
 	public void paint(Graphics g) {
-		Graphics2D graphics2d = (Graphics2D) g.create();  
+		Graphics2D graphics2d = (Graphics2D) g.create();
 		GraphicsUtils.setAlpha(graphics2d, transparency);
-		graphics2d.setColor(getBackground());  
-		graphics2d.fillRect(0, 0, getWidth(), getHeight());  
-		if(smapImage!=null)
-			smapImage.drawBitmap(graphics2d);
+		graphics2d.setColor(getBackground());
+		graphics2d.fillRect(0, 0, getWidth(), getHeight());
+		try {
+			if (smapImage != null)
+				smapImage.drawBitmap(graphics2d);
+			drawImageComponent(graphics2d);
 
-		drawImageComponent(graphics2d);
+			paintBorder(g); // 绘制边框
 
-		paintBorder(g); //绘制边框
-
-		paintChildren(g);  //绘制该Panel的子组件
+			paintChildren(g); // 绘制该Panel的子组件
+		} catch (Exception e) {
+			System.err.println("err");
+		}
 	}
 
 	/**
 	 * 设置透明度
+	 * 
 	 * @param transparency
 	 */
-	public  void setTransparency(float transparency) {
+	public void setTransparency(float transparency) {
 		this.transparency = transparency;
 	}
 
@@ -124,12 +134,12 @@ public class Panel extends JPanel implements IEventTask,ActionListener,ISetOnLis
 		this.imageComponents = imageComponents;
 	}
 
-	public void clear(){
+	public void clear() {
 		this.imageComponents.clear();
 	}
 
-	private void drawImageComponent(Graphics2D g){
-		if(imageComponents!=null)
+	private void drawImageComponent(Graphics2D g) {
+		if (imageComponents != null)
 			for (int i = 0; i < imageComponents.size(); i++) {
 				ImageComponent imageComponent = imageComponents.get(i);
 				imageComponent.drawBitmap(g, imageComponent.getX(), imageComponent.getY());
@@ -138,6 +148,7 @@ public class Panel extends JPanel implements IEventTask,ActionListener,ISetOnLis
 
 	/**
 	 * 查询该Panel的控件
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -153,11 +164,11 @@ public class Panel extends JPanel implements IEventTask,ActionListener,ISetOnLis
 		return null;
 	}
 
-	public void addPanelListener(IPanelListener l){
+	public void addPanelListener(IPanelListener l) {
 		listener.add(IPanelListener.class, l);
 	}
 
-	public void removePanelListener(IPanelListener l){
+	public void removePanelListener(IPanelListener l) {
 		listener.remove(IPanelListener.class, l);
 	}
 
@@ -174,6 +185,7 @@ public class Panel extends JPanel implements IEventTask,ActionListener,ISetOnLis
 	public boolean isMove() {
 		return isMove;
 	}
+
 	public void setMove(boolean isMove) {
 		this.isMove = isMove;
 	}
@@ -197,6 +209,7 @@ public class Panel extends JPanel implements IEventTask,ActionListener,ISetOnLis
 		this.addMouseListener(event);
 		this.addMouseMotionListener(event);
 	}
+
 	@Override
 	public void removeListener(PaneListener event) {
 		this.removeMouseListener(event);
@@ -210,19 +223,21 @@ public class Panel extends JPanel implements IEventTask,ActionListener,ISetOnLis
 	public boolean isRightClickClose() {
 		return isRightClickClose;
 	}
-	@Override
-	public void paintImmediately(int x, int y, int w, int h) {}
 
-	
+	@Override
+	public void paintImmediately(int x, int y, int w, int h) {
+	}
+
 	public Point getPointCursor() {
 		return super.getMousePosition();
 	}
-	
+
 	private String scene;
 
 	public void setSceneId(String scene) {
-		this.scene=scene;
+		this.scene = scene;
 	}
+
 	public String getScene() {
 		return scene;
 	}
