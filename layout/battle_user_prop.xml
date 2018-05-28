@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<panel id="BattleUserProp" x="255" y="110" width="294" height="259" move="true" isReightClose="true">
-
-	<ImageComponentButton buttonname="closer" x="272" y="3" path="/wzife/button/closebtn.tcp" actionId="close"/>
-	<Sprite x="0" y="0" path="/wzife/dialog/useitem.tcp"/>
-</panel>

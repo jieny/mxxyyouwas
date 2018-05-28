@@ -29,6 +29,7 @@ import com.mxxy.game.widget.Label;
 
 /**
  * SelectRole (选择角色)
+ * 
  * @author ZAB 邮箱 ：624284779@qq.com
  */
 final public class SelectRole extends AbstractPanelHandler {
@@ -138,11 +139,11 @@ final public class SelectRole extends AbstractPanelHandler {
 		@Override
 		public void click(PlayerEvent evt) {
 			player = evt.getPlayer();
-			player.index = selectIndex;
+//			player.index = selectIndex;
 			playerVO = player.getData();
 			name.setText(playerVO.getName());
-			head.setIcon(new ImageIcon("componentsRes/createimage/" + playerVO.getCharacter() + ".png"));
-			headbackground.setIcon(new ImageIcon("componentsRes/createimage/headbackground.png"));
+			head.setIcon(new ImageIcon("res/componentsRes/createimage/" + playerVO.getCharacter() + ".png"));
+			headbackground.setIcon(new ImageIcon("res/componentsRes/createimage/headbackground.png"));
 		}
 
 		public void setSceneId(String sceneId) {
@@ -152,7 +153,6 @@ final public class SelectRole extends AbstractPanelHandler {
 
 	/**
 	 * 上一步
-	 * 
 	 * @param e
 	 */
 	public void back(ActionEvent e) {
@@ -162,7 +162,6 @@ final public class SelectRole extends AbstractPanelHandler {
 
 	/**
 	 * 下一步(开始进入游戏)
-	 * 
 	 * @param e
 	 */
 	public void next(ActionEvent e) {
@@ -173,7 +172,6 @@ final public class SelectRole extends AbstractPanelHandler {
 
 	/**
 	 * 创建人物
-	 * 
 	 * @param e
 	 */
 	public void create(ActionEvent e) {
@@ -187,7 +185,6 @@ final public class SelectRole extends AbstractPanelHandler {
 
 	/**
 	 * 当选择栏没有人物时提示
-	 * 
 	 * @param creates
 	 */
 	int count;
@@ -202,9 +199,6 @@ final public class SelectRole extends AbstractPanelHandler {
 		if (presonCount <= 0) {
 			promptRegistPlayer(crateButton);
 		}
-		// if(player!=null){
-		// System.out.println(isHover(player));
-		// }
 	}
 
 	@Override

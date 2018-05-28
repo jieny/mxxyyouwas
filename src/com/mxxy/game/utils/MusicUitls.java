@@ -35,7 +35,6 @@ public class MusicUitls {
 
 	public static void loadSound(String filename) {
 		URL url = MusicUitls.class.getClassLoader().getResource(filename);
-		System.err.println(url);
 		if (url != null) {
 			try {
 				stream = AudioSystem.getAudioInputStream(url);

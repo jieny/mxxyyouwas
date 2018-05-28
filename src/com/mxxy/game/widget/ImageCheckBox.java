@@ -12,6 +12,5 @@ public class ImageCheckBox extends JCheckBox {
 	}
 
 	@Override
-	public void paintImmediately(int x, int y, int w, int h) {
-	}
+	public void paintImmediately(int x, int y, int w, int h) {}
 }

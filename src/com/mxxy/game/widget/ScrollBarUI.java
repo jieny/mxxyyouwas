@@ -42,13 +42,13 @@ public class ScrollBarUI extends BasicScrollBarUI {
 
 	@Override
 	protected JButton createIncreaseButton(int orientation) {
-		ImageComponentButton button = new ImageComponentButton(SpriteFactory.loadSprite("/wzife/button/down.tcp"));
+		ImageComponentButton button = new ImageComponentButton(SpriteFactory.loadSprite("res/wzife/button/down.tcp"));
 		return button;
 	}
 
 	@Override
 	protected JButton createDecreaseButton(int orientation) {
-		ImageComponentButton button = new ImageComponentButton(SpriteFactory.loadSprite("/wzife/button/up.tcp"));
+		ImageComponentButton button = new ImageComponentButton(SpriteFactory.loadSprite("res/wzife/button/up.tcp"));
 		return button;
 	}
 }

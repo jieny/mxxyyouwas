@@ -64,7 +64,6 @@ final public class BattlePanelCmd extends AbstractPanelHandler {
 	 * 逃跑
 	 */
 	public void warrunaway(ActionEvent e) {
-		
 		battlepanel.runaway(player, true);
 	}
 }

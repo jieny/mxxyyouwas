@@ -1,9 +1,11 @@
 package com.mxxy.game.ui;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +15,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
-
-import javazoom.jl.player.Player;
 
 import com.mxxy.game.base.AbstactPanel;
 import com.mxxy.game.base.Application;
@@ -43,20 +43,20 @@ import com.mxxy.game.widget.TileMap;
  */
 public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePanelController> {
 
-	private static final String BATTLE_ROLE_CMD = "BattlePanelCmd";  
+	private static final String BATTLE_ROLE_CMD = "BattlePanelCmd";
 
-	private static final String BATTLE_ROLE_WARMAGIC="BattleWarmagic";
+	private static final String BATTLE_ROLE_WARMAGIC = "BattleWarmagic";
 
-	private static final String BATTLE_ROLE_PROP="BattleUserProp";
+	private static final String BATTLE_ROLE_PROP = "BattleUserProp";
 
 	private CommandManager commandManager;
 
 	public TimeManager timerManager;
 
 	private Command lastCmd;
-	/**已方*/
+	/** 已方 */
 	private List<Players> ownsideTeam;
-	/**敌方*/
+	/** 敌方 */
 	private List<Players> hostileTeam;
 
 	private TileMap tileMap;
@@ -65,35 +65,37 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 
 	private Image backgroundImage;
 
-	private Random random=new Random();
+	private Random random = new Random();
 
 	private Players target;
 
 	private Magic mMagic;
 
 	private RichLabel battleMessage;
-	/**是否选择的法术*/
+	/** 是否选择的法术 */
 	private boolean isSelectMagic;
-	/**控制命令流程 true 战斗未开始，false战斗已开始  避免重复指令操作*/
+	/** 控制命令流程 true 战斗未开始，false战斗已开始 避免重复指令操作 */
 	private boolean waitingCmd;
 
 	/**
-	 * @param tileMap 地图
-	 * @param viewPosition 人物坐标
+	 * @param tileMap
+	 *            地图
+	 * @param viewPosition
+	 *            人物坐标
 	 * @param gamePanel
 	 */
 	public BattlePanel(TileMap tileMap, Point viewPosition, GamePanel gamePanel) {
 		this.tileMap = tileMap;
 		this.point = viewPosition;
-		commandManager=new CommandManager(this);
+		commandManager = new CommandManager(this);
 	}
 
 	@Override
 	public void init() {
 		setGameCursor(Cursor.DEFAULT_CURSOR);
-		backgroundImage = SpriteFactory.loadImage("/scene/battlebg.png");
-		waitingCmd=true;
-		timerManager=new TimeManager(this);
+		backgroundImage = SpriteFactory.loadImage("res/scene/battlebg.png");
+		waitingCmd = true;
+		timerManager = new TimeManager(this);
 		timerManager.initTimes();
 		timerManager.countDown();
 	}
@@ -101,9 +103,9 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 	public void initComponetn() {
 		Panel dialog = getUIHelp().getPanel(BATTLE_ROLE_CMD);
 		getUIHelp().showPanel(dialog);
-		battleMessage=new RichLabel();
-		battleMessage.setBounds(Constant.WINDOW_WIDTH/2-100, 500, 300, 50);
-		add(battleMessage,0);
+		battleMessage = new RichLabel();
+		battleMessage.setBounds(Constant.WINDOW_WIDTH / 2 - 100, 500, 300, 50);
+		add(battleMessage, 0);
 	}
 
 	/**
@@ -141,10 +143,12 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 	 * 新的回合开始
 	 */
 	public void roundStartNew() {
+		Players cmdPlayer = ownsideTeam.get(cmdIndex);
 		waitingCmd = true;
 		getUIHelp().showPanel(BATTLE_ROLE_CMD);
 		cmdIndex = 0;
 		this.setPlayer(ownsideTeam.get(cmdIndex));
+
 	}
 
 	/**
@@ -158,10 +162,9 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 		Command cmd = new Command(Players.STATE_ATTACK, cmdPlayer, target);
 		addCmd(cmd);
 	}
-	
-	private Players targetPlayers;
+
 	/**
-	 *  施法指令
+	 * 施法指令
 	 */
 	public void magicCmd() {
 		if (target == null) {
@@ -169,26 +172,26 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 		}
 		Players cmdPlayer = ownsideTeam.get(cmdIndex);
 		Command cmd = new Command(Players.STATE_MAGIC, cmdPlayer, target);
-		cmd.add("magicConfig", magicConfig);
-		targetPlayers=cmd.getTarget();
+		cmd.add(MagicConfig.class.getSimpleName(), magicConfig);
 		addCmd(cmd);
-		playOnceMagic(false);
+		playOnceMagic();
 	}
 
 	private MagicConfig magicConfig;
-	
+
 	public void setSelectMagic(MagicConfig mBean) {
-		this.magicConfig=mBean;
-		isSelectMagic=true;
+		this.magicConfig = mBean;
+		isSelectMagic = true;
 	}
 
 	/**
 	 * @param player
 	 * @param x
 	 * @param y
-	 * @param state  Players.STATE_RUSHB||Players.STATE_RUSHA
+	 * @param state
+	 *            Players.STATE_RUSHB||Players.STATE_RUSHA
 	 */
-	public void rush(Players player, int x, int y,String state) {
+	public void rush(Players player, int x, int y, String state) {
 		this.targetX = x;
 		this.targetY = y;
 		this.originX = player.getX();
@@ -238,9 +241,9 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 		movingPlayer.moveBy(dx, dy);
 	}
 
-
 	/**
 	 * 当前单位是否到达目标点
+	 * 
 	 * @return
 	 */
 	private boolean isReach() {
@@ -249,18 +252,19 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 
 	/**
 	 * 随机挑选敌人
+	 * 
 	 * @return
 	 */
 	private Players randomEnemy() {
 		Players target = hostileTeam.get(random.nextInt(hostileTeam.size()));
-		//		do {
-		//			target = hostileTeam.get(random.nextInt(hostileTeam.size()));
-		//		} while (target.getData().hp == 0);
+		// do {
+		// target = hostileTeam.get(random.nextInt(hostileTeam.size()));
+		// } while (target.getData().hp == 0);
 		return target;
 	}
 
-
 	public boolean flage;
+
 	@Override
 	public void drawBitmap(Graphics2D g, long elapsedTime) {
 		g.setColor(Constant.PLAYER_NAME_COLOR);
@@ -271,22 +275,33 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 		}
 		drawNpc(g, elapsedTime);
 		drawComponent(g, elapsedTime);
-		if(mMagic!=null) drawMagic(g, elapsedTime);
+		if (mMagic != null)
+			drawMagic(g, elapsedTime);
 		drawPoints(g);
 		drawMemory(g);
 	}
 
 	/**
 	 * 绘制法术
-	 * @param elapsedTime 
-	 * @param g 
+	 * 
+	 * @param elapsedTime
+	 * @param g
 	 */
-	public void drawMagic(Graphics2D g, long elapsedTime){
-		if(mMagic!=null){
-			if(magicConfig.isGroup()){
-				mMagic.draw(g, 135, 215);
-			}else{
-				mMagic.draw(g, targetPlayers.getX(), targetPlayers.getY());
+	public void drawMagic(Graphics2D g, long elapsedTime) {
+		if (mMagic != null) {
+			switch (magicConfig.getMagicId()) {
+			case MagicConfig.BIGMAGIC:
+				if (mMagic.getSprite() != null) {
+					// g.drawRect(mMagic.getSprite().getCenterX(), mMagic.getSprite().getCenterY(),
+					// mMagic.getSprite().getWidth()
+					// , mMagic.getSprite().getHeight());
+					if (magicConfig.getName().equals("龙卷雨击")) {
+						mMagic.draw(g, mMagic.getSprite().getCenterX() - 230, mMagic.getSprite().getCenterY() - 180);
+					} else {
+						mMagic.draw(g, mMagic.getSprite().getCenterX(), mMagic.getSprite().getCenterY());
+					}
+				}
+				break;
 			}
 			mMagic.update(elapsedTime);
 		}
@@ -294,39 +309,44 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 
 	/**
 	 * 播放一次法术动画
-	 * @param true 为播放音乐
+	 * 
+	 * @param true
+	 *            为播放音乐
 	 */
-	public void playOnceMagic(boolean sound){
+	public void playOnceMagic() {
 		getUIHelp().hidePanel(BATTLE_ROLE_WARMAGIC);
 		setGameCursor(Cursor.DEFAULT_CURSOR);
-		mMagic=new Magic();
+		mMagic = new Magic();
 		mMagic.setMagincId(magicConfig.getName());
 		mMagic.createSprite(this.ownsideTeam.get(0));
-		if(mMagic!=null){
+		if (mMagic != null) {
 			mMagic.getSprite().setRepeat(1);
-			mMagic.getSprite().getCurrAnimation().waitFor(); 
-			mMagic=null;
+			mMagic.getSprite().getCurrAnimation().waitFor();
+			mMagic = null;
 		}
-//		if(sound) {
-//			try {
-//				MP3Player.play("sound/magic/" + magicConfig.getName() + ".mp3");
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
 	}
-	
+
+	public void playOnceMusic(boolean sound) {
+		if (sound) {
+			try {
+				MP3Player.play("res/music/" + magicConfig.getName() + ".mp3");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	private Map<Players, Integer> points = new HashMap<Players, Integer>();
-	
+
 	private void drawPoints(Graphics2D g) {
 		Set<Entry<Players, Integer>> entrys = points.entrySet();
 		for (Entry<Players, Integer> en : entrys) {
 			Players player = en.getKey();
 			int value = en.getValue();
-			int x = player.getX()-player.getPerson().getCenterX()/2;
-			int y = player.getY()-player.getPerson().getCenterY()/2;
+			int x = player.getX() - player.getPerson().getCenterX() / 2;
+			int y = player.getY() - player.getPerson().getCenterY() / 2;
 			int dx = 0;
-			Animation numAnim = SpriteFactory.loadAnimation(value > 0 ? "misc/3cf8f9fe" : "misc/30f737d8");
+			Animation numAnim = SpriteFactory.loadAnimation(value > 0 ? "res/misc/3cf8f9fe" : "res/misc/30f737d8");
 			String strValue = Integer.toString(Math.abs(value));
 			for (int i = 0; i < strValue.length(); i++) {
 				int index = strValue.charAt(i) - '0';
@@ -336,9 +356,10 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 			}
 		}
 	}
-	
+
 	/**
 	 * 设置显示的增加、消耗点数
+	 * 
 	 * @param player
 	 * @param value
 	 */
@@ -348,18 +369,18 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 
 	/**
 	 * 隐藏点数
+	 * 
 	 * @param player
 	 */
 	public void hidePoints(Players player) {
 		points.remove(player);
 	}
-	
 
 	public void initPlayer() {
 		for (int i = 0; i < ownsideTeam.size(); i++) {
 			Players player = ownsideTeam.get(i);
 			player.setLocation(530 - 55 * i, 400 - 45 * i);
-			player.setState(Players.STATE_STAND);
+			player.setState(Players.STATE_WRITBUTTLE);
 			player.setDirection(Sprite.DIRECTION_TOP_LEFT);
 			super.addNpc(player);
 		}
@@ -399,31 +420,34 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 			super.addNpc(player);
 		}
 	}
+
 	/**
 	 * 道具选择面板
 	 */
-	public void selectProp(){
+	public void selectProp() {
 		Panel dlg = getUIHelp().getPanel(BATTLE_ROLE_PROP);
-		getUIHelp().showPanel(dlg);
+		getUIHelp().switchPanel(dlg);
 	}
+
 	/**
 	 * 法术选择面板
 	 */
-	public void selectWarmagic(){
+	public void selectWarmagic() {
 		Panel dlg = getUIHelp().getPanel(BATTLE_ROLE_WARMAGIC);
-		getUIHelp().showPanel(dlg);
+		getUIHelp().switchPanel(dlg);
 	}
 
 	@Override
 	public String getMusic() {
-		return ("music/2003.mp3");
+		return ("res/music/2003.mp3");
 	}
 
 	/**
 	 * 移除指定
+	 * 
 	 * @param players
 	 */
-	public void reomovPlayer (Players players){
+	public void reomovPlayer(Players players) {
 		this.ownsideTeam.remove(players);
 		this.hostileTeam.remove(players);
 		super.romveNpc(players);
@@ -431,6 +455,7 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 
 	/**
 	 * 已方团队
+	 * 
 	 * @param team
 	 */
 	public void setOwnsideTeam(List<Players> team) {
@@ -440,6 +465,7 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 
 	/**
 	 * 敌方团队
+	 * 
 	 * @param team
 	 */
 	public void setHostileTead(List<Players> team) {
@@ -481,7 +507,7 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 			player.setState(Players.STATE_WALK);
 			Thread.sleep(1000);
 			if (this.success) {
-				MP3Player.play("music/escape_ok.mp3");
+				MP3Player.play("res/music/escape_ok.mp3");
 				long interval = 50;
 				long t = 0;
 				while (t < duration) {
@@ -513,6 +539,7 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 
 		/**
 		 * judge playerLacotion GoBeyone Screen(判断人物是否超出屏幕)
+		 * 
 		 * @param players
 		 * @return
 		 */
@@ -523,12 +550,10 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 	}
 
 	@Override
-	public void paintImmediately(int x, int y, int w, int h) {}
-
-	@Override
 	public void setListener(BattlePanelController event) {
 		this.addMouseListener(event);
 		this.addMouseMotionListener(event);
+		this.addKeyListener(event);
 	}
 
 	@Override
@@ -537,12 +562,43 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 	}
 
 	/**
+	 * 根据速度排序
+	 * 
+	 * @param target
+	 * @param hostileTeam
+	 * @return
+	 */
+	public List<Players> getMagicHostileTeam(Players target, List<Players> hostileTeam) {
+		List<Players> list = new ArrayList<Players>(hostileTeam);
+		list.remove(target);
+		Collections.sort(list, new Comparator<Players>() {
+			@Override
+			public int compare(Players o1, Players o2) {
+				if (o1.getSpeed() < o2.getSpeed()) {
+					return 1;
+				}
+				if (o1.getSpeed() == o2.getSpeed()) {
+					return 0;
+				}
+				return -1;
+			}
+		});
+		ArrayList<Players> players = new ArrayList<Players>();
+		players.add(list.get(0));
+		players.add(list.get(1));
+		return players;
+	}
+
+	/**
 	 * 指令介绍
-	 * @param text  文本
+	 * 
+	 * @param text
+	 *            文本
 	 */
 	public void setBattleMessage(String text) {
 		battleMessage.setText(text);
 	}
+
 	public List<Players> getHostileTeam() {
 		return hostileTeam;
 	}
@@ -570,9 +626,14 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 	public void setSelectMagic(boolean isSelectMagic) {
 		this.isSelectMagic = isSelectMagic;
 	}
-	
+
 	public void setmMagic(Magic mMagic) {
 		this.mMagic = mMagic;
 	}
-	
+
+	public void hidePanel() {
+		getUIHelp().hidePanel(BATTLE_ROLE_WARMAGIC);
+		getUIHelp().hidePanel(BATTLE_ROLE_PROP);
+		getUIHelp().hidePanel(BATTLE_ROLE_CMD);
+	}
 }

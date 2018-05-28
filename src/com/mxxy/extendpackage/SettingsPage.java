@@ -5,13 +5,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 
 import javax.swing.JCheckBox;
-import javax.swing.SwingConstants;
 
+import com.mxxy.game.base.SwingApplication;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
 import com.mxxy.game.modler.SettingModeler;
-import com.mxxy.game.utils.ComponentFactory;
 import com.mxxy.game.utils.MP3Player;
+import com.mxxy.game.utils.RuntimeUtil;
 import com.mxxy.game.utils.SpriteFactory;
 import com.mxxy.game.widget.GameSlider;
 import com.mxxy.game.widget.ImageCheckBox;
@@ -42,15 +42,13 @@ final public class SettingsPage extends AbstractPanelHandler<SettingModeler> {
 	}
 
 	public void initJSlider() {
-		Image ball1 = SpriteFactory.loadImage("componentsRes/ball1.png");
-		Image ball2 = SpriteFactory.loadImage("componentsRes/ball2.png");
-		Image ball3 = SpriteFactory.loadImage("componentsRes/ball3.png");
-		gameSlider = ComponentFactory.createSlider(0, 100, 0, ball1, ball2, ball3,
-				SpriteFactory.loadImage("componentsRes/pos1.png"), SpriteFactory.loadImage("componentsRes/pos2.png"),
-				this, SwingConstants.HORIZONTAL);
-		gameSlider.setBounds(112, 127, 200, 15);
-		panel.add(gameSlider, 0);
-
+		Image ball1 = SpriteFactory.loadImage("res/componentsRes/ball1.png");
+		Image ball2 = SpriteFactory.loadImage("res/componentsRes/ball2.png");
+		Image ball3 = SpriteFactory.loadImage("res/componentsRes/ball3.png");
+//		gameSlider = ComponentFactory.createSlider(0, 100, 0, null, null, null,
+//				null,null,this, SwingConstants.HORIZONTAL);
+//		gameSlider.setBounds(112, 127, 200, 15);
+//		panel.add(gameSlider, 0);
 	}
 
 	String state = null;
@@ -91,9 +89,10 @@ final public class SettingsPage extends AbstractPanelHandler<SettingModeler> {
 	 * @param e
 	 */
 	public void restartGame(ActionEvent e) {
-		// RuntimeUtil.exec("java
-		// "+RuntimeUtil.getJarExecPath(SwingApplication.class)+"com/mxxy/game/base/SwingApplication");
-		// application.exitGame();
+		String jarExecPath = RuntimeUtil.getJarExecPath(SwingApplication.class);
+//		RuntimeUtil.exec("java c"+jarExecPath+"")
+//		 RuntimeUtil.exec("java RuntimeUtil.getJarExecPath(SwingApplication.class)com/mxxy/game/base/SwingApplication");
+		 application.exitGame();
 	}
 
 	@Override

@@ -28,7 +28,7 @@ final public class PlayerEmote extends AbstractPanelHandler {
 
 	public void movement(ActionEvent e) {
 		ImageComponentButton source = (ImageComponentButton) e.getSource();
-		if (player.getMount()==null) {
+		if (player.getMount() == null) {
 			player.setState(source.getName());
 		} else {
 			uihelp.prompt((JComponent) mPanel, Constant.getString("PleaseDisMount"), 2000);

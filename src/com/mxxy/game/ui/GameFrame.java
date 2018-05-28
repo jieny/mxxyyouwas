@@ -44,7 +44,7 @@ public class GameFrame extends JFrame implements IWindows {
 	public void initContent(Context context) {
 		context.setWindows(this);
 		this.uihelp = new UIHelp(this);
-		icon = new ImageIcon(SpriteFactory.loadImage("componentsRes/title.png")).getImage();
+		icon = new ImageIcon(SpriteFactory.loadImage("res/componentsRes/title.png")).getImage();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIconImage(icon);
 		super.setTitle(Constant.getString("MainTitle"));
@@ -70,11 +70,13 @@ public class GameFrame extends JFrame implements IWindows {
 	}
 
 	private IPanelDraw draw;
-	
+
 	@Override
 	public void showPanel(IPanelDraw panel) {
+		if(getPanel()!=null){
+			getPanel().getComponent().removeAll();
+		}
 		this.draw = panel;
-		System.out.println("showPanel>>>>> \t"+panel);
 		int width = panel.getClass().getSimpleName().equals("LoadingPanel") ? panel.getScreenWidth()
 				: Constant.WINDOW_WIDTH;
 		int height = panel.getClass().getSimpleName().equals("LoadingPanel") ? panel.getScernHeight()
@@ -99,7 +101,7 @@ public class GameFrame extends JFrame implements IWindows {
 	}
 
 	@Override
-	public UIHelp getUiHelp() {
+	public UIHelp getUIHelp() {
 		return uihelp;
 	}
 

@@ -3,7 +3,7 @@ package com.mxxy.game.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mxxy.game.config.MapConfig;
+import com.mxxy.game.config.MapConfigImpl;
 import com.mxxy.game.sprite.Cursor;
 
 /**
@@ -13,7 +13,7 @@ import com.mxxy.game.sprite.Cursor;
  */
 public class ResourceStores {
 
-	private Map<String, MapConfig> configMap = new HashMap<String, MapConfig>();
+	private Map<String, MapConfigImpl> configMap = new HashMap<String, MapConfigImpl>();
 
 	private Map<String, Cursor> cursors = new HashMap<String, Cursor>();
 
@@ -32,8 +32,8 @@ public class ResourceStores {
 	 * @param id
 	 * @return
 	 */
-	public MapConfig getMapConfig(String id) {
-		MapConfig config = configMap.get(id);
+	public MapConfigImpl getMapConfig(String id) {
+		MapConfigImpl config = configMap.get(id);
 		if (config == null) {
 			String sceneName = null;
 			switch (id) {
@@ -76,7 +76,7 @@ public class ResourceStores {
 				break;
 			default:
 			}
-			config = new MapConfig(id, sceneName, "scene/" + id + ".map");
+			config = new MapConfigImpl(id, sceneName, "res/scene/" + id + ".map");
 			configMap.put(id, config);
 		}
 		return config;

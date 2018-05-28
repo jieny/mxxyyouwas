@@ -63,9 +63,9 @@ public class TimeManager {
 	public void initTimes() {
 		timerImge = new ImageIcon[10];
 		for (int i = 0; i < timerImge.length; i++) {
-			timerImge[i] = new ImageIcon(SpriteFactory.loadImage("componentsRes/timer/" + i + ".png"));
+			timerImge[i] = new ImageIcon(SpriteFactory.loadImage("res/componentsRes/timer/" + i + ".png"));
 		}
-		wirtImage = new ImageIcon(SpriteFactory.loadImage("componentsRes/timer/wait.png"));
+		wirtImage = new ImageIcon(SpriteFactory.loadImage("res/componentsRes/timer/wait.png"));
 	}
 
 	/**

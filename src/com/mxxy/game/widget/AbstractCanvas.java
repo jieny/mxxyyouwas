@@ -11,12 +11,12 @@ abstract public class AbstractCanvas implements AnimationDraw {
 	private int x;// 动画X位置
 	private int y;// 动画Y位置
 
-	public void drawBitmap(Graphics2D g) {
+	public void drawBitmap(Graphics g) {
 		this.drawBitmap(g, x, y);
 	}
 
 	@Override
-	public void drawBitmap(Graphics2D g, int x, int y) {
+	public void drawBitmap(Graphics g, int x, int y) {
 		this.drawBitmap(g, x, y, width, height);
 	}
 
@@ -80,12 +80,11 @@ abstract public class AbstractCanvas implements AnimationDraw {
 
 	/**
 	 * 动画线程
-	 * 
 	 * @author dell
 	 */
 	private class AnimatorThread extends Thread {
-		private long interval;
-		private long duration;
+		private long interval;  //间隔
+		private long duration; //时长
 		private long passTime;
 
 		/**

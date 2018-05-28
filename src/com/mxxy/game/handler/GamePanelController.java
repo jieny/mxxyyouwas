@@ -29,7 +29,9 @@ public class GamePanelController extends AbstractBaseEventListener<GamePanel> {
 			for (int i = 0; i < npcs.size(); i++) {
 				Players npc = npcs.get(i);
 				if (mPanel.isHover(npc)) {// 判断鼠标是否在对话框上面触发谈话事件
-					npc.fireEvent(new PlayerEvent(npc, PlayerEvent.TALK));
+					PlayerEvent playerEvent=new PlayerEvent(npc, PlayerEvent.TALK);
+					playerEvent.setAttributes("UIHELP",mPanel.getUIHelp());
+					npc.fireEvent(playerEvent);
 					return;
 				}
 			}

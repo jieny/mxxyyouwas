@@ -48,7 +48,6 @@ final public class RegistUser extends AbstractPanelHandler<RegistUserModler> {
 
 	/**
 	 * 注册账号
-	 * 
 	 * @param event
 	 */
 	public void regist(ActionEvent event) {
@@ -58,7 +57,7 @@ final public class RegistUser extends AbstractPanelHandler<RegistUserModler> {
 		String verification = check_num.getText().trim();
 		RegistStatus regitst = modler.regitst(propertiesConfigManager, user, password, check, verification);
 		switch (regitst) {
-		case SUCCESS: // 注册成功回收对象
+		case SUCCESS:
 			uihelp.prompt((JComponent) panel.getParent(), Constant.getString("RegistSuccess"), 2000);
 			regist_user = null;
 			regist_password = null;

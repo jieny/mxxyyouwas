@@ -1404,11 +1404,11 @@ final public class FileUtils {
 	 * @return   解压是否成功   true  || false
 	 * @throws IOException
 	 */
-	public boolean unZipFiles(String zipPath, String descDir)throws IOException{
+	public static boolean unZipFiles(String zipPath, String descDir)throws IOException{
 		return unZipFiles(new File(zipPath), descDir);
 	}
 
-	public  boolean unZipFiles(File zipFile, String descDir){
+	public static  boolean unZipFiles(File zipFile, String descDir){
 		File pathFile = new File(descDir);
 		if(!pathFile.exists()){
 			pathFile.mkdirs();

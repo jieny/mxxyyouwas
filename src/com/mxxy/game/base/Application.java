@@ -10,9 +10,9 @@ import org.dom4j.DocumentException;
 
 import com.mxxy.game.config.Context;
 import com.mxxy.game.config.DataStoreManager;
-import com.mxxy.game.config.IConfigManager;
 import com.mxxy.game.config.IDataManager;
 import com.mxxy.game.config.IProfileManager;
+import com.mxxy.game.config.IPropertiseManager;
 import com.mxxy.game.config.PlayerVO;
 import com.mxxy.game.config.ProfileImpl;
 import com.mxxy.game.config.PropertiseConfigImpl;
@@ -20,7 +20,6 @@ import com.mxxy.game.ui.IWindows;
 import com.mxxy.game.utils.FileUtils;
 import com.mxxy.game.utils.FilterByJava;
 import com.mxxy.game.utils.UIHelp;
-import com.mxxy.game.xml.ExtendScript;
 import com.mxxy.game.xml.XMLoader;
 
 abstract public class Application {
@@ -33,7 +32,7 @@ abstract public class Application {
 
 	private IDataManager dataStore;
 
-	private IConfigManager configmanager;
+	private IPropertiseManager configmanager;
 
 	private IProfileManager profileManager;
 
@@ -130,7 +129,7 @@ abstract public class Application {
 			context = createContext();
 			dataStore = new DataStoreManager(context);
 			configmanager = new PropertiseConfigImpl();
-			configmanager.setFilename("layout/ui.properties");
+			configmanager.setFilename("res/layout/ui.properties");
 			configmanager.loadConfigs();
 			profileManager = new ProfileImpl();
 //			extendScript = new ExtendScript();
@@ -149,8 +148,8 @@ abstract public class Application {
 		File[] files = dir.listFiles(new FilterByJava(".java"));
 		for (int i = 0; i < configmanager.getPropertiseSize(); i++) {
 			try {
-				loader.loadUI(FileUtils.getPath("layout/" + configmanager.get(String.valueOf(i))));
-//				 extendScript.compile(files[i].getAbsolutePath());
+				loader.loadUI(FileUtils.getPath("res/layout/" + configmanager.get(String.valueOf(i))));
+//				extendScript.compile(files[i].getAbsolutePath());
 				loadeResourceProgress(i);
 			} catch (DocumentException e) {
 				e.printStackTrace();
@@ -167,16 +166,16 @@ abstract public class Application {
 
 	}
 
-	public UIHelp getUiHelp() {
-		return iWindows.getUiHelp();
+	public UIHelp getUIHelp() {
+		return iWindows.getUIHelp();
 	}
 
 	public IWindows getiWindows() {
 		return iWindows;
 	}
 
-	public IConfigManager getConfigmanager() {
-		return (IConfigManager) objects[1];
+	public IPropertiseManager getConfigmanager() {
+		return (IPropertiseManager) objects[1];
 	}
 
 	public Object[] getObjects() {
@@ -186,15 +185,15 @@ abstract public class Application {
 	public void enterGame(PlayerVO data) {
 
 	}
-	
+
 	public void enterTheWar(Object object[]) {
-		
+
 	}
-	
+
 	public void quitWar() {
-		
+
 	}
-	
+
 	/**
 	 * 退出游戏
 	 */

@@ -9,4 +9,5 @@ import com.mxxy.game.listener.IPanelListener;
  * @author dell
  */
 @SuppressWarnings("rawtypes")
-public class PanelEventHandlerAdapter extends AbstractBaseEventListener implements IPanelListener {}
+public class PanelEventHandlerAdapter extends AbstractBaseEventListener implements IPanelListener {
+}

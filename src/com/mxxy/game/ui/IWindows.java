@@ -32,7 +32,7 @@ public interface IWindows {
 	/**
 	 * UI 帮助类
 	 */
-	UIHelp getUiHelp();
+	UIHelp getUIHelp();
 
 	/**
 	 * 隐藏鼠标
@@ -47,6 +47,6 @@ public interface IWindows {
 	
 	IPanelDraw getPanel();
 	
-	void showPanel(IPanelDraw panelDraw);
 	
+	void showPanel(IPanelDraw panelDraw);
 }

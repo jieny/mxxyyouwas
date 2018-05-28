@@ -5,7 +5,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.lang.ref.SoftReference;
 
-import com.mxxy.game.config.MapConfig;
+import com.mxxy.game.config.MapConfigImpl;
 import com.mxxy.game.resources.DefaultTileMapProvider;
 
 public class TileMap extends AbstractCanvas {
@@ -17,10 +17,10 @@ public class TileMap extends AbstractCanvas {
 	private int yBlockCount;
 	private int width;
 	private int height;
-	private MapConfig config;
+	private MapConfigImpl config;
 
 	@SuppressWarnings("unchecked")
-	public TileMap(DefaultTileMapProvider provider, MapConfig cfg) {
+	public TileMap(DefaultTileMapProvider provider, MapConfigImpl cfg) {
 		this.config = cfg;
 		this.xBlockCount = provider.getXBlockCount();
 		this.yBlockCount = provider.getYBlockCount();
@@ -145,11 +145,11 @@ public class TileMap extends AbstractCanvas {
 		this.blockTable = null;
 	}
 
-	public MapConfig getConfig() {
+	public MapConfigImpl getConfig() {
 		return this.config;
 	}
 
-	public void setConfig(MapConfig config) {
+	public void setConfig(MapConfigImpl config) {
 		this.config = config;
 	}
 

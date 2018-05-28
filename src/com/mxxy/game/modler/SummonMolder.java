@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.swing.AbstractListModel;
 import javax.swing.JList;
 
-import com.mxxy.game.config.IConfigManager;
+import com.mxxy.game.config.IPropertiseManager;
 import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.FileUtils;
 import com.mxxy.game.widget.ScrollList;
@@ -17,7 +17,7 @@ import com.mxxy.game.widget.ScrollList;
  */
 public class SummonMolder {
 
-	public JList<String> getList(IConfigManager propertiesConfigManager) {
+	public JList<String> getList(IPropertiseManager propertiesConfigManager) {
 		JList<String> list = new ScrollList<String>(new SummonList(getSummonList(propertiesConfigManager)));
 		list.setFont(Constant.TEXT_MOUNT_FONT);
 		return list;
@@ -29,7 +29,7 @@ public class SummonMolder {
 	 * @param propertiesConfigManager
 	 * @return
 	 */
-	private ArrayList<String> getSummonList(IConfigManager propertiesConfigManager) {
+	private ArrayList<String> getSummonList(IPropertiseManager propertiesConfigManager) {
 		ArrayList<String> arrayList = new ArrayList<String>();
 		for (int i = 0; i < getGodPet().size(); i++) {
 			arrayList.add(propertiesConfigManager.get(getGodPet().get(i)));
@@ -64,7 +64,7 @@ public class SummonMolder {
 	 */
 	public ArrayList<String> getGodPet() {
 		ArrayList<String> godPet = new ArrayList<String>();
-		String[] dirList = FileUtils.toDirList("shape/char");
+		String[] dirList = FileUtils.toDirList("res/shape/char");
 		for (int i = 0; i < dirList.length; i++) {
 			if (dirList[i].startsWith("5")) {
 				godPet.add(dirList[i]);

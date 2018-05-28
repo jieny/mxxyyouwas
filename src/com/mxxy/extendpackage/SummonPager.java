@@ -24,7 +24,8 @@ import com.mxxy.game.widget.ListScrollPanel.IScrollPanelListItem;
  * 
  * @author ZAB 邮箱 ：624284779@qq.com
  */
-final public class SummonPager extends AbstractPanelHandler<SummonMolder> implements IScrollPanelListItem {
+final public class SummonPager extends AbstractPanelHandler<SummonMolder>
+		implements IScrollPanelListItem {
 
 	private ListScrollPanel listscrollpanel;
 
@@ -59,7 +60,7 @@ final public class SummonPager extends AbstractPanelHandler<SummonMolder> implem
 
 	@Override
 	protected String setConfigFileName() {
-		return "textconfig/resources.properties";
+		return "value/resources.properties";
 	}
 
 	@Override
@@ -67,7 +68,7 @@ final public class SummonPager extends AbstractPanelHandler<SummonMolder> implem
 		stateInex = 0;
 		summonIndex = index;
 		ArrayList<String> godPet = modler.getGodPet();
-		summonPlayers=new Players();
+		summonPlayers = new Players();
 		summonPlayers.setCharacter(godPet.get((int) index));
 		summonPlayers.setShadow(true);
 		summonPlayers.setState("stand");
@@ -109,6 +110,7 @@ final public class SummonPager extends AbstractPanelHandler<SummonMolder> implem
 	@Override
 	public void dispose(PanelEvent evt) {
 		super.dispose(evt);
+		summonPlayers = null;
 		panel.remove(listscrollpanel);
 		if (summonAttrbute != null)
 			uihelp.hidePanel(summonAttrbute);

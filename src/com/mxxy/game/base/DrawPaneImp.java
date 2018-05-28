@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 
 import com.mxxy.game.config.Context;
 import com.mxxy.game.config.DataStoreManager;
-import com.mxxy.game.config.IConfigManager;
+import com.mxxy.game.config.IPropertiseManager;
 import com.mxxy.game.sprite.Cursor;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.utils.Constant;
@@ -27,10 +27,10 @@ import com.mxxy.game.utils.UIHelp;
 import com.mxxy.game.was.Toolkit;
 
 /**
- * 绘制面板基类
  * 
- * @author dell
- *
+ * @author ZAB
+ * 绘制面板基类
+ * 2018年5月28日
  */
 @SuppressWarnings("serial")
 abstract public class DrawPaneImp extends JPanel implements IPanelDraw {
@@ -75,7 +75,7 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw {
 
 	public DrawPaneImp() {
 		super(null);
-		setScreenSize(806, 600);
+		setScreenSize(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
 		setIgnoreRepaint(true);
 		setFocusable(true);
 		requestFocus(true);
@@ -198,13 +198,13 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw {
 		}
 	}
 
-	private IConfigManager configManager;
+	private IPropertiseManager configManager;
 
-	public void setConfigManager(IConfigManager configManager) {
+	public void setConfigManager(IPropertiseManager configManager) {
 		this.configManager = configManager;
 	}
 
-	public IConfigManager getConfigManager() {
+	public IPropertiseManager getConfigManager() {
 		return configManager;
 	}
 
@@ -228,8 +228,6 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw {
 					Thread mp3play = new Thread(new Runnable() {
 						@Override
 						public void run() {
-							
-							System.out.println(filename);
 							MP3Player.loop(filename);
 						}
 					});
@@ -394,11 +392,12 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw {
 	public UIHelp getUIHelp() {
 		return UIHelp;
 	}
+
 	@Override
 	public void setContext(Context context) {
 		this.context = context;
 	}
-	
+
 	public Context getContext() {
 		return context;
 	}
@@ -406,7 +405,7 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw {
 	public void setDataStore(DataStoreManager dataStore) {
 		this.dataStore = dataStore;
 	}
-	
+
 	public DataStoreManager getDataStore() {
 		return dataStore;
 	}
@@ -457,5 +456,9 @@ abstract public class DrawPaneImp extends JPanel implements IPanelDraw {
 				fpsListen.makeFPS();
 			}
 		}
+	}
+
+	@Override
+	public void paintImmediately(int x, int y, int w, int h) {
 	}
 }

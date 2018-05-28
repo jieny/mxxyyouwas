@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import com.mxxy.game.modler.MagicModle.MagicConfig;
 import com.mxxy.game.sprite.Sprite;
 
 /**
@@ -165,16 +166,27 @@ public class ImageComponentButton extends JButton {
 		}
 	}
 
-	
-	private boolean isGroup;
-	
-	public void setGroup(boolean isGroup) {
-		this.isGroup = isGroup;
+
+	private boolean enableds;
+
+	public void setEnableds(boolean enableds) {
+		this.enableds = enableds;
 	}
-	
-	public boolean isGroup() {
-		return isGroup;
+
+	public boolean isEnableds() {
+		return enableds;
+	}	
+	private MagicConfig magicConfig;
+
+
+	public void setMagicConfig(MagicConfig magicConfig) {
+		this.magicConfig = magicConfig;
 	}
+
+	public MagicConfig getMagicConfig() {
+		return magicConfig;
+	}
+
 	// 立即绘制
 	@Override
 	public void paintImmediately(int x, int y, int w, int h) {}

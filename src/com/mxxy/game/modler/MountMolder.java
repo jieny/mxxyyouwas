@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.swing.AbstractListModel;
 import javax.swing.JList;
 
-import com.mxxy.game.config.IConfigManager;
+import com.mxxy.game.config.IPropertiseManager;
 import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.FileUtils;
 import com.mxxy.game.widget.ScrollList;
@@ -19,12 +19,11 @@ public class MountMolder {
 
 	/**
 	 * 列表数据
-	 * 
 	 * @param propertiesConfigManager
 	 * @param mountName
 	 * @return
 	 */
-	public JList<String> getList(IConfigManager propertiesConfigManager) {
+	public JList<String> getList(IPropertiseManager propertiesConfigManager) {
 		JList<String> list = new ScrollList<String>(new ListModler(getMountName(propertiesConfigManager)));
 		list.setFont(Constant.TEXT_MOUNT_FONT);
 		return list;
@@ -56,7 +55,7 @@ public class MountMolder {
 	 * @param propertiesConfigManager
 	 * @return
 	 */
-	public ArrayList<String> getMountName(IConfigManager propertiesConfigManager) {
+	public ArrayList<String> getMountName(IPropertiseManager propertiesConfigManager) {
 		ArrayList<String> mountName = new ArrayList<String>();
 		ArrayList<String> allDir = getAllDir(fileName);
 		for (int i = 0; i < allDir.size(); i++) {

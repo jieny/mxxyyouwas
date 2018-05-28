@@ -44,7 +44,7 @@ public interface IPanelDraw {
 	 * @param cursor
 	 */
 	void setGameCursor(String cursor);
-	
+
 	/**
 	 * 播放音乐
 	 */

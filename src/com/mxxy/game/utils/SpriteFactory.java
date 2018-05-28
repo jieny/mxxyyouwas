@@ -18,9 +18,6 @@ import com.mxxy.game.widget.Animation;
  * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class SpriteFactory {
-	public static Sprite loadCursor(String filename) {
-		return loadSprite("/resources/cursor/" + filename);
-	}
 
 	public static Sprite loadSprite(String filename) {
 		return loadSprite(filename, null);
@@ -99,11 +96,10 @@ public class SpriteFactory {
 
 	/**
 	 * 阴影
-	 * 
 	 * @return
 	 */
 	public static Sprite loadShadow() {
-		return loadSprite("/shape/char/shadow.tcp");
+		return loadSprite("res/shape/char/shadow.tcp");
 	}
 
 	public static Sprite loadSprite(String filename, int[] colorations) {
@@ -136,16 +132,16 @@ public class SpriteFactory {
 
 	public static Animation getXyjAnimation(String num) {
 		Animation anim = new Animation();
-		Icon ico = new ImageIcon("npcRes/" + num + "/1.png");
+		Icon ico = new ImageIcon("res/npcRes/" + num + "/1.png");
 		int height = ico.getIconHeight();
 		int width = ico.getIconWidth();
 		anim.setHeight(height);
 		anim.setWidth(width);
-		File path = new File("npcRes/" + num);
+		File path = new File("res/npcRes/" + num);
 		String[] list = path.list();
 		int len = list.length + 1;
 		for (int i = 1; i < len; i++) {
-			anim.addFrame(new ImageIcon("npcRes/" + num + "/" + i + ".png").getImage(), 100L, 0, 0);
+			anim.addFrame(new ImageIcon("res/npcRes/" + num + "/" + i + ".png").getImage(), 100L, 0, 0);
 		}
 		return anim;
 	}
@@ -158,8 +154,8 @@ public class SpriteFactory {
 	 */
 	public static Sprite findPhoto(String characterId) {
 		if (characterId.compareTo("0012") <= 0) {
-			return SpriteFactory.loadSprite("/wzife/photo/hero/" + characterId + ".tcp");
+			return SpriteFactory.loadSprite("res/wzife/photo/hero/" + characterId + ".tcp");
 		}
-		return SpriteFactory.loadSprite("/wzife/photo/npc/" + characterId + ".tcp");
+		return SpriteFactory.loadSprite("res/wzife/photo/npc/" + characterId + ".tcp");
 	}
 }

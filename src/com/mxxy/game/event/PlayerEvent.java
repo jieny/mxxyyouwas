@@ -9,6 +9,7 @@ import com.mxxy.game.sprite.Players;
 
 /**
  * 玩家事件源
+ * 
  * @author dell
  */
 @SuppressWarnings("serial")

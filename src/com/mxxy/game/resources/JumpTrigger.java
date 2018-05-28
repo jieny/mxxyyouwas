@@ -43,7 +43,7 @@ public class JumpTrigger {
 	 */
 	public Sprite getSprite() {
 		if (sprite == null) {
-			sprite = SpriteFactory.loadSprite("/magic/jump.tcp");
+			sprite = SpriteFactory.loadSprite("res/magic/jump.tcp");
 		}
 		return sprite;
 	}

@@ -79,8 +79,8 @@ public class ComponentFactory {
 		return text;
 	}
 
-	public static JTextField regitsTextField() {// 创建文本框
-		final JTextField text = new JTextField(Constant.getString("USER_HINT"));
+	public static JTextField regitsTextField(String hide) {// 创建文本框
+		final JTextField text = new JTextField(hide);
 		text.setBorder(null);
 		text.setCaretColor(new GameColor(190, 190, 190));
 		text.setForeground(GameColor.decode("#404040"));

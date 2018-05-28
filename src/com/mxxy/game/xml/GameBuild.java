@@ -77,6 +77,7 @@ public class GameBuild implements IGameBuilder {
 
 	/**
 	 * 解析ImageComPonent(该方法通过反射调用)
+	 * 
 	 * @param panel
 	 * @param rootElement
 	 */
@@ -101,6 +102,7 @@ public class GameBuild implements IGameBuilder {
 
 	/**
 	 * 构造精灵图片(该方法通过反射调用)
+	 * 
 	 * @param panel
 	 * @param rootElement
 	 */
@@ -108,40 +110,36 @@ public class GameBuild implements IGameBuilder {
 
 	public void parseSprite(Panel panel, DefaultElement rootElement) {
 		Label label = null;
-		String isBorder = rootElement.attributeValue("isBorder");
+		String border = rootElement.attributeValue("border");
 		String text = rootElement.attributeValue("text");
-		String isImageIcon = rootElement.attributeValue("isImageIcon");
-		String spritename = rootElement.attributeValue("spritename");
+		String imageIcon = rootElement.attributeValue("imageIcon");
+		String name = rootElement.attributeValue("name");
 		String path = rootElement.attributeValue("path");
 		String griva = rootElement.attributeValue("grivate");
 		String color = rootElement.attributeValue("color");
-		String direction = rootElement.attributeValue("direction");
-		if (StringUtils.isNotBlank(isImageIcon)) {
+		if (StringUtils.isNotBlank(imageIcon)) {
 			ImageIcon icon = new ImageIcon(path);
 			label = new Label(null, icon, 0);
 		} else {
 			label = new Label(SpriteFactory.loadAnimation(path));
-		}
-		if (StringUtils.isNotBlank(direction)) {
-
 		}
 		if (StringUtils.isNotBlank(color)) {
 			if (color.equals("black")) {
 				label.setForeground(GameColor.BLACK);
 			} else if (color.equals("red")) {
 				label.setForeground(GameColor.RED);
-			} else if(color.equals("green")){
+			} else if (color.equals("green")) {
 				label.setForeground(GameColor.green);
 			}
 		}
 		if (StringUtils.isNotBlank(griva)) {
 			label.setHorizontalAlignment(grivate[Integer.parseInt(griva)]);
 		}
-		if (StringUtils.isNotBlank(isBorder)) {
+		if (StringUtils.isNotBlank(border)) {
 			label.setBorder();
 		}
 		label.setText(text);
-		label.setName(spritename);
+		label.setName(name);
 		String x = rootElement.attributeValue("x");
 		String y = rootElement.attributeValue("y");
 		if (StringUtils.isNotBlank(x) && StringUtils.isNotBlank(y)) {
@@ -163,15 +161,17 @@ public class GameBuild implements IGameBuilder {
 	 */
 	public void parseImageComponentButton(Panel panel, DefaultElement rootElement) {
 		String text = rootElement.attributeValue("text");
-		String name = rootElement.attributeValue("buttonname");
+		String name = rootElement.attributeValue("name");
 		String enable = rootElement.attributeValue("enable");
 		int x = Integer.parseInt(rootElement.attributeValue("x"));
 		int y = Integer.parseInt(rootElement.attributeValue("y"));
 		String actionId = rootElement.attributeValue("actionId");
 		String path = rootElement.attributeValue("path");
 		String paths = rootElement.attributeValue("paths");
+		String enableds = rootElement.attributeValue("enableds");
 		ImageComponentButton imageComponentButton = new ImageComponentButton();
 		imageComponentButton.setName(name);
+		imageComponentButton.setEnableds(StringUtils.isNotBlank(enableds));
 		imageComponentButton.addActionListener(panel);
 		if (StringUtils.isNotBlank(actionId)) {
 			imageComponentButton.setActionCommand(actionId);
@@ -221,8 +221,8 @@ public class GameBuild implements IGameBuilder {
 		panel.setName(rootElement.attributeValue("id"));
 		Class<?> class1 = Class.forName("com.mxxy.extendpackage." + panel.getName());
 		IPanelListener iPanelListener = InstanceUtil.getInstance(class1);
-//		 IPanelListener iPanelListener=(IPanelListener)
-//		 extendScript.loadUIScript(panel.getName());
+		// IPanelListener iPanelListener=(IPanelListener)
+		// extendScript.loadUIScript(panel.getName());
 		if (iPanelListener != null)
 			panel.addPanelListener(iPanelListener);
 		return panel;
@@ -231,21 +231,20 @@ public class GameBuild implements IGameBuilder {
 	/**
 	 * 解析文本(通过反射调用)
 	 */
-	private int i = 0;
-
 	public void parseTextField(Panel panel, DefaultElement rootElement) {
-		String name = rootElement.attributeValue("compontname");
+		String name = rootElement.attributeValue("name");
 		int x = Integer.parseInt(rootElement.attributeValue("x"));
 		int y = Integer.parseInt(rootElement.attributeValue("y"));
 		int width = Integer.parseInt(rootElement.attributeValue("width"));
 		int height = Integer.parseInt(rootElement.attributeValue("height"));
+		String hide = rootElement.attributeValue("hide");
 		JTextField jTextField = null;
-		if (i == 0) {
-			jTextField = ComponentFactory.regitsTextField();
+		if (StringUtils.isNotBlank(hide)) {
+			jTextField = ComponentFactory.regitsTextField(hide);
 		} else {
 			jTextField = new JTextField();
 		}
-		i++;
+		jTextField.setToolTipText(rootElement.attributeValue("tooltip"));
 		jTextField.setName(name);
 		jTextField.setOpaque(false);
 		jTextField.setBorder(null);
@@ -260,7 +259,7 @@ public class GameBuild implements IGameBuilder {
 	 * @param rootElement
 	 */
 	public void parseCheckBox(Panel panel, DefaultElement rootElement) {
-		String name = rootElement.attributeValue("compontname");
+		String name = rootElement.attributeValue("name");
 		int x = Integer.parseInt(rootElement.attributeValue("x"));
 		int y = Integer.parseInt(rootElement.attributeValue("y"));
 		int width = Integer.parseInt(rootElement.attributeValue("width"));
@@ -295,6 +294,7 @@ public class GameBuild implements IGameBuilder {
 
 	/**
 	 * 反射
+	 * 
 	 * @param mName
 	 *            方法名
 	 * @param arg

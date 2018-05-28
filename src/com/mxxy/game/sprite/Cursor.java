@@ -8,6 +8,7 @@ import com.mxxy.game.widget.SpriteImage;
 
 /**
  * 鼠标样式
+ * 
  * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class Cursor {
@@ -39,12 +40,12 @@ public class Cursor {
 	private int offsetY;
 
 	private String type;
-	
+
 	public Cursor(String type, boolean effect) {
-		this.type=type;
-		this.pointer = new SpriteImage(SpriteFactory.loadSprite("/wzife/cursor/"+type+".tcp"));
+		this.type = type;
+		this.pointer = new SpriteImage(SpriteFactory.loadSprite("res/wzife/cursor/" + type + ".tcp"));
 		if (effect) {
-			this.effect = new SpriteImage(SpriteFactory.loadSprite("/wzife/cursor/水波.tcp"));
+			this.effect = new SpriteImage(SpriteFactory.loadSprite("res/wzife/cursor/水波.tcp"));
 			this.effect.setVisible(false);
 		}
 	}
@@ -106,6 +107,7 @@ public class Cursor {
 
 	/**
 	 * 设置指针在屏幕的位置
+	 * 
 	 * @param x
 	 * @param y
 	 */

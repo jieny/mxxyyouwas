@@ -12,12 +12,12 @@ import java.util.Map;
 
 import javax.swing.SwingWorker;
 
-import com.mxxy.game.astar.NpcBean;
-import com.mxxy.game.astar.NpcBean.NpcListbean;
-import com.mxxy.game.astar.SceneJump;
-import com.mxxy.game.astar.SceneJump.SceneJumpBean;
+import com.mxxy.game.resources.NpcBean;
+import com.mxxy.game.resources.SceneJump;
 import com.mxxy.game.resources.SceneNpc;
 import com.mxxy.game.resources.SceneTeleporter;
+import com.mxxy.game.resources.NpcBean.NpcListbean;
+import com.mxxy.game.resources.SceneJump.SceneJumpBean;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.sprite.Sprite;
 import com.mxxy.game.sprite.Weapon;
@@ -26,6 +26,7 @@ import com.mxxy.game.utils.JsonUtils;
 
 /**
  * 数据管理
+ * 
  * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class DataStoreManager implements IDataManager {
@@ -52,12 +53,12 @@ public class DataStoreManager implements IDataManager {
 	}
 
 	public Players createPlayer(PlayerVO data) {
-		Players player=new Players();
+		Players player = new Players();
 		player.setShadow(true);
 		player.setData(data);
 		return player;
 	}
-	
+
 	/**
 	 * @param character
 	 * @param name
@@ -65,7 +66,7 @@ public class DataStoreManager implements IDataManager {
 	 * @return
 	 */
 	public Players createElf(String character, String name, int level) {
-		Players player=new Players();
+		Players player = new Players();
 		player.setShadow(true);
 		player.setPersonName(name);
 		player.setCharacter(character);
@@ -77,14 +78,15 @@ public class DataStoreManager implements IDataManager {
 
 	/**
 	 * 首席弟子
+	 * 
 	 * @return
 	 */
 	public Players createPlayer(SceneNpc sceneNpc) {
 		boolean showWeapon = sceneNpc.getCharacterId().equals("0010") || sceneNpc.getCharacterId().equals("0001");
-		Players player=new Players();
-		Weapon weapon=new Weapon();
+		Players player = new Players();
+		Weapon weapon = new Weapon();
 		weapon.setWeaponIndex("59");
-		player.setWeapon(showWeapon?weapon:null);
+		player.setWeapon(showWeapon ? weapon : null);
 		player.setPersonName(sceneNpc.getName());
 		player.setCharacter(sceneNpc.getCharacterId());
 		player.setShadow(true);
@@ -173,7 +175,7 @@ public class DataStoreManager implements IDataManager {
 			try {
 				@SuppressWarnings("resource")
 				BufferedReader bufferedReader = new BufferedReader(
-						new InputStreamReader(new FileInputStream("uiConfig/" + fileName + ".json"), "utf-8"));
+						new InputStreamReader(new FileInputStream("uiconfig/" + fileName + ".json"), "utf-8"));
 				String inString = null;
 				while ((inString = bufferedReader.readLine()) != null) {
 					stringBuilder.append(inString);
@@ -202,7 +204,7 @@ public class DataStoreManager implements IDataManager {
 		}
 		sceneList.add(key);
 	}
-
+	
 	public List<SceneNpc> getSceneNpcList(String sceneid) {
 		return sceneNpcMap.get(sceneid);
 	}

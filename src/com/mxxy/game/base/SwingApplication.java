@@ -1,11 +1,9 @@
 package com.mxxy.game.base;
 
-import java.awt.Container;
 import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
+import com.mxxy.extendpackage.GamePager;
 import com.mxxy.game.config.DataStoreManager;
 import com.mxxy.game.config.PlayerVO;
 import com.mxxy.game.config.PropertiseConfigImpl;
@@ -26,6 +24,8 @@ public class SwingApplication extends Application {
 	private GameFrame gameFrame;
 
 	private LoadingPanel loadingPanel;
+	
+	private GamePanel gamePanel;
 
 	@Override
 	protected IWindows createWindows() {
@@ -58,15 +58,13 @@ public class SwingApplication extends Application {
 	public void showHomePager() {
 		LoginPanel loginPanel = new LoginPanel();
 		Panel panel = PanelManager.getPanel("HomePager");
-		loginPanel.setUIhelp(getUiHelp());
+		loginPanel.setUIhelp(getUIHelp());
 		loginPanel.setConfigManager(config);
 		loginPanel.playMusic();
 		gameFrame.showPanel(loginPanel);
-		getUiHelp().showPanel(panel);
+		getUIHelp().showPanel(panel);
 	}
 
-	
-	private GamePanel gamePanel;
 	/**
 	 * 进入游戏
 	 */
@@ -74,21 +72,8 @@ public class SwingApplication extends Application {
 	public void enterGame(PlayerVO data) {
 		gameFrame.setIsfristApplication(false);
 		GamePanel gamePanel = new GamePanel();
-		Panel gamePager = PanelManager.getPanel("GamePager");
 		gamePanel.setConfigManager(config);
 		/** 由于是覆盖在上面的 所以需要将事件传递给父容器 */
-		gamePager.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Container parent = gamePager.getParent();
-				Point p = e.getPoint();
-				int x = gamePager.getX();
-				int y = gamePager.getY();
-				MouseEvent event = new MouseEvent(parent, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(),
-						e.getModifiers(), x + p.x, y + p.y, e.getClickCount(), false);
-				parent.dispatchEvent(event);
-			}
-		});
 		DataStoreManager dataStore = (DataStoreManager) objects[0];
 		dataStore.initData(data);
 		dataStore.loadSceneNpc();
@@ -96,44 +81,48 @@ public class SwingApplication extends Application {
 		gamePanel.setContext(dataStore.getContext());
 		gamePanel.setDataStore(dataStore);
 		gamePanel.initGameDate();
-		gamePanel.setUIhelp(getUiHelp());
+		gamePanel.setUIhelp(getUIHelp());
 		gamePanel.playMusic();
 		gameFrame.showPanel(gamePanel);
 		new GamePanelController(gamePanel);
-		getUiHelp().showPanel(gamePager);
+		getUIHelp().showPanel(GamePager.class.getSimpleName());
 	}
 	
 	/**
 	 * 进入战争模块
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void enterTheWar(Object[] args) {
-		IWindows windows=context.getWindows();
+		getUIHelp().hidePanel(GamePager.class.getSimpleName());
+		IWindows windows = context.getWindows();
 		GamePanel gamePanel = (GamePanel) windows.getPanel();
-		this.gamePanel=gamePanel;
-		TileMap map = gamePanel.getMap(gamePanel.getContext().getScene());  //获取当前
+		this.gamePanel = gamePanel;
+		TileMap map = gamePanel.getMap(gamePanel.getContext().getScene()); // 获取当前
 		Point viewPosition = gamePanel.getViewPosition();
 		BattlePanel battlePanel = new BattlePanel(map, viewPosition, gamePanel);
-		battlePanel.setUIhelp(getUiHelp());
+		battlePanel.setUIhelp(getUIHelp());
 		battlePanel.setConfigManager(config);
-		battlePanel.setBounds(0, 0, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
-		battlePanel.setHostileTead((List)args[1]); //设置敌方队伍
-		battlePanel.setOwnsideTeam((List)args[0]); //设置己方队伍
+		battlePanel.setHostileTead((List) args[1]); // 设置敌方队伍
+		battlePanel.setOwnsideTeam((List) args[0]); // 设置己方队伍
 		battlePanel.playMusic();
 		gameFrame.showPanel(battlePanel);
 		new BattlePanelController(battlePanel);
+		getUIHelp().showPanel(GamePager.class.getSimpleName());
 		battlePanel.initComponetn();
 	}
-	
+
 	/**
 	 * 退出战争页面
 	 */
 	@Override
 	public void quitWar() {
-		GamePanel gamePanel=this.gamePanel;
+		getUIHelp().hidePanel(GamePager.class.getSimpleName());
+		GamePanel gamePanel = this.gamePanel;
 		gamePanel.setPlayerLocation(context.getPlayer().getSceneLocation());
 		gamePanel.initGameDate();
 		gameFrame.showPanel(gamePanel);
+		getUIHelp().showPanel(GamePager.class.getSimpleName());
 		gamePanel.playMusic();
 		Constant.setProps(Constant.LAST_PATROL_TIME, System.currentTimeMillis());
 	}

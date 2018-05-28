@@ -17,5 +17,4 @@ final public class BattleUserProp extends AbstractPanelHandler{
 	protected void initView() {
 		
 	}
-
 }

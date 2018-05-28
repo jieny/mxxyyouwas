@@ -36,7 +36,7 @@ final public class PlayerAttribute extends AbstractPanelHandler<PlayerAttributeM
 	Panel appllation;
 
 	public void OpenPlayerDescribe(ActionEvent e) {
-		appllation = uihelp.getPanel("Appellation");
+		Panel appllation = uihelp.getPanel(e);
 		showOrHide(appllation);
 	}
 
@@ -44,6 +44,11 @@ final public class PlayerAttribute extends AbstractPanelHandler<PlayerAttributeM
 	public void dispose(PanelEvent evt) {
 		super.dispose(evt);
 		uihelp.hidePanel(appllation);
+	}
+	
+	public void openSkill(ActionEvent e){
+		Panel oldpanel = uihelp.getPanel(e);
+		showOrHide(oldpanel);
 	}
 
 	/**

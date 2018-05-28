@@ -1,6 +1,6 @@
 package com.mxxy.game.handler;
 
-import com.mxxy.game.config.IConfigManager;
+import com.mxxy.game.config.IPropertiseManager;
 import com.mxxy.game.config.PropertiseConfigImpl;
 import com.mxxy.game.utils.InstanceUtil;
 
@@ -8,7 +8,7 @@ abstract public class AbstractPanelHandler<M> extends PanelHandler {
 
 	protected M modler;
 
-	protected IConfigManager propertiesConfigManager;
+	protected IPropertiseManager propertiesConfigManager;
 
 	@Override
 	public M initModler() {
@@ -24,9 +24,10 @@ abstract public class AbstractPanelHandler<M> extends PanelHandler {
 
 	/**
 	 * 实例化配置
+	 * 
 	 * @return
 	 */
-	public IConfigManager exampleConfigManager() {
+	public IPropertiseManager exampleConfigManager() {
 		propertiesConfigManager = new PropertiseConfigImpl();
 		propertiesConfigManager.setFilename(setConfigFileName());
 		if (setConfigFileName() != null)
@@ -36,6 +37,7 @@ abstract public class AbstractPanelHandler<M> extends PanelHandler {
 
 	/**
 	 * 需要访问的文件
+	 * 
 	 * @return filename
 	 */
 	protected String setConfigFileName() {

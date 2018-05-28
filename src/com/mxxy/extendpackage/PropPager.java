@@ -25,8 +25,8 @@ final public class PropPager extends AbstractPanelHandler {
 
 	@Override
 	protected void initView() {
-		palyer = uihelp.getPanel("PlayerPager");
-		mount = uihelp.getPanel("MountPager");
+		palyer = uihelp.getPanel(PlayerPager.class.getSimpleName());
+		mount = uihelp.getPanel(MountPager.class.getSimpleName());
 	}
 
 	/**

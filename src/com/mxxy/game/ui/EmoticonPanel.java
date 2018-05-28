@@ -26,7 +26,7 @@ public class EmoticonPanel extends AbstactPanel {
 
 	public void initEmoticonSymbol() {
 		for (int i = 0; i < emoticonSymbol.length; i++) {
-			emoticonSymbol[i] = new Label(SpriteFactory.loadAnimation("/wzife/emoticons/#" + i + ".was"));
+			emoticonSymbol[i] = new Label(SpriteFactory.loadAnimation("res/wzife/emoticons/#" + i + ".was"));
 		}
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 10; j++) {
@@ -46,9 +46,5 @@ public class EmoticonPanel extends AbstactPanel {
 		GraphicsUtils.setAlpha(graphics2d, 0.5f);
 		graphics2d.fillRect(0, 0, getWidth(), getHeight());
 		super.paintComponent(g);
-	}
-
-	@Override
-	public void paintImmediately(int x, int y, int w, int h) {
 	}
 }

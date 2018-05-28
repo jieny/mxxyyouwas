@@ -31,6 +31,5 @@ abstract public class ContainersPanel extends JPanel {
 	protected abstract void draw(Graphics2D g, long elapsedTime);
 
 	@Override
-	public void paintImmediately(int x, int y, int w, int h) {
-	}
+	public void paintImmediately(int x, int y, int w, int h) {}
 }

@@ -19,7 +19,7 @@ final public class PetPgaer extends AbstractPanelHandler {
 	}
 
 	public void openPet(ActionEvent e) {
-		Panel openHeadPet = uihelp.getPanel("SummonPager");
+		Panel openHeadPet = uihelp.getPanel(e);
 		showOrHide(openHeadPet);
 	}
 

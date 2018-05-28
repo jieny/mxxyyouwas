@@ -16,7 +16,5 @@ final public class SummonAttrbute extends AbstractPanelHandler {
 	}
 
 	@Override
-	protected void initView() {
-
-	}
+	protected void initView() {}
 }

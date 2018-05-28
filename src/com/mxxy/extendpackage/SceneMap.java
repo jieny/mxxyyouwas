@@ -24,7 +24,7 @@ final public class SceneMap extends AbstractPanelHandler {
 
 	@Override
 	protected void initView() {
-		Sprite background = SpriteFactory.loadSprite("/smap/" + context.getScene() + ".tcp");
+		Sprite background = SpriteFactory.loadSprite("res/smap/" + context.getScene() + ".tcp");
 		smap = new SpriteImage(background);
 		panel.setBounds(Constant.WINDOW_WIDTH / 2 - background.getWidth() / 2,
 				Constant.WINDOW_HEIGHT / 2 - background.getHeight() / 2, background.getWidth(), background.getHeight());

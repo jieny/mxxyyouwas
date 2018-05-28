@@ -19,4 +19,5 @@ public interface ISetOnListener<T> {
 	 * @param event
 	 */
 	void removeListener(T event);
+
 }

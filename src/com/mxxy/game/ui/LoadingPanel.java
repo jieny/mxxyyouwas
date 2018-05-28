@@ -24,14 +24,14 @@ public class LoadingPanel extends DrawPaneImp {
 	@Override
 	public void init() {
 		stopDraw();
-		load_icon = new ImageIcon("componentsRes/loads.png");
+		load_icon = new ImageIcon("res/componentsRes/loads.png");
 		label = new Label(null, load_icon, 0);
 		label.setBounds(0, 0, load_icon.getIconWidth(), load_icon.getIconHeight());
 		jProgressBar = new JProgressBar();
 		jProgressBar.setBounds(0, load_icon.getIconHeight(), load_icon.getIconWidth(), 13);
 		jProgressBar.setFont(Constant.PROMPT_FONT);
-		// jProgressBar.setStringPainted(true);
-		// jProgressBar.setIndeterminate(true);
+//		 jProgressBar.setStringPainted(true);
+//		 jProgressBar.setIndeterminate(true);
 		jProgressBar.setBorderPainted(true);
 		add(jProgressBar);
 		add(label, 0);

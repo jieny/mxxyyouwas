@@ -78,7 +78,7 @@ public class Animation extends AbstractCanvas {
 
 	@Override
 	protected void draw(Graphics2D g, int x, int y, int width, int hight) {
-		g.drawImage(getFrame(currentFrameIndex).getImage(), x, y, null);
+//		g.drawImage(getFrame(currentFrameIndex).getImage(), x, y, null);
 		this.currFrame.draw(g, x, y, width, hight);
 	}
 

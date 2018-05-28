@@ -15,7 +15,7 @@ final public class WordMap extends AbstractPanelHandler {
 
 	@Override
 	protected void initView() {
-		SpriteImage loadImage = new SpriteImage(SpriteFactory.loadImage("smap/world.jpg"));
+		SpriteImage loadImage = new SpriteImage(SpriteFactory.loadImage("res/smap/world.jpg"));
 		panel.setBounds(0, 0, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
 		panel.setSmapImage(loadImage);
 	}

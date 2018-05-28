@@ -35,7 +35,7 @@ final public class Emoticon extends AbstractPanelHandler {
 
 	private void initEmoticonSymbol() {
 		for (int i = 0; i < emoticonSymbol.length; i++) {
-			emoticonSymbol[i] = new Label(SpriteFactory.loadAnimation("/wzife/emoticons/#" + i + ".was"));
+			emoticonSymbol[i] = new Label(SpriteFactory.loadAnimation("res/wzife/emoticons/#" + i + ".was"));
 		}
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 10; j++) {

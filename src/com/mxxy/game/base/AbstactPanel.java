@@ -4,10 +4,17 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.List;
 
+import com.mxxy.extendpackage.TalkPanel;
+import com.mxxy.extendpackage.TalkPanel.TalkAction;
 import com.mxxy.game.sprite.Players;
 
 @SuppressWarnings("serial")
 abstract public class AbstactPanel extends DrawPaneImp {
+	
+	private String SceneId;
+	
+	private String SceneName;
+	
 	/**
 	 * drawPlayer (绘制人物)
 	 */
@@ -63,7 +70,7 @@ abstract public class AbstactPanel extends DrawPaneImp {
 		npcList.clear();
 	}
 
-	// private TalkAction talkAction =new TalkAction();
+	 private TalkAction talkAction =new TalkPanel().new TalkAction();
 	/**
 	 * addNpcAndListener
 	 * 
@@ -72,10 +79,27 @@ abstract public class AbstactPanel extends DrawPaneImp {
 	public void addNpc(Players players) {
 		npcList.add(players);
 		players.removeAllListeners();
-		// players.addPlayerListener(talkAction);
+		players.addPlayerListener(talkAction);
 	}
 
 	public List<Players> getNpcList() {
 		return npcList;
+	}
+	
+	
+	public String getSceneId() {
+		return SceneId;
+	}
+
+	public String getSceneName() {
+		return SceneName;
+	}
+
+	public void setSceneId(String string) {
+		SceneId = string;
+	}
+
+	public void setSceneName(String sceneName) {
+		SceneName = sceneName;
 	}
 }

@@ -9,6 +9,10 @@ import java.awt.RenderingHints;
 import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
+/**
+ * 边框
+ * @author dell
+ */
 public class BorderUi extends LineBorder {
 	public BorderUi(Color color, int thickness, boolean roundedCorners) {
 		super(color, thickness, roundedCorners);

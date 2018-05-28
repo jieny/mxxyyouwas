@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-public class PropertiseConfigImpl implements IConfigManager {
+public class PropertiseConfigImpl implements IPropertiseManager {
 
 	private String filename;
 

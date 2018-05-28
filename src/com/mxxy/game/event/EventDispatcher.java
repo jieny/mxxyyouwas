@@ -8,8 +8,10 @@ import java.util.concurrent.LinkedBlockingQueue;
  * 事件分发生产消费者
  * 
  * @author ZAB
- * @param <S> 任务调度
- * @param <E> 事件源
+ * @param <S>
+ *            任务调度
+ * @param <E>
+ *            事件源
  */
 public class EventDispatcher<S extends IEventTask, E extends EventObject> extends Thread {
 	/**

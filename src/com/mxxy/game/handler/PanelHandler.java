@@ -28,7 +28,7 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 	protected UIHelp uihelp;
 
 	protected Object[] object;
-
+	
 	private Timer timer;
 	/** 数据更新频率 */
 	protected long period = 1000;
@@ -46,7 +46,7 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 	@Override
 	public void init(PanelEvent evt) {
 		application = Application.application;
-		uihelp = application.getUiHelp();
+		uihelp = application.getUIHelp();
 		object = application.getObjects();
 		iWindows = application.getiWindows();
 		context = (Context) object[2];
@@ -66,6 +66,7 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 
 	/**
 	 * 初始化Modler
+	 * 
 	 * @return
 	 */
 	protected <T extends Component> T findViewById(String id) {
@@ -94,6 +95,7 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 
 	/**
 	 * 开启数据更新开关
+	 * 
 	 * @param on
 	 */
 	protected long lastTime;
@@ -142,13 +144,7 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 	}
 
 	protected void showOrHide(Panel panel) {
-		if (panel != null) {
-			if (panel.isShowing()) {
-				uihelp.hidePanel(panel);
-			} else {
-				uihelp.showPanel(panel);
-			}
-		}
+		uihelp.switchPanel(panel);
 	}
 
 	protected void showHide(Panel panels) {

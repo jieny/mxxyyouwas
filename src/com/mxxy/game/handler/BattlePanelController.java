@@ -1,15 +1,16 @@
 package com.mxxy.game.handler;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import com.mxxy.game.listener.AbstractBaseEventListener;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.ui.BattlePanel;
+
 /**
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
-public class BattlePanelController extends AbstractBaseEventListener<BattlePanel>{
+public class BattlePanelController extends AbstractBaseEventListener<BattlePanel> {
 
 	public BattlePanelController(BattlePanel gamePanel) {
 		mPanel = gamePanel;
@@ -29,13 +30,13 @@ public class BattlePanelController extends AbstractBaseEventListener<BattlePanel
 				break;
 			}
 		}
-		if(mPanel.isWaitingCmd() && clickPlayer!=null) {
+		if (mPanel.isWaitingCmd() && clickPlayer != null) {
 			mPanel.setTarget(clickPlayer);
 			if (mPanel.isSelectMagic()) {
 				mPanel.setSelectMagic(false);
-//				if (selectedMagic != null) {
-					mPanel.magicCmd();
-//				}
+				// if (selectedMagic != null) {
+				mPanel.magicCmd();
+				// }
 			} else {
 				mPanel.attackCmd();
 			}
@@ -43,22 +44,19 @@ public class BattlePanelController extends AbstractBaseEventListener<BattlePanel
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		
+	public void keyPressed(KeyEvent e) {
+		if (e.isAltDown() && mPanel.isWaitingCmd()) {  //判断是否Alt 按下
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_A:    
+				mPanel.attackCmd();
+				break;
+			case KeyEvent.VK_E:
+				mPanel.selectProp();
+				break;
+			case KeyEvent.VK_W:
+				mPanel.selectWarmagic();
+				break;
+			}
+		}
 	}
 }

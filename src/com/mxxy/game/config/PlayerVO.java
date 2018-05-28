@@ -23,8 +23,7 @@ public class PlayerVO implements Serializable {
 	public static final String STATE_WALK = "walk";
 
 	public String id;
-	
-	
+
 	public int hp;
 	/**
 	 * 人物文件
@@ -63,23 +62,21 @@ public class PlayerVO implements Serializable {
 	 * 称谓
 	 */
 	private String describe;
-	
+
 	private int speed;
-	
-	
+
 	public int getSpeed() {
 		return speed;
 	}
-	
+
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	
-	
+
 	public void setmWeapon(Weapon mWeapon) {
 		this.mWeapon = mWeapon;
 	}
-	
+
 	public Weapon getmWeapon() {
 		return mWeapon;
 	}
@@ -152,6 +149,6 @@ public class PlayerVO implements Serializable {
 	public String toString() {
 		return "PlayerVO [id=" + id + ", character=" + character + ", name=" + name + ", colorations="
 				+ Arrays.toString(colorations) + ", state=" + state + ", direction=" + direction + ", sceneLocation="
-				+ sceneLocation +  ", describe=" + describe + "]";
+				+ sceneLocation + ", describe=" + describe + "]";
 	}
 }

@@ -6,8 +6,12 @@ import java.awt.Image;
 
 import javax.swing.JSlider;
 import javax.swing.plaf.basic.BasicSliderUI;
-
+/**
+ * 
+ * @author dell
+ */
 public class GameSliderUI extends BasicSliderUI {
+	
 	private Image thumbImage = null;// 普通按的图片
 	public Image thumbOverImage;// 鼠标在上面的图片
 	private Image thumbPressedImage = null;// 按下面的图片

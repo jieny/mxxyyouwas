@@ -12,6 +12,7 @@ import com.mxxy.game.widget.Animation;
 
 /**
  * 精灵
+ * 
  * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class Sprite extends AbstractCanvas {
@@ -36,9 +37,9 @@ public class Sprite extends AbstractCanvas {
 
 	private boolean autoPlay = true; // 自动循环
 
-	private int centerX; 
+	private int centerX;
 
-	private int centerY; 
+	private int centerY;
 
 	private List<Integer> colorations; // 颜色
 
@@ -161,14 +162,14 @@ public class Sprite extends AbstractCanvas {
 		return this.autoPlay;
 	}
 
-	/**重置动画*/
+	/** 重置动画 */
 	public void reset() {
 		this.direction = 0;
 		this.currAnimation = ((Animation) this.animations.get(0));
 		resetFrames();
 	}
 
-	/**重置当前帧*/
+	/** 重置当前帧 */
 	public synchronized void resetFrames() {
 		this.currAnimation.setIndex(0);
 	}
@@ -197,6 +198,7 @@ public class Sprite extends AbstractCanvas {
 
 	/**
 	 * 设置方向
+	 * 
 	 * @param index
 	 */
 	public synchronized void setDirection(int index) {
@@ -207,7 +209,8 @@ public class Sprite extends AbstractCanvas {
 	}
 
 	/**
-	 * @param repeat -1为循环播放，1为播放一次
+	 * @param repeat
+	 *            -1为循环播放，1为播放一次
 	 */
 	public void setRepeat(int repeat) {
 		this.currAnimation.setRepeat(repeat);

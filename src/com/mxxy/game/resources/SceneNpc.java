@@ -3,8 +3,8 @@ package com.mxxy.game.resources;
 /**
  * SceneNPC
  */
-public class SceneNpc{
-	
+public class SceneNpc {
+
 	private int sceneId;
 	private String characterId;
 	private String name;
@@ -38,7 +38,6 @@ public class SceneNpc{
 		this.describe = describe;
 		this.direction = direction;
 	}
-
 
 	public void setSceneId(int sceneId) {
 		this.sceneId = sceneId;

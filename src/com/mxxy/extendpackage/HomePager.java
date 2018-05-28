@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import com.mxxy.game.base.Panel;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
-import com.mxxy.game.ui.Announcer;
+import com.mxxy.game.ui.ScrollAnnouncer;
 import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.RuntimeUtil;
 
@@ -53,7 +53,7 @@ final public class HomePager extends AbstractPanelHandler {
 	/**
 	 * 游戏主页
 	 */
-	private Announcer pager;
+	private ScrollAnnouncer pager;
 
 	public void web(ActionEvent e) {
 		showAnnouncer();
@@ -63,7 +63,7 @@ final public class HomePager extends AbstractPanelHandler {
 	 * 报幕
 	 */
 	public void showAnnouncer() {
-		pager = new Announcer();
+		pager = new ScrollAnnouncer();
 		Thread thread = new Thread(pager);
 		thread.start();
 		panel.add(pager, 0);

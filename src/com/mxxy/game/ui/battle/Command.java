@@ -5,69 +5,78 @@ import java.util.Map;
 
 import com.mxxy.game.config.PlayerVO;
 import com.mxxy.game.sprite.Players;
+
 /**
  * 指令
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
-public class Command implements Comparable{
+public class Command implements Comparable {
 	private String cmd;
+	
 	private Players source;
+	
 	private Players target;
+	
 	private Map params = new HashMap();
-	
-	public Command(String cmd,Players source) {
-		this(cmd,source,null,null);
+
+	public Command(String cmd, Players source) {
+		this(cmd, source, null, null);
 	}
-	
-	public Command(String cmd,Players source,Players target) {
+
+	public Command(String cmd, Players source, Players target) {
 		this.cmd = cmd;
 		this.source = source;
 		this.target = target;
 	}
-	
-	public Command(String cmd,Players source,Players target,Map params) {
-		this(cmd,source,target);
+
+	public Command(String cmd, Players source, Players target, Map params) {
+		this(cmd, source, target);
 		this.params = params;
 	}
-	
+
 	public String getCmd() {
 		return this.cmd;
 	}
+
 	/**
 	 * 添加一个参数
+	 * 
 	 * @param name
 	 * @param value
 	 */
-	public void add(String name,Object value) {
+	public void add(String name, Object value) {
 		this.params.put(name, value);
 	}
+
 	public Object get(String name) {
 		return this.params.get(name);
 	}
+
 	public int getInt(String name) {
 		Integer val = (Integer) this.params.get(name);
-		return val!=null?val.intValue():0;
+		return val != null ? val.intValue() : 0;
 	}
+
 	public boolean getBool(String name) {
 		Boolean val = (Boolean) this.params.get(name);
-		return val!=null?val.booleanValue():false;
+		return val != null ? val.booleanValue() : false;
 	}
-	
+
 	/**
-	 * @return the source  已方
+	 * @return the source 已方
 	 */
 	public Players getSource() {
 		return source;
 	}
-	
+
 	/**
-	 * @return the target   目标
+	 * @return the target 目标
 	 */
 	public Players getTarget() {
 		return target;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -82,6 +91,7 @@ public class Command implements Comparable{
 		builder.append("]");
 		return builder.toString();
 	}
+
 	/**
 	 * 根据人物速度比较
 	 */

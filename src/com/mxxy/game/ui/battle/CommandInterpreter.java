@@ -3,9 +3,6 @@ package com.mxxy.game.ui.battle;
 import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import com.mxxy.game.modler.MagicModle.MagicConfig;
@@ -17,76 +14,138 @@ import com.mxxy.game.was.Toolkit;
 
 public class CommandInterpreter {
 
+	public final static String MAGICINFIG_TAG = MagicConfig.class.getSimpleName();
+
 	private BattlePanel battlePanel;
 
 	public CommandInterpreter(BattlePanel battlePanel) {
-		this.battlePanel=battlePanel;
+		this.battlePanel = battlePanel;
 	}
 
 	public void exce(Command command) {
+		battlePanel.hidePanel();
 		this.invokeMethod(command.getCmd(), command);
 	}
 
+	public int attackCount = 0;
+
 	public void attack(Command command) {
 		System.out.println("触发攻击指令");
-		Players source = command.getSource();  
+		Players source = command.getSource();
 		Players target = command.getTarget();
 		Point location = source.getLocation();
-		battlePanel.setBattleMessage("#Y"+source.getPersonName()+"进行了攻击#18");
-		Sprite s = SpriteFactory.loadSprite("shape/char/0001/attack.tcp");
-		int dx = s.getWidth()-s.getCenterX();
-		int dy = s.getHeight()-s.getCenterY();
-		if(target.getX() > source.getX()) {
+		MagicConfig magicConfig = (MagicConfig) command.get(MAGICINFIG_TAG);
+		if (magicConfig == null) {
+			battlePanel.setBattleMessage("#Y" + source.getPersonName() + "进行了攻击#18");
+		}
+
+		Sprite s = SpriteFactory.loadSprite("res/shape/char/0001/attack.tcp");
+		int dx = s.getWidth() - s.getCenterX();
+		int dy = s.getHeight() - s.getCenterY();
+		if (target.getX() > source.getX()) {
 			dx = -dx;
 			dy = -dy;
 		}
-		battlePanel.rush(source, target.getX()+dx,target.getY()+dy,Players.STATE_RUSHA);
+		battlePanel.rush(source, target.getX() + dx, target.getY() + dy, Players.STATE_RUSHA);
+
 		source.playOnce(Players.STATE_ATTACK);
-		Toolkit.sleep(100);
+
+		if (magicConfig != null) {
+			target.playEffect(magicConfig.getName(), false, source.getRace());
+		}
+
 		target.playOnce(Players.STATA_HIT);
 		battlePanel.showPoints(target, -99);
 		source.writFor();
 		target.setState(Players.STATE_STAND);
 		battlePanel.hidePoints(target);
-		battlePanel.rush(source, location.x, location.y,Players.STATE_RUSHB);
-		source.setState(Players.STATE_STAND);
+
+		if (magicConfig != null) {
+			if (magicConfig.getMagicId() == MagicConfig.REPEATMAGINC) {
+				if (attackCount == magicConfig.getRepeatCount() - 1) {
+					battlePanel.rush(source, 530, 400, Players.STATE_RUSHB);
+					magicConfig = null;
+					attackCount = -1;
+				}
+				attackCount++;
+			} else {
+				battlePanel.rush(source, location.x, location.y, Players.STATE_RUSHB);
+			}
+		} else {
+			battlePanel.rush(source, location.x, location.y, Players.STATE_RUSHB);
+		}
+		source.setState(Players.STATE_WRITBUTTLE);
 		battlePanel.setBattleMessage("");
 	}
 
 	/**
 	 * 施法指令
 	 */
-	public void magic(Command command){
-		Players source = command.getSource();  
+	public void magic(Command command) {
+		Players source = command.getSource();
 		Players target = command.getTarget();
-		source.playOnce(Players.STATE_MAGIC);
-		MagicConfig magicConfig = (MagicConfig) command.get("magicConfig");
-		battlePanel.setBattleMessage("#Y"+source.getPersonName()+"施法法术 — "+magicConfig.getName()+"#32");
-		Toolkit.sleep(300);
-		if(magicConfig.isGroup()) {
+		MagicConfig magicConfig = (MagicConfig) command.get(MAGICINFIG_TAG);
+		battlePanel.setBattleMessage("#Y" + source.getPersonName() + "施法法术 — " + magicConfig.getName());
+		switch (magicConfig.getMagicId()) {
+		case MagicConfig.BIGMAGIC:
+			source.playOnce(Players.STATE_MAGIC);
 			groupMagic(target);
-		}else{
-			singleMagic(target);
+			break;
+		case MagicConfig.SINGLEGROUPMAGIC: 
+			source.playOnce(Players.STATE_MAGIC);
+			List<Players> hostileTeam = battlePanel.getHostileTeam();
+			List<Players> magicHostileTeam = battlePanel.getMagicHostileTeam(target, hostileTeam);
+			magicHostileTeam.add(target);
+			for (int i = magicHostileTeam.size() - 1; i >= 0; i--) {
+				singleMagic(magicHostileTeam.get(i), magicConfig.getName(), source.getRace());
+			}
+			break;
+		case MagicConfig.SINGLEMAGIC:
+			source.playOnce(Players.STATE_MAGIC);
+			singleMagic(target, magicConfig.getName(), source.getRace());
+			break;
+		case MagicConfig.REPEATMAGINC:
+			for (int i = 0; i < magicConfig.getRepeatCount(); i++) {
+				Command command2 = new Command(Players.STATE_ATTACK, source, target);
+				command2.add(MAGICINFIG_TAG, magicConfig);
+				attack(command2);
+			}
+			break;
+		case MagicConfig.GROUPATTACK:
+			List<Players> hostileTeams = battlePanel.getHostileTeam();
+			List<Players> magicHostileTeams = battlePanel.getMagicHostileTeam(target, hostileTeams);
+			magicHostileTeams.add(target);
+			for (int i = magicHostileTeams.size() - 1; i >= 0; i--) {
+				Command command2 = new Command(Players.STATE_ATTACK, source, magicHostileTeams.get(i));
+				command2.add(MAGICINFIG_TAG, magicConfig);
+				attack(command2);
+			}
+			break;
 		}
-		source.setState(Players.STATE_STAND);
+		source.writFor();
+		source.setState(Players.STATE_WRITBUTTLE);
+		battlePanel.setBattleMessage("");
 	}
 
 	/**
 	 * 群法
-	 * @param target 目标敌人
+	 * 
+	 * @param target
+	 *            目标敌人
 	 */
-	public void groupMagic(Players target){
+	public void groupMagic(Players target) {
 		List<Players> hostileTeam = battlePanel.getHostileTeam();
-		List<Players> magic = getMagicHostileTeam(target,hostileTeam);
+		List<Players> magic = battlePanel.getMagicHostileTeam(target, hostileTeam);
+		battlePanel.playOnceMusic(true);
 		magic.add(target);
 		for (Players players : magic) {
 			players.playOnce(Players.STATA_HIT);
 			battlePanel.showPoints(players, -10);
 		}
 		Toolkit.sleep(800);
-//		for (Players players : magic) {
-//			players.playOnce(Players.STATE_DIE);
-//		}
+		// for (Players players : magic) {
+		// players.playOnce(Players.STATE_DIE);
+		// }
 		for (Players players : magic) {
 			players.setState(Players.STATE_STAND);
 			battlePanel.hidePoints(players);
@@ -95,43 +154,24 @@ public class CommandInterpreter {
 
 	/**
 	 * 单法
+	 * 
 	 * @param target
+	 * @param string
 	 */
-	public void singleMagic(Players target){
-		target.playOnce(Players.STATA_HIT);
-		battlePanel.showPoints(target, -10);
-		Toolkit.sleep(1500);
-		target.setState(Players.STATE_STAND);
-		battlePanel.hidePoints(target);
-	}
-	/**
-	 * 根据速度排序
-	 * @param target
-	 * @param hostileTeam
-	 * @return
-	 */
-	public List<Players> getMagicHostileTeam(Players target,List<Players> hostileTeam){
-		List<Players>list=new ArrayList<Players>(hostileTeam);
-		list.remove(target);
-		Collections.sort(list, new Comparator<Players>() {  
-			@Override  
-			public int compare(Players o1, Players o2) {  
-				if (o1.getSpeed() < o2.getSpeed()) {  
-					return 1;  
-				}  
-				if (o1.getSpeed() == o2.getSpeed()) {  
-					return 0;  
-				}  
-				return -1;  
-			}  
-		});  
-		ArrayList<Players>players=new ArrayList<Players>();
-		players.add(list.get(0));
-		players.add(list.get(1));
-		return players;
+	public void singleMagic(Players target, String magicName, String string) {
+		new Thread() {
+			public void run() {
+				target.playOnce(Players.STATA_HIT);
+				battlePanel.showPoints(target, -10);
+				target.playEffect(magicName, true, string);
+				target.waitForEffect();
+				target.setState(Players.STATE_STAND);
+				battlePanel.hidePoints(target);
+			};
+		}.start();
 	}
 
-	public Object invokeMethod(String mName, Object arg)  {
+	public Object invokeMethod(String mName, Object arg) {
 		Method method;
 		try {
 			method = this.getClass().getDeclaredMethod(mName, arg.getClass());

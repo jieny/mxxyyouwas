@@ -25,9 +25,9 @@ public class Constant {
 	/**
 	 * PlayerDeviation(人物移动偏移量)
 	 */
-	public static float PLAYER_SPEED = 0.13f;
-	public static final float PLAYER_RUNAWAY = 0.14f;
-	public static final float BATTLE_PLAYER_RUNAWAY = 0.12f;
+	public static float PLAYER_SPEED = 0.13f; //正常
+	public static final float PLAYER_RUNAWAY = 0.14f;  //逃跑
+	public static final float BATTLE_PLAYER_RUNAWAY = 0.12f; //攻击
 	/**
 	 * 邮箱正则
 	 */
@@ -64,8 +64,7 @@ public class Constant {
 	public static final Font PROMPT_FONT = new Font("宋体", Font.PLAIN, 14);
 
 	/**
-	 * 正则
-	 * 
+	 * 邮箱正则
 	 * @param email
 	 * @return
 	 */

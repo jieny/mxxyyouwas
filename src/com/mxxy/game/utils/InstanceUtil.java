@@ -49,7 +49,7 @@ public class InstanceUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T> T create(Class<?> clazz) {
+	public static <T> T create(Class<?> clazz) {
 		T t = null;
 		try {
 			t = (T) clazz.newInstance();
@@ -60,7 +60,7 @@ public class InstanceUtil {
 		}
 		return t;
 	}
-
+	
 	/**
 	 * 实例化内部类 Class<?>
 	 * class1=Class.forName("com.mxxy.extendpackage."+rootElement.attributeValue("handel"));

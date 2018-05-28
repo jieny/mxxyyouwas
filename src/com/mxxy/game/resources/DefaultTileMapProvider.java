@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import com.mxxy.game.config.MapConfig;
+import com.mxxy.game.config.MapConfigImpl;
 import com.mxxy.game.utils.ResourceStores;
 import com.mxxy.game.widget.TileMap;
 
@@ -183,7 +183,7 @@ public class DefaultTileMapProvider implements IMapProvider {
 			}
 			this.blockOffsetTable = null;
 		}
-		MapConfig cfg = (MapConfig) ResourceStores.getInstance().getMapConfig(id);
+		MapConfigImpl cfg = (MapConfigImpl) ResourceStores.getInstance().getMapConfig(id);
 		if (cfg != null) {
 			try {
 				File file = new File(cfg.getPath());

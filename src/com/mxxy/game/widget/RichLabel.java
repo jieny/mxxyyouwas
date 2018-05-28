@@ -20,9 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import com.mxxy.game.utils.GameColor;
+import com.mxxy.game.utils.GraphicsUtils;
 import com.mxxy.game.utils.SpriteFactory;
-
-//TODO add Link
 
 /**
  * 文字格式：聊天时可以为消息内容设置文字格式，指令为“#字母”，区分大小写。 <br>
@@ -33,8 +32,7 @@ import com.mxxy.game.utils.SpriteFactory;
  * #Y 表示后面的字体为黄色(yellow)<br>
  * #W 表示后面的字体为白色(white)<br>
  * #b 表示后面的字体为闪烁(blink)<br>
- * #S
- * #c + 六个数字或者A-F字母 自定义颜色，例如：c008000=暗绿色<br>
+ * #S #c + 六个数字或者A-F字母 自定义颜色，例如：c008000=暗绿色<br>
  * #u + 文字 + #u 文字有下划线。<br>
  * #n 所有文字状态恢复正常。<br>
  * #r 文字换行。<br>
@@ -46,14 +44,15 @@ public class RichLabel extends JComponent {
 	private static final long serialVersionUID = 4898130145332371300L;
 
 	private ArrayList<Object> sectionList;
-	
+
 	private int maxWidth;
-	
+
 	private long startTime;
 
 	private long currTime;
 
 	private static HashMap<String, Animation> faceAnimations;
+
 	static {
 		faceAnimations = new HashMap<String, Animation>(100);
 	}
@@ -88,7 +87,7 @@ public class RichLabel extends JComponent {
 			if (section.startsWith("#")) {
 				anim = faceAnimations.get(section);
 				if (anim == null && section.charAt(1) >= '0' && section.charAt(1) <= '9') {
-					anim = SpriteFactory.loadAnimation("/wzife/emoticons/#" + section.substring(1) + ".was");
+					anim = SpriteFactory.loadAnimation("res/wzife/emoticons/#" + section.substring(1) + ".was");
 					if (anim != null) {
 						faceAnimations.put(section, anim);
 					}
@@ -110,7 +109,7 @@ public class RichLabel extends JComponent {
 					sectionList.add(Color.BLACK);
 				} else if (section.equals("#Y")) {
 					sectionList.add(Color.YELLOW);
-				}else if (section.equals("#r")) {
+				} else if (section.equals("#r")) {
 					// line swap
 					sectionList.add(new Integer(-1));
 				} else if (section.equals("#n")) {
@@ -127,7 +126,8 @@ public class RichLabel extends JComponent {
 
 	@Override
 	public void paint(Graphics g) {
-		g.setFont(new Font("宋体", Font.PLAIN, 15));
+		GraphicsUtils.setAntialias(g, true);
+		g.setFont(new Font("黑体", Font.PLAIN, 14));
 		g.setColor(Color.WHITE);
 		if (startTime == 0)
 			startTime = System.currentTimeMillis();
@@ -173,8 +173,8 @@ public class RichLabel extends JComponent {
 				rowHeight = 0;
 			}
 		}
-		
-		this.maxWidth=maxwidth;
+
+		this.maxWidth = maxwidth;
 		paintRichText(g, x, y, maxwidth, rowHeight, start, count);
 	}
 
@@ -337,8 +337,7 @@ public class RichLabel extends JComponent {
 	@Override
 	public void paintImmediately(int x, int y, int w, int h) {
 	}
-	
-	
+
 	public int getMaxWidth() {
 		return maxWidth;
 	}

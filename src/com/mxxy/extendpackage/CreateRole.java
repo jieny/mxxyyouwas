@@ -33,7 +33,7 @@ import com.mxxy.game.widget.Label;
  * 
  * @author ZAB 邮箱 ：624284779@qq.com
  */
-final public class CreateRole extends AbstractPanelHandler<CreteRoleMolder> {
+final public class CreateRole extends AbstractPanelHandler<CreteRoleMolder>  {
 
 	private JTextField names;
 
@@ -74,13 +74,12 @@ final public class CreateRole extends AbstractPanelHandler<CreteRoleMolder> {
 		if (current != source.getName()) {
 			String desc = propertiesConfigManager.get(source.getName());
 			playerDesc.setText(desc);
-			ImageIcon imageIcon = new ImageIcon("componentsRes/createimage/headbackground.png");
+			ImageIcon imageIcon = new ImageIcon("res/componentsRes/createimage/headbackground.png");
 			selectperson.setIcon(imageIcon);
 			selectperson.setSize(imageIcon.getIconWidth(), imageIcon.getIconHeight());
-			ImageIcon headImageIcon = new ImageIcon("componentsRes/createimage/" + source.getName() + ".png");
+			ImageIcon headImageIcon = new ImageIcon("res/componentsRes/createimage/" + source.getName() + ".png");
 			characterIndex.setIcon(headImageIcon);
 			characterIndex.setSize(headImageIcon.getIconWidth(), headImageIcon.getIconHeight());
-//			person = new Players(null, null, source.getName(), true, false);
 			person=new Players();
 			person.setCharacter(source.getName());
 			person.setShadow(false);
@@ -111,7 +110,7 @@ final public class CreateRole extends AbstractPanelHandler<CreteRoleMolder> {
 		}
 	}
 
-	static int[] colorations = new int[3];
+	int[] colorations = new int[3];
 	int index;
 
 	public void changeColor(ActionEvent e) {
@@ -206,7 +205,7 @@ final public class CreateRole extends AbstractPanelHandler<CreteRoleMolder> {
 
 	@Override
 	protected String setConfigFileName() {
-		return "textconfig/playerdesc.properties";
+		return "value/playerdesc.properties";
 	}
 
 	@SuppressWarnings("serial")

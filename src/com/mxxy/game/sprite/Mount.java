@@ -6,10 +6,10 @@ import com.mxxy.game.utils.SpriteFactory;
 
 /**
  * 坐骑
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
-public class Mount extends AbsSprite{
+public class Mount extends AbsSprite {
 
 	/** 坐骑站立 */
 	public static final String STATE_MOUNT_STAND = "mountstand";
@@ -20,7 +20,7 @@ public class Mount extends AbsSprite{
 
 	@Override
 	public void draw(Graphics2D g, int x, int y) {
-		Sprite mont=sprite;
+		Sprite mont = sprite;
 		if (this.mountCharacter.equals("0200")) {
 			if (mont != null)
 				if (mont.getDirection() == 7) { // 右边
@@ -48,13 +48,17 @@ public class Mount extends AbsSprite{
 
 	@Override
 	public Sprite createSprite(Players players) {
-		super.sprite=SpriteFactory.loadSprite("/shape/char/" + players.getSchoolCharacter() + "/" + this.mountCharacter + "/" + players.getState() + ".tcp");
+		if (players != null) {
+			super.sprite = SpriteFactory.loadSprite("res/shape/char/" + players.getRace() + "/" + this.mountCharacter
+					+ "/" + players.getState() + ".tcp");
+		}
 		return super.sprite;
 	}
 
 	public void setMountCharacter(String mountCharacter) {
 		this.mountCharacter = mountCharacter;
 	}
+
 	public String getMountCharacter() {
 		return mountCharacter;
 	}

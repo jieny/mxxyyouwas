@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
@@ -35,20 +37,17 @@ import com.mxxy.game.widget.SpriteImage;
 public class Panel extends JPanel implements IEventTask, ActionListener, ISetOnListener<PaneListener> {
 
 	private EventListenerList listener = new EventListenerList();
-
-	private float transparency;
 	/*** 透明度 */
-
-	private boolean isRightClickClose;
+	private float transparency;
 	/** 右键关闭 */
-
-	private SpriteImage smapImage;
+	private boolean isRightClickClose;
 	/** 小地图或者背景图片 **/
-
+	private SpriteImage smapImage;
+	/** 面板是否移动 */
 	private boolean isMove;
 
-	/** 面板是否移动 */
-
+	private Map<String, Object> attributes;
+	
 	public Panel(int width, int height) {
 		super(null);
 		setSize(width, height);
@@ -85,7 +84,6 @@ public class Panel extends JPanel implements IEventTask, ActionListener, ISetOnL
 	 * 关闭面板
 	 */
 	public void close() {
-		System.out.println(this);
 		if (getParent() != null) {
 			getParent().remove(this);
 			fireEvent(new PanelEvent(this, PanelEvent.DISPOSE));
@@ -192,6 +190,7 @@ public class Panel extends JPanel implements IEventTask, ActionListener, ISetOnL
 
 	/**
 	 * 事件分发
+	 * 
 	 * @param e
 	 */
 	@SuppressWarnings("unchecked")
@@ -231,7 +230,19 @@ public class Panel extends JPanel implements IEventTask, ActionListener, ISetOnL
 	public Point getPointCursor() {
 		return super.getMousePosition();
 	}
+	
+	
+	public void setAttributes(String name, Object value) {
+		if (attributes == null) {
+			attributes = new HashMap<String, Object>();
+		}
+		attributes.put(name, value);
+	}
 
+	public Object getAttributes(String name) {
+		return (attributes == null) ? null : attributes.get(name);
+	}
+	
 	private String scene;
 
 	public void setSceneId(String scene) {

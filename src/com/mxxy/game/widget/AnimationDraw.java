@@ -1,7 +1,6 @@
 package com.mxxy.game.widget;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 public interface AnimationDraw {
 	/**
@@ -11,8 +10,7 @@ public interface AnimationDraw {
 	 * @param x
 	 * @param y
 	 */
-	public void drawBitmap(Graphics2D g, int x, int y);
-
+	public void drawBitmap(Graphics g, int x, int y);
 	/**
 	 * 指定 x, y ,width,height
 	 * 
@@ -33,7 +31,7 @@ public interface AnimationDraw {
 	public abstract int getHeight();
 
 	public abstract boolean contains(int paramInt1, int paramInt2);
-
+	
 	/**
 	 * 设置坐标
 	 * 

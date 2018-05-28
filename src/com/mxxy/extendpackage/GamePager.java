@@ -1,14 +1,20 @@
 package com.mxxy.extendpackage;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import com.mxxy.game.base.AbstactPanel;
 import com.mxxy.game.base.Panel;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
-import com.mxxy.game.ui.GamePanel;
+import com.mxxy.game.ui.BattlePanel;
 import com.mxxy.game.utils.SpriteFactory;
 import com.mxxy.game.widget.ImageComponentButton;
 import com.mxxy.game.widget.Label;
@@ -21,8 +27,11 @@ import com.mxxy.game.widget.Label;
 final public class GamePager extends AbstractPanelHandler {
 
 	private Label label;
+
 	private ImageComponentButton playerCharacter;
+
 	private Label sceneXY, sceneName, sceneTimer;
+
 	private SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
 
 	@Override
@@ -30,13 +39,34 @@ final public class GamePager extends AbstractPanelHandler {
 		super.init(evt);
 	}
 
+	public List<ImageComponentButton>  getAllImageButtons(){
+		Component[] components = panel.getComponents();
+		List<ImageComponentButton> labels = new ArrayList<ImageComponentButton>();
+		for (Component c : components) {
+			if (c instanceof ImageComponentButton) {
+				labels.add((ImageComponentButton) c);
+			}
+		}
+		return labels;
+	}
+
 	@Override
 	protected void initView() {
+
+		if(context.getWindows().getPanel() instanceof BattlePanel){
+			for (int i = 0; i < getAllImageButtons().size(); i++) {
+				ImageComponentButton imageComponentButton= getAllImageButtons().get(i);
+				imageComponentButton.setEnabled(imageComponentButton.isEnableds());
+			}
+			panel.removeMouseListener(this);
+		}
+		
 		label = findViewById("leftdown");
 		playerCharacter = findViewById("PlayerAttribute");
 		addComponent();
 		period = 100;
 		setAutoUpdate(true);
+		panel.addMouseListener(this);
 	}
 
 	@Override
@@ -61,10 +91,10 @@ final public class GamePager extends AbstractPanelHandler {
 		String format2 = format.format(currentTime);
 		sceneTimer = new Label(format2, null, Label.LEFT);
 		sceneTimer.setBounds(30, 2, 100, 15);
-		GamePanel panel2 = (GamePanel) context.getWindows().getPanel();
+		AbstactPanel panel2 = (AbstactPanel) context.getWindows().getPanel();
 		sceneName = new Label(panel2.getSceneName(), null, Label.LEFT);
 		sceneName.setBounds(36, 15, 100, 15);
-		playerCharacter.init(SpriteFactory.loadSprite("/wzife/photo/facesmall/" + player.getCharacter() + ".tcp"));
+		playerCharacter.init(SpriteFactory.loadSprite("res/wzife/photo/facesmall/" + player.getCharacter() + ".tcp"));
 		sceneXY = new Label(null, null, Label.LEFT);
 		sceneXY.setBounds(25, 65, 100, 15);
 		panel.add(label, 0);
@@ -74,18 +104,7 @@ final public class GamePager extends AbstractPanelHandler {
 	}
 
 	/**
-	 * 小地图
-	 * 
-	 * @param e
-	 */
-	public void openSmap(ActionEvent e) {
-		Panel oldpanel = uihelp.getPanel(e);
-		showOrHide(oldpanel);
-	}
-
-	/**
 	 * 道具 坐骑
-	 * 
 	 * @param e
 	 */
 	public void openProp(ActionEvent e) {
@@ -100,49 +119,14 @@ final public class GamePager extends AbstractPanelHandler {
 		}
 	}
 
-	/**
-	 * 宠物
-	 * 
-	 * @param e
-	 */
-	public void openPet(ActionEvent e) {
+	
+	public void actionOpenPager(ActionEvent e){
 		Panel openPet = uihelp.getPanel(e);
 		showOrHide(openPet);
 	}
-
-	/**
-	 * 点击宠物头像
-	 * 
-	 * @param e
-	 */
-	public void openSummon(ActionEvent e) {
-		Panel openHeadPet = uihelp.getPanel(e);
-		showOrHide(openHeadPet);
-	}
-
-	/**
-	 * 好友列表
-	 * 
-	 * @param e
-	 */
-	public void openFriend(ActionEvent e) {
-		Panel openHeadPet = uihelp.getPanel(e);
-		showOrHide(openHeadPet);
-	}
-
-	/**
-	 * 表情动作
-	 * 
-	 * @param e
-	 */
-	public void openPlayerEmote(ActionEvent e) {
-		Panel openHeadPet = uihelp.getPanel(e);
-		showOrHide(openHeadPet);
-	}
-
+	
 	/**
 	 * 设置面板
-	 * 
 	 * @param e
 	 */
 	public void openSetting(ActionEvent e) {
@@ -150,32 +134,16 @@ final public class GamePager extends AbstractPanelHandler {
 		oldpanel.setSceneId(context.getScene());
 		showOrHide(oldpanel);
 	}
-
-	/**
-	 * 打开世界地图
-	 */
-	public void openWordMap(ActionEvent e) {
-		Panel oldpanel = uihelp.getPanel(e);
-		showOrHide(oldpanel);
-	}
-
-	/**
-	 * 人物属性面板
-	 * 
-	 * @param e
-	 */
-	public void openPlayerCharacter(ActionEvent e) {
-		Panel oldpanel = uihelp.getPanel(e);
-		showOrHide(oldpanel);
-	}
-
-	/**
-	 * 符号表情
-	 * 
-	 * @param e
-	 */
-	public void openEmote(ActionEvent e) {
-		Panel emoticon = uihelp.getPanel(e);
-		showOrHide(emoticon);
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		super.mouseClicked(e);
+		Container parent = panel.getParent();
+		Point p = e.getPoint();
+		int x = panel.getX();
+		int y = panel.getY();
+		MouseEvent event = new MouseEvent(parent, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(),
+				e.getModifiers(), x + p.x, y + p.y, e.getClickCount(), false);
+		parent.dispatchEvent(event);
 	}
 }

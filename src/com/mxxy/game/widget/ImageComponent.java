@@ -8,13 +8,16 @@ import java.awt.Rectangle;
 import com.mxxy.game.utils.SpriteFactory;
 
 public class ImageComponent extends AbstractCanvas {
+	
 	private Image image;
+	
 	public Rectangle rect;
+	
 	public String path;
 
 	public ImageComponent(String path, int x, int y, Point p) {
 		this.path = path;
-		this.image = SpriteFactory.loadImage("componentsRes/" + path + ".png");
+		this.image = SpriteFactory.loadImage("res/componentsRes/" + path + ".png");
 		if (p != null)
 			this.rect = new Rectangle(x, y, p.x, p.y); // 构造矩形对象
 		super.setLocation(x, y);

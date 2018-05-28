@@ -14,10 +14,8 @@ import com.mxxy.game.utils.Constant;
 
 /**
  * 提示框
- * 
  * @author ZAB
  */
-@SuppressWarnings("serial")
 public class PromptLabel extends JLabel {
 
 	public PromptLabel(String text) {
@@ -35,9 +33,7 @@ public class PromptLabel extends JLabel {
 	}
 
 	@Override
-	public void paintImmediately(int x, int y, int w, int h) {
-
-	}
+	public void paintImmediately(int x, int y, int w, int h) {}
 
 	@Override
 	public void paint(Graphics g) {

@@ -73,8 +73,8 @@ public class LoginPanel extends DrawPaneImp {
 				right = 10;
 			}
 		}
-		Image map1 = new ImageIcon("mapRes/0001/" + right + ".jpg").getImage();
-		Image map2 = new ImageIcon("mapRes/0001/" + left + ".jpg").getImage();
+		Image map1 = new ImageIcon("res/mapRes/0001/" + right + ".jpg").getImage();
+		Image map2 = new ImageIcon("res/mapRes/0001/" + left + ".jpg").getImage();
 		g.drawImage(map1, startX, 0, null);
 		int start = startX - 800;
 		g.drawImage(map2, start, 0, null);
@@ -82,11 +82,7 @@ public class LoginPanel extends DrawPaneImp {
 
 	@Override
 	protected String getMusic() {
-		String[] music = { "music/1514.mp3", "music/1070.mp3", "music/1091.mp3" };
+		String[] music = { "res/music/1514.mp3", "res/music/1070.mp3", "res/music/1091.mp3" };
 		return (music[new Random().nextInt(music.length)]);
-	}
-
-	@Override
-	public void paintImmediately(int x, int y, int w, int h) {
 	}
 }

@@ -1,6 +1,6 @@
 package com.mxxy.game.modler;
 
-import com.mxxy.game.config.IConfigManager;
+import com.mxxy.game.config.IPropertiseManager;
 import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.Constant.RegistStatus;
 
@@ -11,12 +11,12 @@ import com.mxxy.game.utils.Constant.RegistStatus;
  */
 public class RegistUserModler {
 
-	public RegistStatus regitst(IConfigManager configManager, String user, String password, String check_password,
+	public RegistStatus regitst(IPropertiseManager configManager, String user, String password, String check_password,
 			String verification) {
 		return isPassword(configManager, user, password, check_password);
 	}
 
-	private RegistStatus isPassword(IConfigManager configManager, String u_name, String u_pwd, String u_pwd_ag) {
+	private RegistStatus isPassword(IPropertiseManager configManager, String u_name, String u_pwd, String u_pwd_ag) {
 		if (!u_name.equals(Constant.getString("USER_HINT"))) {
 			if (Constant.isEmail(u_name)) {
 				if (u_pwd.equals(u_pwd_ag)) {

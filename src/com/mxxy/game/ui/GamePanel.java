@@ -16,7 +16,7 @@ import java.util.Random;
 import com.mxxy.game.astar.AStar;
 import com.mxxy.game.base.AbstactPanel;
 import com.mxxy.game.base.Application;
-import com.mxxy.game.config.MapConfig;
+import com.mxxy.game.config.MapConfigImpl;
 import com.mxxy.game.event.PlayerEvent;
 import com.mxxy.game.event.PlayerListenerAdapter;
 import com.mxxy.game.handler.GamePanelController;
@@ -46,8 +46,6 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 	private int sceneHeight;
 	private int sceneWidth;
 	private byte[] maskdata;
-	private String SceneId;
-	private String SceneName;
 	private AStar searcher;
 	private List<Point> path;
 	private ScenePlayerHandler scenePlayerHandler = new ScenePlayerHandler();
@@ -173,7 +171,7 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 			return;
 		}
 		this.map = map;
-		MapConfig mapConfig = map.getConfig(); // 获取到配置对象
+		MapConfigImpl mapConfig = map.getConfig(); // 获取到配置对象
 		setSceneId(mapConfig.getId()); // 设置场景ID
 		setSceneName(mapConfig.getName());// 设置场景Name
 		setMaxWidth(map.getWidth());
@@ -229,7 +227,16 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 			throw new IllegalArgumentException("跳转场景失败，sceneId不能为空！");
 		}
 	}
-
+	
+	
+	
+	/**
+	 * 更换场景
+	 */
+	public void replaceScreen() {
+		
+	}
+	
 	/**
 	 * 鼠标点击效果
 	 * 
@@ -352,7 +359,7 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 
 	@Override
 	public String getMusic() {
-		return ("music/" + context.getScene() + ".mp3");
+		return ("res/music/" + context.getScene() + ".mp3");
 	}
 
 	/**
@@ -411,9 +418,8 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 				long nowtime = System.currentTimeMillis();
 				Long lastPatrolTime = (Long) Constant.props.get(Constant.LAST_PATROL_TIME);
 				if (lastPatrolTime != null && nowtime - lastPatrolTime > 10000L) {
-					Random rand = new Random();
-					if (rand.nextInt(100) < 5) {
-						enterTheWar();
+					if (random.nextInt(100) < 5) {
+						// enterTheWar();
 					}
 				}
 			}
@@ -422,6 +428,8 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 		@Override
 		public void walk(PlayerEvent evt) {
 			Point target = evt.getTarget(); // 获取到点击的坐标点
+
+			System.out.println(evt.getPlayer().getDirection());
 			walkTo(target.x, target.y);
 		}
 	}
@@ -578,13 +586,14 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 		players.stop(true); // 停止移动
 		List<Players> ownsideTeam = new ArrayList<Players>();// 己方阵容
 		List<Players> hostileTeam = new ArrayList<Players>();// 敌方阵容
-		int[] randomCommon = StringUtils.randomCommon(0,20,5);
+		// (Math.random()*(5-1)+1)
+		int[] randomCommon = StringUtils.randomCommon(0, 20, (int) 5);
 		for (int i = 0; i < randomCommon.length; i++) {
-			hostileTeam.add(this.createElf(context.getScene(),randomCommon[i]));
+			hostileTeam.add(this.createElf(context.getScene(), randomCommon[i]));
 		}
 		ownsideTeam.add(players);
-//		ownsideTeam.add(dataStore.createElf("5004", "超级神虎",100));
-		Application.application.enterTheWar(new Object[] {ownsideTeam,hostileTeam});
+		// ownsideTeam.add(dataStore.createElf("5004", "超级神虎",100));
+		Application.application.enterTheWar(new Object[] { ownsideTeam, hostileTeam });
 	}
 
 	/**
@@ -593,35 +602,19 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 	 * @param id
 	 * @return
 	 */
-	public Players createElf(String id,int elflevel) {
-//		int elflevel = Math.max(0, 10 + random.nextInt(4) - 2);
-		int elfIndex = random.nextInt(Constant.SCENE_DHW_ELFS.length);
+	public Players createElf(String id, int elflevel) {
+		// int elflevel = Math.max(0, 10 + random.nextInt(4) - 2);
+		int elfIndex = random.nextInt(Constant.DF_ELFS.length);
 		Players p = null;
 		switch (context.getScene()) {
 		case Constant.SCENE_CAC:
 			p = dataStore.createElf(Constant.SCENE_DHW_ELFS[elfIndex], Constant.DHW_ELFNAMES[elfIndex], elflevel);
 			break;
 		case Constant.SCENE_DHW:
-			p = dataStore.createElf(Constant.XXT_ELFS[elfIndex], Constant.XXT_ELFNAMES[elfIndex], elflevel);
+			p = dataStore.createElf(Constant.DF_ELFS[elfIndex], Constant.DF_ELFNAMES[elfIndex], elflevel);
 			break;
 		}
 		return p;
-	}
-
-	public String getSceneId() {
-		return SceneId;
-	}
-
-	public String getSceneName() {
-		return SceneName;
-	}
-
-	public void setSceneId(String string) {
-		SceneId = string;
-	}
-
-	public void setSceneName(String sceneName) {
-		SceneName = sceneName;
 	}
 
 	public final class MovementThread extends Thread {
@@ -644,9 +637,5 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 				Toolkit.sleep(40);
 			}
 		}
-	}
-
-	@Override
-	public void paintImmediately(int arg0, int arg1, int arg2, int arg3) {
 	}
 }

@@ -33,18 +33,18 @@ import com.mxxy.game.widget.Animation;
  * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class Players implements IEventTask {
-	/** 攻击*/
-	public static final String STATE_ATTACK="attack";
-	/** 施法*/
-	public static final String STATE_MAGIC="magic";
+	/** 攻击 */
+	public static final String STATE_ATTACK = "attack";
+	/** 施法 */
+	public static final String STATE_MAGIC = "magic";
 	/** 站立 */
 	public static final String STATE_STAND = "stand";
-	/**防御*/
-	public static final String STATE_DEFEND="defend";
-	/**被击中*/
-	public static final String STATA_HIT="hit";
-	/**倒下*/
-	public static final String STATE_DIE="die";
+	/** 防御 */
+	public static final String STATE_DEFEND = "defend";
+	/** 被击中 */
+	public static final String STATA_HIT = "hit";
+	/** 倒下 */
+	public static final String STATE_DIE = "die";
 	/** 移动 */
 	public static final String STATE_WALK = "walk";
 	/** 哭泣 **/
@@ -53,10 +53,12 @@ public class Players implements IEventTask {
 	public static final String STATE_DANCE = "dance";
 	/** 发怒 */
 	public static final String STATE_ANGRY = "angry";
-	/** 跑去*/
-	public static final String STATE_RUSHA="rusha";
-	/** 跑回*/
-	public static final String STATE_RUSHB="rushb";
+	/** 跑去 */
+	public static final String STATE_RUSHA = "rusha";
+	/** 跑回 */
+	public static final String STATE_RUSHB = "rushb";
+	/** 待战*/
+	public static final String STATE_WRITBUTTLE="writbuttle";
 	/** 人物坐骑站立 */
 	public static final String STATE_MOUNT_STAND = "mountstand";
 	/** 人物坐骑移动 */
@@ -106,41 +108,28 @@ public class Players implements IEventTask {
 
 	private static double k2 = 3 * k1;
 	/** 门派标识 1000人族,1001魔族,1002仙族 */
-	private String schoolCharacter;
-	/** 坐骑*/
-	private Mount mMount;  
-	/** 武器*/
-	private Weapon mWeapon; 
-	/** 矩形绘制*/
+	private String race;
+	/** 坐骑 */
+	private Mount mMount;
+	/** 武器 */
+	private Weapon mWeapon;
+	/** 矩形绘制 */
 	public Rectangle rect;
-	/**人物速度*/
+	/** 人物速度 */
 	private int speed;
-	
+
 	private int hp;
 	
-//	private Animation onceEffect;
-
-	public void setShadow(boolean isShadow) {
-		this.shadow = isShadow ? SpriteFactory.loadShadow() : null;
-	}
-
-	public void setMount(Mount mMount) {
-		this.mMount = mMount;
-		setState(mMount!=null?STATE_MOUNT_STAND:STATE_STAND);
-	}
-
-	public void setWeapon(Weapon mWeapon) {
-		this.mWeapon = mWeapon;
-	}
-
+	private Animation onceEffect = null;
+	
 	public void setCharacter(String character) {
 		this.character = character;
 		if (Integer.parseInt(character) >= 1 && Integer.parseInt(character) <= 4) {
-			this.setSchoolCharacter("1000");
+			this.setRace("1000");
 		} else if (Integer.parseInt(character) >= 5 && Integer.parseInt(character) <= 8) {
-			this.setSchoolCharacter("1001");
+			this.setRace("1001");
 		} else if (Integer.parseInt(character) >= 9 && Integer.parseInt(character) <= 12) {
-			this.setSchoolCharacter("1002");
+			this.setRace("1002");
 		}
 	}
 
@@ -148,13 +137,12 @@ public class Players implements IEventTask {
 		this.data = data;
 		this.setSpeed(data.getSpeed());
 		this.setCharacter(data.getCharacter());
-		this.setCharacter(data.getCharacter());
 		this.setPersonName(data.getName());
 		this.setWeapon(data.getmWeapon());
 		this.setDescribe(data.getDescribe());
 		this.setDirection(data.getDirection());
 		this.setColorations(data.getColorations(), true);
-		this.setSceneLocation(data.getSceneLocation());
+		this.setSceneLocation(new Point(80,50));
 		this.setState(data.getState());
 		this.setNameBackground(Constant.PLAYER_NAME_COLOR);
 	}
@@ -165,6 +153,7 @@ public class Players implements IEventTask {
 
 	/**
 	 * 获取人物坐标
+	 * 
 	 * @return
 	 */
 	public Point getLocation() {
@@ -177,6 +166,7 @@ public class Players implements IEventTask {
 
 	/**
 	 * 设置人物坐标
+	 * 
 	 * @param x
 	 * @param y
 	 */
@@ -187,6 +177,7 @@ public class Players implements IEventTask {
 
 	/**
 	 * 获取当前场景坐标
+	 * 
 	 * @return
 	 */
 	public Point getSceneLocation() {
@@ -195,6 +186,7 @@ public class Players implements IEventTask {
 
 	/**
 	 * 设置场景坐标
+	 * 
 	 * @param point
 	 */
 	public void setSceneLocation(Point point) {
@@ -204,25 +196,26 @@ public class Players implements IEventTask {
 
 	/**
 	 * 绘制
+	 * 
 	 * @param g
 	 */
 	public void draw(Graphics2D g, int x, int y) {
 		g.setFont(nameFont);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		if (mMount!=null)
+		if (mMount != null)
 			mMount.draw(g, x, y);
 		if (person != null)
 			person.drawBitmap(g, x, y);
 		if (shadow != null)
 			shadow.drawBitmap(g, x, y);
-		if (mMount==null) {
+		if (mMount == null) {
 			if (mWeapon != null)
 				mWeapon.draw(g, x, y);
 		}
 		int textY = y + 25;
 		int texts = y + 43;
 		Graphics2D g2d = (Graphics2D) g.create();
-		if (personName != null && personName!=null) {
+		if (personName != null && personName != null) {
 			int textX = x - g.getFontMetrics().stringWidth(personName) / 2;
 			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			g2d.setColor(getNameBackground());
@@ -230,57 +223,54 @@ public class Players implements IEventTask {
 			g2d.drawString(personName, textX, describe == null ? textY : texts);
 		}
 
-		if (describe != null && personName!=null) {
+		if (describe != null && personName != null) {
 			int textsX = x - g.getFontMetrics().stringWidth(describe) / 2;
 			g2d.setColor(isHover ? Color.red : Constant.DESCRIBE_COLOR);
 			g2d.drawString(describe, textsX, textY);
 		}
-
-//		if(this.onceEffect!=null) {
-//			this.onceEffect.drawBitmap(g2d, x, y);
-//		}
-//		g.setColor(Color.RED);
-//		if(index<3){
-//			g.drawRect(300+100*index,90, rect.width, rect.height);
-//		}else{
-//			g.drawRect(300+100*(index-3),220, rect.width, rect.height);
-//		}
+		
+		if (this.onceEffect != null){
+			onceEffect.drawBitmap(g2d,x,y);
+		}
+		
 		g2d.dispose();
 	}
 
-	public int index;
 
 	/**
 	 * 更具状态 实例NPC人物
+	 * 
 	 * @param state
 	 * @return
 	 */
 	private Sprite createPerson(String state) {
-		String mountIndex = mMount!=null ? mMount.getMountCharacter() : "";
+		String mountIndex = mMount != null ? mMount.getMountCharacter() : "";
 		String value = mountIndex.length() > 0 ? mountIndex + "/" : "";
-		Sprite sprite = SpriteFactory.loadSprite("/shape/char/" + this.character + "/" + value + state + ".tcp",
+		Sprite sprite = SpriteFactory.loadSprite("res/shape/char/" + this.character + "/" + value + state + ".tcp",
 				this.colorations);
 		return sprite;
 	}
 
-	public void setSchoolCharacter(String schoolCharacter) {
-		this.schoolCharacter = schoolCharacter;
+	public void setRace(String race) {
+		this.race = race;
 	}
+
 	/**
 	 * 设置状态 实例 Person 对象
+	 * 
 	 * @param state
 	 */
 	public void setState(String state) {
 		if (state == null) {
-			state = mMount!=null ? STATE_MOUNT_STAND : STATE_STAND;
+			state = mMount != null ? STATE_MOUNT_STAND : STATE_STAND;
 		}
 		if (this.state != state) {
 			this.state = state;
 			this.person = createPerson(state);
 			this.person.setDirection(this.direction);
 			this.person.resetFrames();
-			if (mMount==null) {
-				if(mWeapon != null){
+			if (mMount == null) {
+				if (mWeapon != null) {
 					mWeapon.createSprite(this);
 					mWeapon.setDirection(this.direction);
 					mWeapon.resetFrames();
@@ -295,6 +285,7 @@ public class Players implements IEventTask {
 
 	/**
 	 * 更新动画
+	 * 
 	 * @param elapsedTime
 	 */
 	public void update(long elapsedTime) {
@@ -306,16 +297,18 @@ public class Players implements IEventTask {
 			mWeapon.update(elapsedTime);
 		if (mMount != null)
 			mMount.update(elapsedTime);
-//		if (this.onceEffect != null) {
-//			this.onceEffect.update(elapsedTime);
-//			if (this.onceEffect.getRepeat() == 0) {
-//				this.onceEffect = null;
-//			}
-//		}
+		
+		if (this.onceEffect != null) {
+			this.onceEffect.update(elapsedTime);
+			if (this.onceEffect.getRepeat() == 0) {
+				this.onceEffect = null;
+			}
+		}
 	}
 
 	/**
 	 * 设置方向
+	 * 
 	 * @param direction
 	 */
 	public void setDirection(int direction) {
@@ -346,22 +339,25 @@ public class Players implements IEventTask {
 			person.setDirection(direction);
 			if (mWeapon != null) {
 				mWeapon.setDirection(direction);
-				if(mWeapon.getSprite()!=null)
-					mWeapon.getSprite().getCurrAnimation().setIndex(mWeapon.getSprite().getCurrAnimation().getCurrentFrameIndex());
+				if (mWeapon.getSprite() != null)
+					mWeapon.getSprite().getCurrAnimation()
+							.setIndex(mWeapon.getSprite().getCurrAnimation().getCurrentFrameIndex());
 			}
 			if (mMount != null) {
 				mMount.setDirection(direction);
-				mMount.getSprite().getCurrAnimation().setIndex(mMount.getSprite().getCurrAnimation().getCurrentFrameIndex());
+				mMount.getSprite().getCurrAnimation()
+						.setIndex(mMount.getSprite().getCurrAnimation().getCurrentFrameIndex());
 			}
 		}
 	}
 
 	/**
 	 * 修改人物动作 并修改坐标
+	 * 
 	 * @param elapsedTime
 	 */
 	public void updateMovement(long elapsedTime) {
-		this.setState(this.isMoving() ? mMount!=null ? STATE_MOUNT_WALK : STATE_WALK : this.state);
+		this.setState(this.isMoving() ? mMount != null ? STATE_MOUNT_WALK : STATE_WALK : this.state);
 		if (this.isMoving()) {
 			if (this.isMoveSceneCoordinate()) {
 				prepareStep();
@@ -376,7 +372,25 @@ public class Players implements IEventTask {
 			}
 		}
 	}
-
+	
+	/**
+	 * 单次播放效果动画
+	 * @param name
+	 * @param sound TODO
+	 */
+	public void playEffect(String name, boolean sound, String race) {
+		Animation s = SpriteFactory.loadAnimation("res/magic/"+race+ "/" + name + ".tcp");
+		s.setRepeat(1);
+		this.onceEffect = s;
+		if(sound){
+			MP3Player.play("res/music/"+name+".mp3");
+		}
+	}
+	
+	public void waitForEffect() {
+		if (this.onceEffect != null)
+			this.onceEffect.waitFor();
+	}
 	/**
 	 * 事件处理
 	 */
@@ -391,6 +405,7 @@ public class Players implements IEventTask {
 
 	/**
 	 * 人物事件处理
+	 * 
 	 * @param event
 	 */
 	private void handleEvent(PlayerEvent event) {
@@ -429,6 +444,7 @@ public class Players implements IEventTask {
 
 	/**
 	 * 清除所有Player事件
+	 * 
 	 * @param l
 	 */
 	public void removePlayerListener(IPlayerListener l) {
@@ -437,6 +453,7 @@ public class Players implements IEventTask {
 
 	/**
 	 * 添加事件
+	 * 
 	 * @param scenePlayerHandler
 	 */
 	public void addPlayerListener(IPlayerListener l) {
@@ -501,6 +518,7 @@ public class Players implements IEventTask {
 
 	/**
 	 * 根据路径的步进量计算出移动方向
+	 * 
 	 * @param step
 	 * @return
 	 */
@@ -541,7 +559,7 @@ public class Players implements IEventTask {
 		synchronized (MOVE_LOCK) {
 			this.moving = false;
 			this.movingOn = false;
-			this.setState(mMount!=null ? STATE_MOUNT_STAND : STATE_STAND);
+			this.setState(mMount != null ? STATE_MOUNT_STAND : STATE_STAND);
 		}
 	}
 
@@ -556,9 +574,9 @@ public class Players implements IEventTask {
 		return null;
 	}
 
-
 	/**
 	 * 根据方向移动到指定路径
+	 * 
 	 * @param direction
 	 */
 	private void stepTo(int direction) {
@@ -640,6 +658,7 @@ public class Players implements IEventTask {
 
 	/**
 	 * 计算
+	 * 
 	 * @param elapsedTime
 	 * @return
 	 */
@@ -671,6 +690,7 @@ public class Players implements IEventTask {
 
 	/**
 	 * 事件消费
+	 * 
 	 * @param e
 	 */
 	@SuppressWarnings("unchecked")
@@ -680,10 +700,11 @@ public class Players implements IEventTask {
 
 	/**
 	 * 修改方向
+	 * 
 	 * @param mouse
 	 */
 	public void changeDirection(Point mouse) {
-		int direction =  calculateStepDirection(mouse);
+		int direction = calculateStepDirection(mouse);
 		setDirection(direction);
 	}
 
@@ -727,11 +748,10 @@ public class Players implements IEventTask {
 		return direction;
 	}
 
-
 	public boolean contains(int x, int y) {
-		if(person!=null && shadow!=null) {
+		if (person != null && shadow != null) {
 			boolean b = person.contains(x, y) || shadow.contains(x, y);
-			if ((this.mWeapon!=null&&this.mWeapon.getSprite() != null) && (!b)) {
+			if ((this.mWeapon != null && this.mWeapon.getSprite() != null) && (!b)) {
 				b = this.mWeapon.getSprite().contains(x, y);
 			}
 			return b;
@@ -747,6 +767,7 @@ public class Players implements IEventTask {
 
 	/**
 	 * 改色后的 人物角色
+	 * 
 	 * @param colorations
 	 */
 	public void coloring(int[] colorations) {
@@ -756,7 +777,7 @@ public class Players implements IEventTask {
 			this.person.resetFrames();
 		}
 
-		if(mWeapon!=null){
+		if (mWeapon != null) {
 			mWeapon.createSprite(this);
 			mWeapon.setDirection(this.direction);
 			mWeapon.resetFrames();
@@ -765,33 +786,20 @@ public class Players implements IEventTask {
 
 	/**
 	 * 播放指定动作
+	 * 
 	 * @param state
 	 */
-	public void playOnce(String state){
+	public void playOnce(String state) {
 		this.setState(state);
 		this.person.setRepeat(1);
-		if(this.mWeapon!=null){
+		if (this.mWeapon != null) {
 			this.mWeapon.getSprite().setRepeat(1);
 		}
 	}
-	
-	public void writFor(){
+
+	public void writFor() {
 		this.person.getCurrAnimation().waitFor();
 	}
-
-
-//	public void playEffect(String name, boolean sound) {
-//		Animation s = SpriteFactory.loadAnimation("/magic/"+"1002"+"/"+ name + ".tcp");
-//		s.setRepeat(1);
-//		this.onceEffect = s;
-//		if(sound) {   
-//			try {
-//				MP3Player.play("sound/magic/" + name + ".mp3");
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
 
 	public void removeAllListeners() {
 		IPlayerListener[] listeners = listenerList.getListeners(IPlayerListener.class);
@@ -807,6 +815,7 @@ public class Players implements IEventTask {
 
 	/**
 	 * 获取文件名如0001
+	 * 
 	 * @return
 	 */
 	public String getCharacter() {
@@ -881,8 +890,8 @@ public class Players implements IEventTask {
 		return searcher;
 	}
 
-	public String getSchoolCharacter() {
-		return this.schoolCharacter;
+	public String getRace() {
+		return this.race;
 	}
 
 	public void setId(String id) {
@@ -892,26 +901,44 @@ public class Players implements IEventTask {
 	public String getId() {
 		return id;
 	}
-	
+
 	public int getSpeed() {
 		return speed;
 	}
+
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	
+
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
-	
+
 	public int getHp() {
 		return hp;
 	}
 	
+	public void setShadow(boolean isShadow) {
+		this.shadow = isShadow ? SpriteFactory.loadShadow() : null;
+	}
+
+	public void setMount(Mount mMount) {
+		this.mMount = mMount;
+		setState(mMount != null ? STATE_MOUNT_STAND : STATE_STAND);
+	}
+
+	public void setWeapon(Weapon mWeapon) {
+		this.mWeapon = mWeapon;
+	}
+	
+	public Weapon getWeapon() {
+		return mWeapon;
+	}
+
 	@Override
 	public String toString() {
-		return "Players [state=" + state + ", x=" + x + ", y=" + y + ", 方向=" + direction +",速度"+ speed +", 人物名字=" + personName
-				+ ", describe=" + describe + ", character=" + character + ",sceneX=" + sceneX + ", sceneY=" + sceneY + ", 改色方案="
-				+ Arrays.toString(colorations) + "]";
+		return "Players [state=" + state + ", x=" + x + ", y=" + y + ", 方向=" + direction + ",速度" + speed + ", 人物名字="
+				+ personName + ", describe=" + describe + ", character=" + character + ",sceneX=" + sceneX + ", sceneY="
+				+ sceneY + ", 改色方案=" + Arrays.toString(colorations) + "]"+ " 种族  "+race;
 	}
 }

@@ -55,7 +55,7 @@ final public class MountPager extends AbstractPanelHandler<MountMolder> implemen
 		}
 		// if(player.getMont()!=null)
 		// sprite=player.getMont();
-		allDir = modler.getAllDir("shape/char/" + character);
+		allDir = modler.getAllDir("res/shape/char/" + character);
 		list = modler.getList(propertiesConfigManager);
 		listScrollsPanel = new ListScrollPanel(120, 85, list);
 		list.setBounds(0, 0, 100, 100);
@@ -100,7 +100,7 @@ final public class MountPager extends AbstractPanelHandler<MountMolder> implemen
 		Mount mount=new Mount();
 		mount.setMountCharacter(mountIndex);
 		if (sprite != null) {
-			player.setSchoolCharacter(character);
+			player.setRace(character);
 			player.setMount(player.getMount()==null?mount:null);
 			ride.setText(player.getMount()!=null?"下骑" : "骑乘");
 		}
@@ -117,6 +117,9 @@ final public class MountPager extends AbstractPanelHandler<MountMolder> implemen
 		String spritePath = string.substring(
 				string.lastIndexOf(Constant.currentDir.charAt(Constant.currentDir.length() - 1)) + 1, string.length())
 				+ "/mountstand.tcp";
+		
+		
+		System.out.println(spritePath);
 		mountIndex = string.substring(string.lastIndexOf(Constant.flie_spance) + 1, string.length());
 		sprite = SpriteFactory.loadSprite(spritePath.replace("\\", "/"));
 	}
@@ -130,6 +133,6 @@ final public class MountPager extends AbstractPanelHandler<MountMolder> implemen
 
 	@Override
 	protected String setConfigFileName() {
-		return "textconfig/resources.properties";
+		return "value/resources.properties";
 	}
 }
