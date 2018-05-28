@@ -419,7 +419,7 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 				Long lastPatrolTime = (Long) Constant.props.get(Constant.LAST_PATROL_TIME);
 				if (lastPatrolTime != null && nowtime - lastPatrolTime > 10000L) {
 					if (random.nextInt(100) < 5) {
-						// enterTheWar();
+						enterTheWar();
 					}
 				}
 			}
