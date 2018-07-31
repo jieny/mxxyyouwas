@@ -37,9 +37,9 @@ public class Sprite extends AbstractCanvas {
 
 	private boolean autoPlay = true; // 自动循环
 
-	private int centerX;
+	private int centerX; //中心X坐标
 
-	private int centerY;
+	private int centerY; //中心Y坐标
 
 	private List<Integer> colorations; // 颜色
 

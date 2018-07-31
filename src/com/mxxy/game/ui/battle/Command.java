@@ -12,6 +12,7 @@ import com.mxxy.game.sprite.Players;
  * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class Command implements Comparable {
+	
 	private String cmd;
 	
 	private Players source;

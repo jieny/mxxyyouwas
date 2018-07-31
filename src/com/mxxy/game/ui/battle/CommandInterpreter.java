@@ -9,6 +9,7 @@ import com.mxxy.game.modler.MagicModle.MagicConfig;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.sprite.Sprite;
 import com.mxxy.game.ui.BattlePanel;
+import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.SpriteFactory;
 import com.mxxy.game.was.Toolkit;
 
@@ -30,7 +31,6 @@ public class CommandInterpreter {
 	public int attackCount = 0;
 
 	public void attack(Command command) {
-		System.out.println("触发攻击指令");
 		Players source = command.getSource();
 		Players target = command.getTarget();
 		Point location = source.getLocation();
@@ -74,7 +74,9 @@ public class CommandInterpreter {
 		} else {
 			battlePanel.rush(source, location.x, location.y, Players.STATE_RUSHB);
 		}
-		source.setState(Players.STATE_WRITBUTTLE);
+
+		String state = location.x > Constant.WINDOW_WIDTH / 2 ? Players.STATE_WRITBUTTLE : Players.STATE_STAND;
+		source.setState(state);
 		battlePanel.setBattleMessage("");
 	}
 
@@ -89,13 +91,12 @@ public class CommandInterpreter {
 		switch (magicConfig.getMagicId()) {
 		case MagicConfig.BIGMAGIC:
 			source.playOnce(Players.STATE_MAGIC);
-			groupMagic(target);
+			groupMagic(source, target);
 			break;
-		case MagicConfig.SINGLEGROUPMAGIC: 
+		case MagicConfig.SINGLEGROUPMAGIC:
 			source.playOnce(Players.STATE_MAGIC);
 			List<Players> hostileTeam = battlePanel.getHostileTeam();
 			List<Players> magicHostileTeam = battlePanel.getMagicHostileTeam(target, hostileTeam);
-			magicHostileTeam.add(target);
 			for (int i = magicHostileTeam.size() - 1; i >= 0; i--) {
 				singleMagic(magicHostileTeam.get(i), magicConfig.getName(), source.getRace());
 			}
@@ -114,7 +115,6 @@ public class CommandInterpreter {
 		case MagicConfig.GROUPATTACK:
 			List<Players> hostileTeams = battlePanel.getHostileTeam();
 			List<Players> magicHostileTeams = battlePanel.getMagicHostileTeam(target, hostileTeams);
-			magicHostileTeams.add(target);
 			for (int i = magicHostileTeams.size() - 1; i >= 0; i--) {
 				Command command2 = new Command(Players.STATE_ATTACK, source, magicHostileTeams.get(i));
 				command2.add(MAGICINFIG_TAG, magicConfig);
@@ -123,7 +123,8 @@ public class CommandInterpreter {
 			break;
 		}
 		source.writFor();
-		source.setState(Players.STATE_WRITBUTTLE);
+		String state = Players.STATE_WRITBUTTLE;
+		source.setState(state);
 		battlePanel.setBattleMessage("");
 	}
 
@@ -133,11 +134,11 @@ public class CommandInterpreter {
 	 * @param target
 	 *            目标敌人
 	 */
-	public void groupMagic(Players target) {
+	public void groupMagic(Players source, Players target) {
 		List<Players> hostileTeam = battlePanel.getHostileTeam();
 		List<Players> magic = battlePanel.getMagicHostileTeam(target, hostileTeam);
+		source.writFor();
 		battlePanel.playOnceMusic(true);
-		magic.add(target);
 		for (Players players : magic) {
 			players.playOnce(Players.STATA_HIT);
 			battlePanel.showPoints(players, -10);

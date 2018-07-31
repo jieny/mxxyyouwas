@@ -13,6 +13,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowListener;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -27,7 +30,8 @@ abstract public class AbstractBaseEventListener<T extends ISetOnListener<?>> ext
 		ActionListener, /** 点击事件 */
 		FocusListener, /** 焦点事件 */
 		IPanelListener, /** 面板事件 */
-		ItemListener, ChangeListener {
+		ItemListener, 
+		ChangeListener{
 	protected T mPanel;
 
 	public AbstractBaseEventListener() {

@@ -7,7 +7,6 @@ import java.awt.event.ItemEvent;
 import javax.swing.JCheckBox;
 
 import com.mxxy.game.base.SwingApplication;
-import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
 import com.mxxy.game.modler.SettingModeler;
 import com.mxxy.game.utils.MP3Player;
@@ -27,11 +26,6 @@ final public class SettingsPage extends AbstractPanelHandler<SettingModeler> {
 	private GameSlider gameSlider;
 
 	@Override
-	public void init(PanelEvent evt) {
-		super.init(evt);
-	}
-
-	@Override
 	protected void initView() {
 		musicCheckBox = findViewById("music");
 		windowsCheckBox = findViewById("windows");
@@ -45,10 +39,10 @@ final public class SettingsPage extends AbstractPanelHandler<SettingModeler> {
 		Image ball1 = SpriteFactory.loadImage("res/componentsRes/ball1.png");
 		Image ball2 = SpriteFactory.loadImage("res/componentsRes/ball2.png");
 		Image ball3 = SpriteFactory.loadImage("res/componentsRes/ball3.png");
-//		gameSlider = ComponentFactory.createSlider(0, 100, 0, null, null, null,
-//				null,null,this, SwingConstants.HORIZONTAL);
-//		gameSlider.setBounds(112, 127, 200, 15);
-//		panel.add(gameSlider, 0);
+		// gameSlider = ComponentFactory.createSlider(0, 100, 0, null, null, null,
+		// null,null,this, SwingConstants.HORIZONTAL);
+		// gameSlider.setBounds(112, 127, 200, 15);
+		// panel.add(gameSlider, 0);
 	}
 
 	String state = null;
@@ -61,7 +55,7 @@ final public class SettingsPage extends AbstractPanelHandler<SettingModeler> {
 		if (checkBox == musicCheckBox) {
 			on = checkBox.isSelected();
 			state = "music";
-			modler.stopMusic(on, panel.getScene());
+			modler.stopMusic(on, (String) panel.getAttributes("screenId"));
 		}
 	}
 
@@ -90,9 +84,10 @@ final public class SettingsPage extends AbstractPanelHandler<SettingModeler> {
 	 */
 	public void restartGame(ActionEvent e) {
 		String jarExecPath = RuntimeUtil.getJarExecPath(SwingApplication.class);
-//		RuntimeUtil.exec("java c"+jarExecPath+"")
-//		 RuntimeUtil.exec("java RuntimeUtil.getJarExecPath(SwingApplication.class)com/mxxy/game/base/SwingApplication");
-		 application.exitGame();
+		// RuntimeUtil.exec("java c"+jarExecPath+"")
+		// RuntimeUtil.exec("java
+		// RuntimeUtil.getJarExecPath(SwingApplication.class)com/mxxy/game/base/SwingApplication");
+		application.exitGame();
 	}
 
 	@Override

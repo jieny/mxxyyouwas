@@ -76,7 +76,7 @@ final public class SummonPager extends AbstractPanelHandler<SummonMolder>
 		summonName.setText(value);
 	}
 
-	public String[] state = { "stand", "walk", "attack", "magic" };
+	public String[] state = { Players.STATE_STAND, Players.STATE_WALK, Players.STATE_ATTACK, Players.STATE_MAGIC };
 	/**
 	 * 控制宠物状态
 	 */

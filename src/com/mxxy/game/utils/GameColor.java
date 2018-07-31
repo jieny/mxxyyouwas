@@ -1,6 +1,8 @@
 package com.mxxy.game.utils;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 游戏取色器
@@ -8,6 +10,24 @@ import java.awt.Color;
  * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class GameColor extends Color {
+	
+	private static Map<String, Color> colors = new HashMap<String, Color>();
+	
+	{
+		colors.put("black", GameColor.black);
+		colors.put("blue", GameColor.blue);
+		colors.put("cyan", GameColor.cyan);
+		colors.put("darkGray", GameColor.darkGray);
+		colors.put("gray", GameColor.gray);
+		colors.put("green",GameColor.green);
+		colors.put("lightGray", GameColor.lightGray);
+		colors.put("magenta", GameColor.magenta);
+		colors.put("orange", GameColor.orange);
+		colors.put("pink", GameColor.pink);
+		colors.put("red", GameColor.red);
+		colors.put("white", GameColor.white);
+		colors.put("yellow", GameColor.yellow);
+	}
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,6 +58,8 @@ public class GameColor extends Color {
 	public final static GameColor blue = new GameColor(0, 0, 255);
 
 	public final static int transparent = 0xff000000;
+	
+	
 
 	public GameColor(Color c) {
 		super(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
@@ -242,5 +264,12 @@ public class GameColor extends Color {
 	public Color getAWTColor() {
 		return new Color(getRed(), getGreen(), getBlue(), getAlpha());
 	}
-
+	
+	public static Color getColor(String color) {
+		Color c = colors.get(color);
+		if(c == null) {
+			c = Color.getColor(color, Color.white);
+		}
+		return c;
+	}
 }

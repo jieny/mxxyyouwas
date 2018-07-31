@@ -3,7 +3,7 @@ package com.mxxy.game.resources;
 
 public class MedicineItem implements Item{
 	
-    private Long id;
+    private String id;
     /**物品名字*/
     private String name;
     /**描述*/
@@ -25,11 +25,11 @@ public class MedicineItem implements Item{
 
     public MedicineItem() {}
 
-    public MedicineItem(Long id) {
+    public MedicineItem(String id) {
         this.id = id;
     }
 
-    public MedicineItem(Long id, String name, long price, int hp, int mp, int injury, String type, short level) {
+    public MedicineItem(String id, String name, long price, int hp, int mp, int injury, String type, short level) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -40,11 +40,11 @@ public class MedicineItem implements Item{
         this.level = level;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

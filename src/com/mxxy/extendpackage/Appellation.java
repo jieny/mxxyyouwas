@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JList;
 
-import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
 import com.mxxy.game.modler.AppellationMolder;
 import com.mxxy.game.widget.Label;
@@ -25,11 +24,6 @@ final public class Appellation extends AbstractPanelHandler<AppellationMolder> i
 	private Label label;
 
 	public String currentDescribe;
-
-	@Override
-	public void init(PanelEvent evt) {
-		super.init(evt);
-	}
 
 	@Override
 	protected void initView() {

@@ -131,7 +131,7 @@ final public class GamePager extends AbstractPanelHandler {
 	 */
 	public void openSetting(ActionEvent e) {
 		Panel oldpanel = uihelp.getPanel(e);
-		oldpanel.setSceneId(context.getScene());
+		oldpanel.setAttributes("screenId",context.getScene());
 		showOrHide(oldpanel);
 	}
 	

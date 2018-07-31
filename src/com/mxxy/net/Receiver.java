@@ -49,8 +49,7 @@ public class Receiver extends Thread {
 
 							Message msg;
 							try {
-								msg = InstanceUtil
-										.getInstance(Class.forName("com.mxxy.protocol." + messageState + "Message"));
+								msg = InstanceUtil.getInstance(Class.forName("com.mxxy.protocol." + messageState + "Message"));
 
 								msg.parse(buffer.array());
 

@@ -2,7 +2,7 @@ package com.mxxy.game.resources;
 
 public interface Item{
 
-	public abstract Long getId();
+	public abstract String getId();
 
 	public abstract String getName();
 

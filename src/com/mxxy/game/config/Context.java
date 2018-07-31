@@ -34,8 +34,8 @@ public class Context {
 		return player;
 	}
 
-	public void setScene(String scene) {
-		this.scene = scene;
+	public void setScene(String screen) {
+		this.scene = screen;
 	}
 
 	public String getScene() {

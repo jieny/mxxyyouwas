@@ -87,6 +87,7 @@ public class GameFrame extends JFrame implements IWindows {
 			setSize(preferredSize);
 			setUndecorated(panel.getClass().getSimpleName().equals("LoadingPanel"));
 			setLocationRelativeTo(null);
+			setLocation(-200, 500);
 			setVisible(true);
 		}
 		JComponent component = panel.getComponent();

@@ -91,7 +91,6 @@ public class SwingApplication extends Application {
 	/**
 	 * 进入战争模块
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void enterTheWar(Object[] args) {
 		getUIHelp().hidePanel(GamePager.class.getSimpleName());
@@ -121,6 +120,7 @@ public class SwingApplication extends Application {
 		GamePanel gamePanel = this.gamePanel;
 		gamePanel.setPlayerLocation(context.getPlayer().getSceneLocation());
 		gamePanel.initGameDate();
+		((BattlePanel)gameFrame.getPanel()).getTimerManager().cleanTimer();
 		gameFrame.showPanel(gamePanel);
 		getUIHelp().showPanel(GamePager.class.getSimpleName());
 		gamePanel.playMusic();

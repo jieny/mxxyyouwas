@@ -62,11 +62,21 @@ public class PlayerVO implements Serializable {
 	 * 称谓
 	 */
 	private String describe;
-
+	
+	
+	private long moeny;
+	
 	private int speed;
 
 	public int getSpeed() {
 		return speed;
+	}
+	
+	public void setMoeny(long moeny) {
+		this.moeny = moeny;
+	}
+	public long getMoeny() {
+		return moeny;
 	}
 
 	public void setSpeed(int speed) {

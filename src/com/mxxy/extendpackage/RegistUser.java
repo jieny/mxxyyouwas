@@ -43,7 +43,7 @@ final public class RegistUser extends AbstractPanelHandler<RegistUserModler> {
 
 	@Override
 	protected String setConfigFileName() {
-		return "save/logindate.propertise";
+		return "save/logindata.propertise";
 	}
 
 	/**

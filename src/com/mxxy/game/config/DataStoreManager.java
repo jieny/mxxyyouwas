@@ -1,9 +1,7 @@
 package com.mxxy.game.config;
 
 import java.awt.Point;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,15 +11,16 @@ import java.util.Map;
 import javax.swing.SwingWorker;
 
 import com.mxxy.game.resources.NpcBean;
+import com.mxxy.game.resources.NpcBean.NpcListbean;
 import com.mxxy.game.resources.SceneJump;
+import com.mxxy.game.resources.SceneJump.SceneJumpBean;
 import com.mxxy.game.resources.SceneNpc;
 import com.mxxy.game.resources.SceneTeleporter;
-import com.mxxy.game.resources.NpcBean.NpcListbean;
-import com.mxxy.game.resources.SceneJump.SceneJumpBean;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.sprite.Sprite;
 import com.mxxy.game.sprite.Weapon;
 import com.mxxy.game.utils.Constant;
+import com.mxxy.game.utils.FileUtils;
 import com.mxxy.game.utils.JsonUtils;
 
 /**
@@ -167,23 +166,10 @@ public class DataStoreManager implements IDataManager {
 		public FileWork(String filename) {
 			this.fileName = filename;
 		}
-
-		StringBuilder stringBuilder = new StringBuilder();
-
+		
 		@Override
 		protected String doInBackground() throws Exception {
-			try {
-				@SuppressWarnings("resource")
-				BufferedReader bufferedReader = new BufferedReader(
-						new InputStreamReader(new FileInputStream("uiconfig/" + fileName + ".json"), "utf-8"));
-				String inString = null;
-				while ((inString = bufferedReader.readLine()) != null) {
-					stringBuilder.append(inString);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return stringBuilder.toString();
+			return FileUtils.readFile(new File("uiconfig/" + fileName + ".json"),"utf-8");
 		}
 	}
 

@@ -11,7 +11,6 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
 import com.mxxy.game.base.Panel;
-import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
 import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.GameColor;
@@ -50,12 +49,6 @@ final public class SelectServer extends AbstractPanelHandler {
 	private EmptyBorder emptyborder;
 
 	private RoundLineBorder RoundLineBorder;
-
-	@Override
-	public void init(PanelEvent evt) {
-		super.init(evt);
-		System.out.println("SelectServer" + panel);
-	}
 
 	@Override
 	protected void initView() {
@@ -187,7 +180,6 @@ final public class SelectServer extends AbstractPanelHandler {
 		}
 
 		@Override
-		public void paintImmediately(int x, int y, int w, int h) {
-		}
+		public void paintImmediately(int x, int y, int w, int h) {}
 	}
 }

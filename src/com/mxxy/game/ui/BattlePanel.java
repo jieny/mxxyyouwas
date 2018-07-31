@@ -27,6 +27,7 @@ import com.mxxy.game.sprite.Magic;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.sprite.Sprite;
 import com.mxxy.game.ui.battle.Command;
+import com.mxxy.game.ui.battle.CommandAction;
 import com.mxxy.game.ui.battle.CommandManager;
 import com.mxxy.game.ui.battle.TimeManager;
 import com.mxxy.game.utils.Constant;
@@ -51,7 +52,9 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 
 	private CommandManager commandManager;
 
-	public TimeManager timerManager;
+	private CommandAction comandAction;
+
+	private TimeManager timerManager;
 
 	private Command lastCmd;
 	/** 已方 */
@@ -88,6 +91,7 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 		this.tileMap = tileMap;
 		this.point = viewPosition;
 		commandManager = new CommandManager(this);
+
 	}
 
 	@Override
@@ -179,6 +183,11 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 
 	private MagicConfig magicConfig;
 
+	/**
+	 * 设置对应法术
+	 * 
+	 * @param mBean
+	 */
 	public void setSelectMagic(MagicConfig mBean) {
 		this.magicConfig = mBean;
 		isSelectMagic = true;
@@ -213,7 +222,6 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 	private int targetX, targetY;
 	private int originX, originY;
 	private Players movingPlayer;
-	private Animation targetAnim;
 
 	private void updateMovement(long elapsedTime) {
 		int dx = 0, dy = 0;
@@ -275,8 +283,9 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 		}
 		drawNpc(g, elapsedTime);
 		drawComponent(g, elapsedTime);
-		if (mMagic != null)
+		if (mMagic != null) {
 			drawMagic(g, elapsedTime);
+		}
 		drawPoints(g);
 		drawMemory(g);
 	}
@@ -570,23 +579,25 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 	 */
 	public List<Players> getMagicHostileTeam(Players target, List<Players> hostileTeam) {
 		List<Players> list = new ArrayList<Players>(hostileTeam);
-		list.remove(target);
-		Collections.sort(list, new Comparator<Players>() {
-			@Override
-			public int compare(Players o1, Players o2) {
-				if (o1.getSpeed() < o2.getSpeed()) {
-					return 1;
+		if (list.size() >= 3) {
+			Collections.sort(list, new Comparator<Players>() {
+				@Override
+				public int compare(Players o1, Players o2) {
+					if (o1.getSpeed() < o2.getSpeed()) {
+						return 1;
+					}
+					if (o1.getSpeed() == o2.getSpeed()) {
+						return 0;
+					}
+					return -1;
 				}
-				if (o1.getSpeed() == o2.getSpeed()) {
-					return 0;
-				}
-				return -1;
-			}
-		});
-		ArrayList<Players> players = new ArrayList<Players>();
-		players.add(list.get(0));
-		players.add(list.get(1));
-		return players;
+			});
+			ArrayList<Players> players = new ArrayList<Players>();
+			players.add(list.get(0));
+			players.add(list.get(1));
+			players.add(target);
+		}
+		return list;
 	}
 
 	/**
@@ -629,6 +640,10 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 
 	public void setmMagic(Magic mMagic) {
 		this.mMagic = mMagic;
+	}
+
+	public TimeManager getTimerManager() {
+		return timerManager;
 	}
 
 	public void hidePanel() {

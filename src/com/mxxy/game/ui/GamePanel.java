@@ -227,16 +227,14 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 			throw new IllegalArgumentException("跳转场景失败，sceneId不能为空！");
 		}
 	}
-	
-	
-	
+
 	/**
 	 * 更换场景
 	 */
 	public void replaceScreen() {
-		
+
 	}
-	
+
 	/**
 	 * 鼠标点击效果
 	 * 
@@ -419,6 +417,7 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 				Long lastPatrolTime = (Long) Constant.props.get(Constant.LAST_PATROL_TIME);
 				if (lastPatrolTime != null && nowtime - lastPatrolTime > 10000L) {
 					if (random.nextInt(100) < 5) {
+
 						enterTheWar();
 					}
 				}
@@ -428,10 +427,9 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 		@Override
 		public void walk(PlayerEvent evt) {
 			Point target = evt.getTarget(); // 获取到点击的坐标点
-
-			System.out.println(evt.getPlayer().getDirection());
 			walkTo(target.x, target.y);
 		}
+
 	}
 
 	/**
@@ -587,7 +585,7 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 		List<Players> ownsideTeam = new ArrayList<Players>();// 己方阵容
 		List<Players> hostileTeam = new ArrayList<Players>();// 敌方阵容
 		// (Math.random()*(5-1)+1)
-		int[] randomCommon = StringUtils.randomCommon(0, 20, (int) 5);
+		int[] randomCommon = StringUtils.randomCommon(0, 20, (int) 1);
 		for (int i = 0; i < randomCommon.length; i++) {
 			hostileTeam.add(this.createElf(context.getScene(), randomCommon[i]));
 		}
@@ -611,7 +609,7 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 			p = dataStore.createElf(Constant.SCENE_DHW_ELFS[elfIndex], Constant.DHW_ELFNAMES[elfIndex], elflevel);
 			break;
 		case Constant.SCENE_DHW:
-			p = dataStore.createElf(Constant.DF_ELFS[elfIndex], Constant.DF_ELFNAMES[elfIndex], elflevel);
+			p = dataStore.createElf(Constant.SCENE_DHW_ELFS[elfIndex], Constant.DHW_ELFNAMES[elfIndex], elflevel);
 			break;
 		}
 		return p;

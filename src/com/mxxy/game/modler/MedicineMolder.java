@@ -1,36 +1,35 @@
 package com.mxxy.game.modler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.mxxy.game.resources.Item;
 import com.mxxy.game.resources.ItemInstance;
 import com.mxxy.game.resources.MedicineItem;
+import com.mxxy.game.resources.MedicineList;
 
 public class MedicineMolder {
-
-	public ItemInstance createItem(String name) {
-		return this.createItem(name, 1);
+	
+	public ItemInstance createItem(String name, MedicineList parses) {
+		return this.createItem(name, 1,parses);
 	}
 	
-	public ItemInstance createItem(String name, int amount) {
+	public ItemInstance createItem(String name, int amount, MedicineList parses) {
 		if(name == null || name.isEmpty()) return null;
 		name = name.trim();
-		Item item = this.findItemByName(name);
+		Item item = this.findItemByName(name,parses);
 		return new ItemInstance(item, amount);
 	}
 	
+	private Item findItemByName(String name, MedicineList parses) {
+		return this.getMedicineItem(parses.getData(), name);
+	}
 	
-
-	private Item findItemByName(String name) {
-		List<MedicineItem> results = new ArrayList<MedicineItem>();
-		MedicineItem aItem =new MedicineItem();
-		aItem.setDescription("z");
-		aItem.setId(0001L);
-		aItem.setHp(100);
-		aItem.setType("type");
-		aItem.setName("name");
-		results.add(aItem);
-		return results.get(0);
+	public MedicineItem getMedicineItem(List<MedicineItem> medicineItems,String name) {
+		for (MedicineItem medicineItem : medicineItems) {
+			if(medicineItem.getName().equals(name)) {
+				return medicineItem;
+			}
+		}
+		return null;
 	}
 }

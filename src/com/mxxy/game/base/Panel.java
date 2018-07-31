@@ -45,9 +45,9 @@ public class Panel extends JPanel implements IEventTask, ActionListener, ISetOnL
 	private SpriteImage smapImage;
 	/** 面板是否移动 */
 	private boolean isMove;
-
+	/** 参数传递 */
 	private Map<String, Object> attributes;
-	
+
 	public Panel(int width, int height) {
 		super(null);
 		setSize(width, height);
@@ -227,11 +227,15 @@ public class Panel extends JPanel implements IEventTask, ActionListener, ISetOnL
 	public void paintImmediately(int x, int y, int w, int h) {
 	}
 
+	/**
+	 * 获取当前鼠标坐标
+	 * 
+	 * @return
+	 */
 	public Point getPointCursor() {
 		return super.getMousePosition();
 	}
-	
-	
+
 	public void setAttributes(String name, Object value) {
 		if (attributes == null) {
 			attributes = new HashMap<String, Object>();
@@ -241,15 +245,5 @@ public class Panel extends JPanel implements IEventTask, ActionListener, ISetOnL
 
 	public Object getAttributes(String name) {
 		return (attributes == null) ? null : attributes.get(name);
-	}
-	
-	private String scene;
-
-	public void setSceneId(String scene) {
-		this.scene = scene;
-	}
-
-	public String getScene() {
-		return scene;
 	}
 }

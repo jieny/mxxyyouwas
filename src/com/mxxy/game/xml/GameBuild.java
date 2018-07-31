@@ -124,13 +124,7 @@ public class GameBuild implements IGameBuilder {
 			label = new Label(SpriteFactory.loadAnimation(path));
 		}
 		if (StringUtils.isNotBlank(color)) {
-			if (color.equals("black")) {
-				label.setForeground(GameColor.BLACK);
-			} else if (color.equals("red")) {
-				label.setForeground(GameColor.RED);
-			} else if (color.equals("green")) {
-				label.setForeground(GameColor.green);
-			}
+			label.setForeground(GameColor.getColor(color));
 		}
 		if (StringUtils.isNotBlank(griva)) {
 			label.setHorizontalAlignment(grivate[Integer.parseInt(griva)]);
@@ -214,7 +208,7 @@ public class GameBuild implements IGameBuilder {
 		if (StringUtils.isNotBlank(transparency)) {
 			panel.setTransparency(Float.parseFloat(transparency));
 		}
-		panel.setBackground(Color.black);
+		panel.setBackground(GameColor.black);
 		panel.setMove(rootElement.attributeValue("move") != null);
 		panel.setRightClickClose(rootElement.attributeValue("isReightClose") != null);
 		panel.setLocation(x, y);

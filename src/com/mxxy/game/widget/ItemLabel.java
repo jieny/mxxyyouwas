@@ -33,7 +33,7 @@ public class ItemLabel extends Label{
 	public void setItem(ItemInstance item) {
 		this.item = item;
 		if(item!=null) {
-			Animation anim = SpriteFactory.loadAnimation(String.format("res/item/item50/%04d.tcp",item.getItemId())); 
+			Animation anim = SpriteFactory.loadAnimation("res/item/item50/"+item.getItemId()+".tcp"); 
 			setAnim(anim);
 		}else {
 			setAnim(null);

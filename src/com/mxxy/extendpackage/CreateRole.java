@@ -195,6 +195,7 @@ final public class CreateRole extends AbstractPanelHandler<CreteRoleMolder>  {
 		playerVO.setmWeapon(mWeapon);
 		playerVO.setState("stand");// 设置人物站立
 		playerVO.setDescribe("护城小兵");// 设置人物称谓
+		playerVO.setMoeny(10000000);
 		playerVO.setSceneId(Constant.SCENE_DHW);
 		p.setPlayerVO(playerVO);
 		p.setCreateDate(new Date());

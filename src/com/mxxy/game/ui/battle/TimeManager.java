@@ -13,53 +13,59 @@ import com.mxxy.game.widget.Label;
 
 /**
  * 回合时间管理器
- * @author ZAB
- * 邮箱 ：624284779@qq.com
+ * 
+ * @author ZAB 邮箱 ：624284779@qq.com
  */
 public class TimeManager {
 
 	private ImageIcon wirtImage;
-	
-	private Label secLeft, secRight,wirtLabel;
-	
+
+	private Label secLeft, secRight, wirtLabel;
+
 	private Timer timer;
-	
+
 	private BattlePanel battlePanel;
 
+	private int countDownTime = 8;
+
 	public TimeManager(BattlePanel battlePanel) {
-		this.battlePanel=battlePanel;
+		this.battlePanel = battlePanel;
 	}
-	
-	private ImageIcon timerImge[];
+
+	private ImageIcon[] timerImge;
+
 	/**
 	 * 开始倒计时
 	 */
 	public void countDown() {
-		timer=new Timer();
+		timer = new Timer();
 		secLeft = new Label(null, timerImge[3], 0);
 		secRight = new Label(null, timerImge[0], 0);
-		wirtLabel= new Label(null,wirtImage,0);
-		secLeft.setBounds(Constant.WINDOW_WIDTH / 2 - timerImge[0].getImage().getWidth(null), 27,timerImge[0].getIconWidth(), timerImge[0].getIconHeight());
+		wirtLabel = new Label(null, wirtImage, 0);
+		secLeft.setBounds(Constant.WINDOW_WIDTH / 2 - timerImge[0].getImage().getWidth(null), 27,
+				timerImge[0].getIconWidth(), timerImge[0].getIconHeight());
 		secRight.setBounds(Constant.WINDOW_WIDTH / 2, 27, timerImge[0].getIconWidth(), timerImge[0].getIconHeight());
-		wirtLabel.setBounds(Constant.WINDOW_WIDTH / 2 - wirtImage.getIconWidth()/2, 30, wirtImage.getIconWidth(), wirtImage.getIconHeight());
+		wirtLabel.setBounds(Constant.WINDOW_WIDTH / 2 - wirtImage.getIconWidth() / 2, 30, wirtImage.getIconWidth(),
+				wirtImage.getIconHeight());
 		battlePanel.add(secLeft, 0);
 		battlePanel.add(secRight, 0);
 		startTimer();
 	}
-	
+
 	/**
 	 * 开启定时任务
 	 */
-	public void startTimer(){
+	public void startTimer() {
 		timer.schedule(new CountDown(), 0, 1000);
 	}
+
 	/**
 	 * 关闭定时任务
 	 */
 	public void cleanTimer() {
 		timer.cancel();
 	}
-	
+
 	public void initTimes() {
 		timerImge = new ImageIcon[10];
 		for (int i = 0; i < timerImge.length; i++) {
@@ -70,6 +76,7 @@ public class TimeManager {
 
 	/**
 	 * 倒计时
+	 * 
 	 * @param number
 	 */
 	private void showNumber(int number) {
@@ -80,32 +87,34 @@ public class TimeManager {
 		secRight.setIcon(timerImge[sec.charAt(1) - 48]);
 	}
 
-	
 	/**
-	 * 时间结束请等待
+	 * 结束倒计时
 	 */
-	public void showWirt(){
+	public void cleanCountDown() {
 		battlePanel.remove(secLeft);
 		battlePanel.remove(secRight);
-		battlePanel.add(wirtLabel,0);
-		//TODO  攻击指令
-//		battlePanel.attackCmd();
+		battlePanel.add(wirtLabel, 0);
+		battlePanel.remove(wirtLabel);
+		cleanTimer();
 	}
 
 	public void setTime(int seconds) {
 		if (seconds > 0) {
 			showNumber(seconds);
 		} else {
-			showWirt();
+			battlePanel.attackCmd();
+			cleanCountDown();
 		}
 	}
 
 	/**
 	 * 倒计时线程
+	 * 
 	 * @author dell
 	 */
 	public class CountDown extends TimerTask {
-		int time = 2;
+		int time = countDownTime;
+
 		@Override
 		public void run() {
 			setTime(time--);

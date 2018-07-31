@@ -6,10 +6,16 @@ import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
 import com.mxxy.game.ui.BattlePanel;
 
+/**
+ * 
+ * @author ZAB
+ * 战斗指令
+ * 2018年5月29日
+ */
 final public class BattlePanelCmd extends AbstractPanelHandler {
 
-	
 	private BattlePanel battlepanel;
+	
 	@Override
 	public void init(PanelEvent evt) {
 		super.init(evt);
@@ -39,7 +45,6 @@ final public class BattlePanelCmd extends AbstractPanelHandler {
 	 * 防御
 	 */
 	public void wardefend(ActionEvent e) {
-		
 		
 	}
 	/**

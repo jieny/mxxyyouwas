@@ -14,7 +14,7 @@
   <!--选择角色-->  
   <Sprite x="380" y="20" path="res/componentsRes/createimage/choice.png" width="145" height="42" imageIcon="true"/>  
   <!--头像-->  
-  <Sprite x="50" y="90" name="head" width="260" height="300"/>  
+  <Sprite x="50" y="90" name="head" width="260" height="300" imageIcon="true"/>  
   <!--头像背景-->  
   <Sprite x="40" y="90" path="res/componentsRes/createimage/selectperson.png" width="207" height="264" imageIcon="true" name="headbackground"/>  
   <!--人物选择框-->  
