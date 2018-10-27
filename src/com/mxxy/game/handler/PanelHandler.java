@@ -177,4 +177,8 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 	public boolean isAutoUpdate() {
 		return autoUpdate;
 	}
+	
+	public Panel getPanel() {
+		return panel;
+	}
 }

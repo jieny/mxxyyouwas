@@ -26,7 +26,7 @@ public class TimeManager {
 
 	private BattlePanel battlePanel;
 
-	private int countDownTime = 8;
+	private int countDownTime = 30;
 
 	public TimeManager(BattlePanel battlePanel) {
 		this.battlePanel = battlePanel;

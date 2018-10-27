@@ -2,6 +2,8 @@ package com.mxxy.game.ui;
 
 import java.awt.Container;
 
+import javax.swing.JFrame;
+
 import com.mxxy.game.base.IPanelDraw;
 import com.mxxy.game.config.Context;
 import com.mxxy.game.utils.UIHelp;
@@ -49,4 +51,8 @@ public interface IWindows {
 	
 	
 	void showPanel(IPanelDraw panelDraw);
+	
+	
+	
+	JFrame getFrame();
 }

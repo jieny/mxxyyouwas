@@ -12,8 +12,10 @@ import java.util.List;
 
 import com.mxxy.game.base.AbstactPanel;
 import com.mxxy.game.base.Panel;
+import com.mxxy.game.event.DragMoveAdapter;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
+import com.mxxy.game.listener.ISetOnListener;
 import com.mxxy.game.ui.BattlePanel;
 import com.mxxy.game.utils.SpriteFactory;
 import com.mxxy.game.widget.ImageComponentButton;
@@ -24,7 +26,7 @@ import com.mxxy.game.widget.Label;
  * 
  * @author ZAB 邮箱 ：624284779@qq.com
  */
-final public class GamePager extends AbstractPanelHandler {
+final public class GamePager extends AbstractPanelHandler implements ISetOnListener<DragMoveAdapter> {
 
 	private Label label;
 
@@ -65,8 +67,8 @@ final public class GamePager extends AbstractPanelHandler {
 		playerCharacter = findViewById("PlayerAttribute");
 		addComponent();
 		period = 100;
+		new DragMoveAdapter(iWindows.getFrame(), uihelp, this);
 		setAutoUpdate(true);
-		panel.addMouseListener(this);
 	}
 
 	@Override
@@ -135,6 +137,8 @@ final public class GamePager extends AbstractPanelHandler {
 		showOrHide(oldpanel);
 	}
 	
+	
+	/** 由于是覆盖在上面的 所以需要将事件传递给父容器 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		super.mouseClicked(e);
@@ -145,5 +149,17 @@ final public class GamePager extends AbstractPanelHandler {
 		MouseEvent event = new MouseEvent(parent, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(),
 				e.getModifiers(), x + p.x, y + p.y, e.getClickCount(), false);
 		parent.dispatchEvent(event);
+	}
+
+	@Override
+	public void setListener(DragMoveAdapter event) {
+		panel.addMouseListener(event);
+		panel.addMouseMotionListener(event);
+	}
+
+	@Override
+	public void removeListener(DragMoveAdapter event) {
+		panel.removeMouseMotionListener(event);
+		panel.removeMouseListener(event);
 	}
 }

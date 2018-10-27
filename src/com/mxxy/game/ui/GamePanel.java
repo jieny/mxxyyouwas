@@ -585,7 +585,7 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 		List<Players> ownsideTeam = new ArrayList<Players>();// 己方阵容
 		List<Players> hostileTeam = new ArrayList<Players>();// 敌方阵容
 		// (Math.random()*(5-1)+1)
-		int[] randomCommon = StringUtils.randomCommon(0, 20, (int) 1);
+		int[] randomCommon = StringUtils.randomCommon(0, 20, (int) (Math.random()*(5-1)+1));
 		for (int i = 0; i < randomCommon.length; i++) {
 			hostileTeam.add(this.createElf(context.getScene(), randomCommon[i]));
 		}

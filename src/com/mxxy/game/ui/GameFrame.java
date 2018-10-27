@@ -19,6 +19,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import com.mxxy.game.base.IPanelDraw;
@@ -39,15 +40,20 @@ public class GameFrame extends JFrame implements IWindows {
 	private TrayIcon trayIcon;
 	private UIHelp uihelp;
 	private Image icon;
+	private JDialog dialog;
 
 	@Override
 	public void initContent(Context context) {
 		context.setWindows(this);
 		this.uihelp = new UIHelp(this);
-		icon = new ImageIcon(SpriteFactory.loadImage("res/componentsRes/title.png")).getImage();
+		icon = new ImageIcon(
+				SpriteFactory.loadImage("res/componentsRes/title.png"))
+				.getImage();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIconImage(icon);
 		super.setTitle(Constant.getString("MainTitle"));
+		uihelp.setTopParent(this);
+		dialog = new JDialog(this);
 		setResizable(false);
 		hideCursor();
 		showSystemtTray();
@@ -73,32 +79,61 @@ public class GameFrame extends JFrame implements IWindows {
 
 	@Override
 	public void showPanel(IPanelDraw panel) {
-		if(getPanel()!=null){
+		if (getPanel() != null) {
 			getPanel().getComponent().removeAll();
 		}
 		this.draw = panel;
-		int width = panel.getClass().getSimpleName().equals("LoadingPanel") ? panel.getScreenWidth()
-				: Constant.WINDOW_WIDTH;
-		int height = panel.getClass().getSimpleName().equals("LoadingPanel") ? panel.getScernHeight()
-				: Constant.WINDOW_HEIGHT;
+		int width = panel.getClass().getSimpleName().equals("LoadingPanel") ? panel
+				.getScreenWidth() : Constant.WINDOW_WIDTH;
+		int height = panel.getClass().getSimpleName().equals("LoadingPanel") ? panel
+				.getScernHeight() : Constant.WINDOW_HEIGHT;
+
 		preferredSize = new Dimension(width, height);
+
 		if (isfristApplication) {
 			dispose();
 			setSize(preferredSize);
-			setUndecorated(panel.getClass().getSimpleName().equals("LoadingPanel"));
-			setLocationRelativeTo(null);
-			setLocation(-200, 500);
-			setVisible(true);
+			setUndecorated(panel.getClass().getSimpleName()
+					.equals("LoadingPanel"));
 		}
+
+		if (panel instanceof GamePanel || panel instanceof BattlePanel) {
+			uihelp.setDialog(dialog);
+			dialog.setContentPane(uihelp.getPanel("MessageNotificationPanel"));
+			dialog.setTitle(Constant.getString("MessageNotification"));
+			dialog.setIconImage(new ImageIcon(SpriteFactory
+					.loadImage("res/componentsRes/tts.png")).getImage());
+			Point p = new Point(this.getLocation().x + Constant.WINDOW_WIDTH
+					+ 5, this.getLocation().y - 2);
+			dialog.setLocation(p);
+			dialog.setVisible(true);
+			dialog.pack();
+		}
+
 		JComponent component = panel.getComponent();
 		setContentPane(component);
 		component.requestFocusInWindow();
+		setLocationRelativeTo(null);
+		setVisible(true);
 	}
 
 	public boolean isfristApplication = true;
 
 	public void setIsfristApplication(boolean isfristApplication) {
 		this.isfristApplication = isfristApplication;
+	}
+
+	@Override
+	public synchronized void setLocation(int x, int y) {
+		Point now = new Point(x, y);
+		super.setLocation(now.x, now.y);
+
+		if (dialog != null && (uihelp.isSnapDialog()) || !dialog.isShowing()) {
+			Point dis = uihelp.getDialogPoint();
+			if (dis != null) {
+				dialog.setLocation(now.x + dis.x, now.y + dis.y);
+			}
+		}
 	}
 
 	@Override
@@ -109,14 +144,16 @@ public class GameFrame extends JFrame implements IWindows {
 	@Override
 	public void hideCursor() {
 		cursorImage = Toolkit.getDefaultToolkit().getImage("");
-		setCursor(Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "CURSOR"));
+		setCursor(Toolkit.getDefaultToolkit().createCustomCursor(cursorImage,
+				new Point(0, 0), "CURSOR"));
 	}
 
 	@Override
 	public void showSystemtTray() {
 		if (SystemTray.isSupported()) {
 			try {
-				trayIcon = new TrayIcon(icon, Constant.getString("MainTitle"), createPopupMenu());
+				trayIcon = new TrayIcon(icon, Constant.getString("MainTitle"),
+						createPopupMenu());
 				trayIcon.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
@@ -135,7 +172,8 @@ public class GameFrame extends JFrame implements IWindows {
 				trayIcon.setImageAutoSize(true);
 				SystemTray systemTray = SystemTray.getSystemTray();
 				systemTray.add(trayIcon);
-				trayIcon.displayMessage(Constant.getString("MainTitle"), "梦想", MessageType.INFO);
+				trayIcon.displayMessage(Constant.getString("MainTitle"), "梦想",
+						MessageType.INFO);
 			} catch (AWTException e) {
 				e.printStackTrace();
 			}
@@ -170,5 +208,10 @@ public class GameFrame extends JFrame implements IWindows {
 	@Override
 	public IPanelDraw getPanel() {
 		return draw;
+	}
+
+	@Override
+	public JFrame getFrame() {
+		return this;
 	}
 }

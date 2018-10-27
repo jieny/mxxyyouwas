@@ -27,10 +27,6 @@ public class CommandAction {
 		this.battlePanel = battlePanel;
 	}
 	
-	
-	
-	
-	
 	public void attack() {
 		
 	}
