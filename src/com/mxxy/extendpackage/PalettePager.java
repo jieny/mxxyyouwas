@@ -31,6 +31,7 @@ final public class PalettePager extends AbstractPanelHandler {
 		palettePlayerVO.setState(Players.STATE_STAND);
 		person = dataStoreManager.createPlayer(palettePlayerVO);
 		person.setShadow(true);
+		person.setColorations(player.getColorations(), true);
 	}
 
 	private ImageComponentButton changeindex;
