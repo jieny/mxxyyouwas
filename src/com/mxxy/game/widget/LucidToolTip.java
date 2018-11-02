@@ -9,7 +9,7 @@ import javax.swing.JToolTip;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
-import com.mxxy.game.utils.Constant;
+import com.mxxy.game.resources.Constant;
 
 public class LucidToolTip extends JToolTip {
 

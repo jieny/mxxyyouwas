@@ -3,7 +3,7 @@ package com.mxxy.game.modler;
 import javax.swing.AbstractListModel;
 import javax.swing.JList;
 
-import com.mxxy.game.utils.Constant;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.widget.ScrollList;
 
 /**

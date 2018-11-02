@@ -6,10 +6,10 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import com.mxxy.game.base.Application;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.sprite.Sprite;
 import com.mxxy.game.ui.BattlePanel;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.MP3Player;
 
 /**

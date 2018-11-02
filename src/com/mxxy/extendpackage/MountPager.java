@@ -11,10 +11,10 @@ import javax.swing.JList;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
 import com.mxxy.game.modler.MountMolder;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.sprite.Mount;
 import com.mxxy.game.sprite.Sprite;
 import com.mxxy.game.ui.ContainersPanel;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.SpriteFactory;
 import com.mxxy.game.widget.ImageComponentButton;
 import com.mxxy.game.widget.ListScrollPanel;
@@ -45,7 +45,7 @@ final public class MountPager extends AbstractPanelHandler<MountMolder> implemen
 
 	public void init(PanelEvent evt) {
 		super.init(evt);
-		character = player.getCharacter();
+		character = player.getPalyVo().getCharacter();
 		if (Integer.parseInt(character) >= 1 && Integer.parseInt(character) <= 4) {
 			character = "1000";
 		} else if (Integer.parseInt(character) >= 5 && Integer.parseInt(character) <= 8) {
@@ -100,7 +100,7 @@ final public class MountPager extends AbstractPanelHandler<MountMolder> implemen
 		Mount mount=new Mount();
 		mount.setMountCharacter(mountIndex);
 		if (sprite != null) {
-			player.setRace(character);
+			player.getPalyVo().setRace(character);
 			player.setMount(player.getMount()==null?mount:null);
 			ride.setText(player.getMount()!=null?"下骑" : "骑乘");
 		}

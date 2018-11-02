@@ -1,6 +1,5 @@
 package com.mxxy.game.xml;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -49,17 +48,16 @@ public class GameBuild implements IGameBuilder {
 	@Override
 	public Panel createPanel(String id, String fileName) {
 		System.out.println("createPanel" + fileName);
-		Panel functionPanel = null;
+		Panel panel = null;
 		try {
 			Document read = saxReader.read(fileName);
 			Element rootElement = read.getRootElement();
-			functionPanel = parsePanel(rootElement);
-			new PaneListener(functionPanel);
-			parseComponent(functionPanel, rootElement);
+			panel = parsePanel(rootElement);
+			parseComponent(panel, rootElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return functionPanel;
+		return panel;
 	}
 
 	/*** 解析配置文件里面的控件 */
@@ -95,6 +93,7 @@ public class GameBuild implements IGameBuilder {
 			width = Integer.parseInt(attributeValue);
 			height = Integer.parseInt(heightAttributeValue);
 		}
+		
 		ImageComponent imageComponent = new ImageComponent(path, x, y, new Point(width, height));
 		imageComponents.add(imageComponent);
 		panel.setImageComponents(imageComponents);
@@ -167,15 +166,19 @@ public class GameBuild implements IGameBuilder {
 		imageComponentButton.setName(name);
 		imageComponentButton.setEnableds(StringUtils.isNotBlank(enableds));
 		imageComponentButton.addActionListener(panel);
+		
 		if (StringUtils.isNotBlank(actionId)) {
 			imageComponentButton.setActionCommand(actionId);
 		}
+		
 		if (StringUtils.isNotBlank(path)) {
 			imageComponentButton.init(SpriteFactory.loadSprite(path));
 		}
+		
 		if (StringUtils.isNotBlank(text)) {
 			imageComponentButton.setText(text);
 		}
+		
 		imageComponentButton.setEnabled(enable == null);
 		if (StringUtils.isNotBlank(paths)) {
 			int width = Integer.valueOf(rootElement.attributeValue("width"));
@@ -209,8 +212,11 @@ public class GameBuild implements IGameBuilder {
 			panel.setTransparency(Float.parseFloat(transparency));
 		}
 		panel.setBackground(GameColor.black);
-		panel.setMove(rootElement.attributeValue("move") != null);
-		panel.setRightClickClose(rootElement.attributeValue("isReightClose") != null);
+		
+		if (rootElement.attributeValue("move") != null|| rootElement.attributeValue("isReightClose") != null) {
+			new PaneListener(panel,rootElement.attributeValue("isReightClose") != null);
+		}
+		
 		panel.setLocation(x, y);
 		panel.setName(rootElement.attributeValue("id"));
 		Class<?> class1 = Class.forName("com.mxxy.extendpackage." + panel.getName());

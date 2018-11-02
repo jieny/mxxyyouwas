@@ -24,6 +24,7 @@ import javax.swing.UIManager;
 
 import com.mxxy.game.base.Panel;
 import com.mxxy.game.event.PanelEvent;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.ui.IWindows;
 import com.mxxy.game.widget.ImageComponentButton;
 import com.mxxy.game.widget.Label;
@@ -265,7 +266,6 @@ public class UIHelp {
 			if (c1 != null && c1 != me && c1.isShowing() && me.isShowing()) {
 				c1.getBounds(otherBound);
 				int dis = getDistance(myBound, otherBound);
-				System.out.println(Math.abs(dis));
 				if (Math.abs(dis) <= 10) {
 
 					set.add(getComponentName(c1));

@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 import com.mxxy.extendpackage.GamePager;
+import com.mxxy.game.domain.SnapObject;
 import com.mxxy.game.listener.AbstractBaseEventListener;
 import com.mxxy.game.utils.UIHelp;
 

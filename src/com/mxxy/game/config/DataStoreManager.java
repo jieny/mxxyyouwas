@@ -10,16 +10,17 @@ import java.util.Map;
 
 import javax.swing.SwingWorker;
 
-import com.mxxy.game.resources.NpcBean;
-import com.mxxy.game.resources.NpcBean.NpcListbean;
-import com.mxxy.game.resources.SceneJump;
-import com.mxxy.game.resources.SceneJump.SceneJumpBean;
-import com.mxxy.game.resources.SceneNpc;
-import com.mxxy.game.resources.SceneTeleporter;
+import com.mxxy.game.domain.NpcBean;
+import com.mxxy.game.domain.PlayerVO;
+import com.mxxy.game.domain.SceneJump;
+import com.mxxy.game.domain.SceneNpc;
+import com.mxxy.game.domain.SceneTeleporter;
+import com.mxxy.game.domain.NpcBean.NpcListbean;
+import com.mxxy.game.domain.SceneJump.SceneJumpBean;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.sprite.Sprite;
 import com.mxxy.game.sprite.Weapon;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.FileUtils;
 import com.mxxy.game.utils.JsonUtils;
 
@@ -51,6 +52,10 @@ public class DataStoreManager implements IDataManager {
 		System.out.println("create game data: " + new Date());
 	}
 
+	
+	/**
+	 * 实例人物对象
+	 */
 	public Players createPlayer(PlayerVO data) {
 		Players player = new Players();
 		player.setShadow(true);
@@ -59,41 +64,41 @@ public class DataStoreManager implements IDataManager {
 	}
 
 	/**
+	 * 创建怪物
 	 * @param character
 	 * @param name
 	 * @param level
 	 * @return
 	 */
 	public Players createElf(String character, String name, int level) {
-		Players player = new Players();
-		player.setShadow(true);
-		player.setPersonName(name);
-		player.setCharacter(character);
-		player.setState(Players.STATE_STAND);
-		player.setDirection(Sprite.DIRECTION_BOTTOM_RIGHT);
-		player.setSpeed(level);
-		return player;
+		PlayerVO elfPlayerVO=new PlayerVO();
+		elfPlayerVO.setState(Players.STATE_STAND);
+		elfPlayerVO.setDirection(Sprite.DIRECTION_BOTTOM_RIGHT);
+		elfPlayerVO.setName(name);
+		elfPlayerVO.setCharacter(character);
+		elfPlayerVO.setSpeed(level);
+		return createPlayer(elfPlayerVO);
 	}
 
 	/**
-	 * 首席弟子
-	 * 
+	 * 创建首席弟子NPC
 	 * @return
 	 */
 	public Players createPlayer(SceneNpc sceneNpc) {
 		boolean showWeapon = sceneNpc.getCharacterId().equals("0010") || sceneNpc.getCharacterId().equals("0001");
-		Players player = new Players();
+		PlayerVO npcPlayerVO = new PlayerVO();
 		Weapon weapon = new Weapon();
 		weapon.setWeaponIndex("59");
-		player.setWeapon(showWeapon ? weapon : null);
-		player.setPersonName(sceneNpc.getName());
-		player.setCharacter(sceneNpc.getCharacterId());
-		player.setShadow(true);
-		player.setDescribe(sceneNpc.getDescribe());
-		player.setSceneLocation(new Point(sceneNpc.getSceneX(), sceneNpc.getSceneY()));
-		player.setState(sceneNpc.getState());
-		player.setDirection(sceneNpc.getDirection()); // 设置方向
+		npcPlayerVO.setmWeapon(showWeapon ? weapon : null);
+		npcPlayerVO.setName(sceneNpc.getName());
+		npcPlayerVO.setCharacter(sceneNpc.getCharacterId());
+		npcPlayerVO.setDescribe(sceneNpc.getDescribe());
+		npcPlayerVO.setSceneLocation(new Point(sceneNpc.getSceneX(), sceneNpc.getSceneY()));
+		npcPlayerVO.setDirection(sceneNpc.getDirection());
+		npcPlayerVO.setState(sceneNpc.getState());
+		Players player= createPlayer(npcPlayerVO);
 		player.setNameBackground(Constant.TEXT_NAME_NPC_COLOR);
+		player.setShadow(true);
 		if (showWeapon) {
 			int[] colorations = new int[3];
 			colorations[0] = 4; // 头发颜色
@@ -104,13 +109,19 @@ public class DataStoreManager implements IDataManager {
 		return player;
 	}
 
-	private Map<String, List<SceneNpc>> sceneNpcMap = new HashMap<String, List<SceneNpc>>();
+	private Map<String, List<SceneNpc>> sceneNpcMap = new HashMap<String, List<SceneNpc>>();   //对应的NPC
 
-	private Map<String, List<SceneTeleporter>> jumpMap = new HashMap<String, List<SceneTeleporter>>();
+	private Map<String, List<SceneTeleporter>> jumpMap = new HashMap<String, List<SceneTeleporter>>(); //对应的跳转点
 
 	@Override
 	public List<SceneNpc> findSceneNpc(String sceneId) {
-		return getSceneNpcList(sceneId);
+		return sceneNpcMap.get(sceneId);
+	}
+	
+
+	@Override
+	public List<SceneTeleporter> findJump(String sceneId) {
+		return jumpMap.get(sceneId);
 	}
 
 	/**
@@ -125,11 +136,6 @@ public class DataStoreManager implements IDataManager {
 							productListbean.sceneX, productListbean.sceneY, productListbean.state,
 							productListbean.describe, productListbean.direction));
 		}
-	}
-
-	@Override
-	public List<SceneTeleporter> findJump(String sceneId) {
-		return getSceneTeleporter(sceneId);
 	}
 
 	/**
@@ -191,14 +197,6 @@ public class DataStoreManager implements IDataManager {
 		sceneList.add(key);
 	}
 	
-	public List<SceneNpc> getSceneNpcList(String sceneid) {
-		return sceneNpcMap.get(sceneid);
-	}
-
-	public List<SceneTeleporter> getSceneTeleporter(String sceneid) {
-		return jumpMap.get(sceneid);
-	}
-
 	private String lastchat = "#Y 代码完善中 #29。";
 
 	@Override

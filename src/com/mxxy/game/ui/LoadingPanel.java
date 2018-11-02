@@ -2,8 +2,9 @@ package com.mxxy.game.ui;
 
 import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
+
 import com.mxxy.game.base.DrawPaneImp;
-import com.mxxy.game.utils.Constant;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.widget.Label;
 
 /**

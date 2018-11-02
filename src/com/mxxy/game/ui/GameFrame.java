@@ -24,7 +24,7 @@ import javax.swing.JFrame;
 
 import com.mxxy.game.base.IPanelDraw;
 import com.mxxy.game.config.Context;
-import com.mxxy.game.utils.Constant;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.utils.SpriteFactory;
 import com.mxxy.game.utils.UIHelp;
 
@@ -104,7 +104,7 @@ public class GameFrame extends JFrame implements IWindows {
 			dialog.setIconImage(new ImageIcon(SpriteFactory
 					.loadImage("res/componentsRes/tts.png")).getImage());
 			Point p = new Point(this.getLocation().x + Constant.WINDOW_WIDTH
-					+ 5, this.getLocation().y - 2);
+					+ 5, this.getLocation().y -5);
 			dialog.setLocation(p);
 			dialog.setVisible(true);
 			dialog.pack();
@@ -113,7 +113,8 @@ public class GameFrame extends JFrame implements IWindows {
 		JComponent component = panel.getComponent();
 		setContentPane(component);
 		component.requestFocusInWindow();
-		setLocationRelativeTo(null);
+		setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - getSize().width)/2,
+				(Toolkit.getDefaultToolkit().getScreenSize().height - getSize().height)/2);
 		setVisible(true);
 	}
 

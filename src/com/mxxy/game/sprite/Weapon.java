@@ -25,7 +25,7 @@ public class Weapon extends AbsSprite implements Serializable {
 	public Sprite createSprite(Players players) {
 		if (players != null && players.getState() != null) {
 			super.sprite = SpriteFactory.loadSprite(
-					"res/shape/char/" + players.getCharacter() + "/" + WeaponIndex + "/" + players.getState() + ".tcp");
+					"res/shape/char/" + players.getPalyVo().getCharacter() + "/" + WeaponIndex + "/" + players.getState() + ".tcp");
 		}
 		return super.sprite;
 	}

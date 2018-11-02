@@ -1,4 +1,4 @@
-package com.mxxy.game.resources;
+package com.mxxy.game.domain;
 
 import java.util.List;
 

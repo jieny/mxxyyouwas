@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-import com.mxxy.game.utils.Constant;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.utils.GameColor;
 import com.mxxy.game.utils.GraphicsUtils;
 import com.mxxy.game.was.Toolkit;

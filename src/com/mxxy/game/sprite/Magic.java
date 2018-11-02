@@ -33,7 +33,7 @@ public class Magic extends AbsSprite {
 	public Sprite createSprite(Players players) {
 		if (!StringUtils.isBlank(this.magincId)) {
 			super.sprite = SpriteFactory
-					.loadSprite("res/magic/" + players.getRace() + "/" + this.magincId + ".tcp");
+					.loadSprite("res/magic/" + players.getPalyVo().getRace() + "/" + this.magincId + ".tcp");
 		}
 		return super.sprite;
 	}

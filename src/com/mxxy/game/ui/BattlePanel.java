@@ -15,22 +15,24 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
+import javax.swing.event.EventListenerList;
 
 import com.mxxy.game.base.AbstactPanel;
 import com.mxxy.game.base.Application;
 import com.mxxy.game.base.Panel;
-import com.mxxy.game.handler.BattlePanelController;
+import com.mxxy.game.event.BattleEvent;
+import com.mxxy.game.listener.BattlePaneListener;
+import com.mxxy.game.listener.IBattleListener;
 import com.mxxy.game.listener.ISetOnListener;
 import com.mxxy.game.modler.MagicModle.MagicConfig;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.sprite.Cursor;
 import com.mxxy.game.sprite.Magic;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.sprite.Sprite;
 import com.mxxy.game.ui.battle.Command;
-import com.mxxy.game.ui.battle.CommandAction;
 import com.mxxy.game.ui.battle.CommandManager;
 import com.mxxy.game.ui.battle.TimeManager;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.MP3Player;
 import com.mxxy.game.utils.SpriteFactory;
 import com.mxxy.game.widget.Animation;
@@ -42,17 +44,17 @@ import com.mxxy.game.widget.TileMap;
  * 
  * @author ZAB 邮箱 ：624284779@qq.com
  */
-public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePanelController> {
+public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePaneListener> {
 
 	private static final String BATTLE_ROLE_CMD = "BattlePanelCmd";
 
 	private static final String BATTLE_ROLE_WARMAGIC = "BattleWarmagic";
 
 	private static final String BATTLE_ROLE_PROP = "BattleUserProp";
-
+	
+	private EventListenerList eventListener =new EventListenerList();
+	
 	private CommandManager commandManager;
-
-	private CommandAction comandAction;
 
 	private TimeManager timerManager;
 
@@ -75,6 +77,7 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 	private Magic mMagic;
 
 	private RichLabel battleMessage;
+	
 	/** 是否选择的法术 */
 	private boolean isSelectMagic;
 	/** 控制命令流程 true 战斗未开始，false战斗已开始 避免重复指令操作 */
@@ -91,7 +94,6 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 		this.tileMap = tileMap;
 		this.point = viewPosition;
 		commandManager = new CommandManager(this);
-
 	}
 
 	@Override
@@ -111,7 +113,28 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 		battleMessage.setBounds(Constant.WINDOW_WIDTH / 2 - 100, 500, 300, 50);
 		add(battleMessage, 0);
 	}
-
+	
+	public void fireBattleEvent(BattleEvent evt) {
+		IBattleListener[] listeners = listenerList.getListeners(IBattleListener.class);
+		for (int i = 0; i < listeners.length; i++) {
+			switch (evt.getId()) {
+			case BattleEvent.BATTLE_WIN:  
+				listeners[i].battleWin(evt);
+				break;
+			case BattleEvent.BATTLE_DEFEATED:
+				listeners[i].battleDefeated(evt);
+				break;
+			case BattleEvent.BATTLE_TIMEOUT:
+				listeners[i].battleTimeout(evt);
+				break;
+			case BattleEvent.BATTLE_BREAK:
+				listeners[i].battleBreak(evt);
+				break;
+			}
+		}
+	}
+	
+	
 	/**
 	 * 当前指定战斗指令的人物序号
 	 */
@@ -249,6 +272,7 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 		movingPlayer.moveBy(dx, dy);
 	}
 
+	
 	/**
 	 * 当前单位是否到达目标点
 	 * 
@@ -319,8 +343,7 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 	/**
 	 * 播放一次法术动画
 	 * 
-	 * @param true
-	 *            为播放音乐
+	 * @param true  为播放音乐
 	 */
 	public void playOnceMagic() {
 		getUIHelp().hidePanel(BATTLE_ROLE_WARMAGIC);
@@ -395,9 +418,9 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 		}
 	}
 
-	int dx = 60, dy = 40;
+	private int dx = 60, dy = 40;
 	// int x0 = 340, y0 = 400;
-	int x1 = 300, y1 = 150;
+	private int x1 = 300, y1 = 150;
 
 	/**
 	 * initHostileTeam(初始化敌方团队)
@@ -559,14 +582,14 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 	}
 
 	@Override
-	public void setListener(BattlePanelController event) {
+	public void setListener(BattlePaneListener event) {
 		this.addMouseListener(event);
 		this.addMouseMotionListener(event);
 		this.addKeyListener(event);
 	}
 
 	@Override
-	public void removeListener(BattlePanelController event) {
+	public void removeListener(BattlePaneListener event) {
 		this.removeListener(event);
 	}
 
@@ -583,10 +606,10 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 			Collections.sort(list, new Comparator<Players>() {
 				@Override
 				public int compare(Players o1, Players o2) {
-					if (o1.getSpeed() < o2.getSpeed()) {
+					if (o1.getPalyVo().getSpeed() < o2.getPalyVo().getSpeed()) {
 						return 1;
 					}
-					if (o1.getSpeed() == o2.getSpeed()) {
+					if (o1.getPalyVo().getSpeed() == o2.getPalyVo().getSpeed()) {
 						return 0;
 					}
 					return -1;
@@ -599,12 +622,24 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 		}
 		return list;
 	}
+	
+
+	/**
+	 * 管理Battle 状态
+	 * @param listener
+	 */
+	public void addBattleListener(IBattleListener listener) {
+		listenerList.add(IBattleListener.class, listener);
+	}
+
+	public void removeBattleListener(IBattleListener listener) {
+		listenerList.remove(IBattleListener.class, listener);
+	}
 
 	/**
 	 * 指令介绍
 	 * 
-	 * @param text
-	 *            文本
+	 * @param text 文本
 	 */
 	public void setBattleMessage(String text) {
 		battleMessage.setText(text);
@@ -644,6 +679,10 @@ public class BattlePanel extends AbstactPanel implements ISetOnListener<BattlePa
 
 	public TimeManager getTimerManager() {
 		return timerManager;
+	}
+	
+	public EventListenerList getEventListener() {
+		return eventListener;
 	}
 
 	public void hidePanel() {

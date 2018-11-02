@@ -14,16 +14,16 @@ import javax.swing.JPanel;
 import com.mxxy.game.base.Panel;
 import com.mxxy.game.config.IDataManager;
 import com.mxxy.game.config.IProfileManager;
-import com.mxxy.game.config.PlayerVO;
-import com.mxxy.game.config.Profile;
 import com.mxxy.game.config.ProfileImpl;
+import com.mxxy.game.domain.PlayerVO;
+import com.mxxy.game.domain.Profile;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.event.PlayerEvent;
 import com.mxxy.game.event.PlayerListenerAdapter;
 import com.mxxy.game.handler.AbstractPanelHandler;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.ui.ContainersPanel;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.widget.ImageComponentButton;
 import com.mxxy.game.widget.Label;
 
@@ -140,7 +140,7 @@ final public class SelectRole extends AbstractPanelHandler {
 		public void click(PlayerEvent evt) {
 			player = evt.getPlayer();
 //			player.index = selectIndex;
-			playerVO = player.getData();
+			playerVO = player.getPalyVo();
 			name.setText(playerVO.getName());
 			head.setIcon(new ImageIcon("res/componentsRes/createimage/" + playerVO.getCharacter() + ".png"));
 			headbackground.setIcon(new ImageIcon("res/componentsRes/createimage/headbackground.png"));
@@ -209,7 +209,7 @@ final public class SelectRole extends AbstractPanelHandler {
 				if (listPlayers.size() > 0) {
 					for (int i = 0; i < listPlayers.size(); i++) {
 						Players players = listPlayers.get(i);
-						players.setPersonName(null);
+						players.setHideName(true);
 						players.draw(g, players.getX(), players.getY());
 						players.setDirection(4);
 						players.update(elapsedTime);

@@ -7,8 +7,8 @@ import java.awt.event.MouseEvent;
 import com.mxxy.game.base.Panel;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.ui.ScrollAnnouncer;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.RuntimeUtil;
 
 /**

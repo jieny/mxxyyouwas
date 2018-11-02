@@ -1,4 +1,4 @@
-package com.mxxy.game.resources;
+package com.mxxy.game.domain;
 
 public interface Item{
 

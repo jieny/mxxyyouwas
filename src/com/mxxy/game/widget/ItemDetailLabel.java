@@ -7,9 +7,9 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mxxy.game.resources.Item;
-import com.mxxy.game.resources.ItemInstance;
-import com.mxxy.game.resources.MedicineItem;
+import com.mxxy.game.domain.Item;
+import com.mxxy.game.domain.ItemInstance;
+import com.mxxy.game.domain.MedicineItem;
 import com.mxxy.game.utils.GraphicsUtils;
 import com.mxxy.game.utils.SpriteFactory;
 

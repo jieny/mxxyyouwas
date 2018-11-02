@@ -1,4 +1,4 @@
-package com.mxxy.game.event;
+package com.mxxy.game.domain;
 
 import java.awt.Component;
 

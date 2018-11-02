@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<panel id="MessageNotificationPanel" width="251" height="570" x="0"
+<panel id="MessageNotificationPanel" width="251" height="572" x="0"
 	y="0">
 	<ImageComponentButton id="" name="head" x="10" y="540"
 		path="res/wzife/chat/left.tcp" actionId="changes" />

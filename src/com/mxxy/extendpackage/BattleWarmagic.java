@@ -42,12 +42,12 @@ final public class BattleWarmagic extends AbstractPanelHandler<MagicModle> {
 
 	@Override
 	protected void initView() {
-		MagicConfig[] schoolMagic = modler.getSchoolMagic(player.getRace());
+		MagicConfig[] schoolMagic = modler.getSchoolMagic(player.getPalyVo().getRace());
 		magicArrays = new ImageComponentButton[schoolMagic.length];
 		for (int i = 0; i < magicArrays.length; i++) {
 			magicArrays[i] = new ImageComponentButton();
 			magicArrays[i].init(SpriteFactory
-					.loadSprite("res/magic/" + player.getRace() + "/" + schoolMagic[i].getName() + "icon.tcp"));
+					.loadSprite("res/magic/" + player.getPalyVo().getRace() + "/" + schoolMagic[i].getName() + "icon.tcp"));
 			magicArrays[i].setSize(45, 45);
 			magicArrays[i].setMagicConfig(new MagicModle().new MagicConfig(schoolMagic[i].getName(),
 					schoolMagic[i].getMagicId(), schoolMagic[i].getRace(), schoolMagic[i].getRepeatCount()));

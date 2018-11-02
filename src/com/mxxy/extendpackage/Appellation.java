@@ -34,16 +34,16 @@ final public class Appellation extends AbstractPanelHandler<AppellationMolder> i
 		list.setPreferredSize(new Dimension(180, 110));
 		list.setSelectionForeground(Color.yellow);
 		listScrollPanel.setLocation(25, 100);
-		currentDescribe = player.getDescribe();
+		currentDescribe = player.getPalyVo().getDescribe();
 		panel.add(listScrollPanel, 0);
 		label = findViewById("currentAppellation");
-		label.setText(player.getDescribe());
+		label.setText(player.getPalyVo().getDescribe());
 		label.setForeground(Color.BLACK);
 	}
 
 	public void changes(ActionEvent e) {
 		if (label.getText().length() > 0 && !label.getText().equals(currentDescribe))
-			player.setDescribe(label.getText().trim());
+			player.getPalyVo().setDescribe(label.getText().trim());
 	}
 
 	@Override

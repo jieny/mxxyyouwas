@@ -96,7 +96,7 @@ public class Panel extends JPanel implements IEventTask, ActionListener, ISetOnL
 		GraphicsUtils.setAlpha(graphics2d, transparency);
 		graphics2d.setColor(getBackground());
 		graphics2d.fillRect(0, 0, getWidth(), getHeight());
-		try {
+//		try {
 			if (smapImage != null)
 				smapImage.drawBitmap(graphics2d);
 			drawImageComponent(graphics2d);
@@ -104,9 +104,9 @@ public class Panel extends JPanel implements IEventTask, ActionListener, ISetOnL
 			paintBorder(g); // 绘制边框
 
 			paintChildren(g); // 绘制该Panel的子组件
-		} catch (Exception e) {
-			System.err.println("err");
-		}
+//		} catch (Exception e) {
+//			System.err.println(e);
+//		}
 	}
 
 	/**
@@ -178,14 +178,6 @@ public class Panel extends JPanel implements IEventTask, ActionListener, ISetOnL
 		for (int i = 0; i < listeners.length; i++) {
 			listenerList.remove(IPanelListener.class, listeners[i]);
 		}
-	}
-
-	public boolean isMove() {
-		return isMove;
-	}
-
-	public void setMove(boolean isMove) {
-		this.isMove = isMove;
 	}
 
 	/**

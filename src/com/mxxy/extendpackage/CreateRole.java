@@ -14,17 +14,17 @@ import javax.swing.SwingConstants;
 
 import com.mxxy.game.base.Panel;
 import com.mxxy.game.config.IProfileManager;
-import com.mxxy.game.config.PlayerVO;
-import com.mxxy.game.config.Profile;
 import com.mxxy.game.config.ProfileImpl;
+import com.mxxy.game.domain.PlayerVO;
+import com.mxxy.game.domain.Profile;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
 import com.mxxy.game.modler.CreteRoleMolder;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.sprite.Weapon;
 import com.mxxy.game.ui.ContainersPanel;
 import com.mxxy.game.utils.ComponentFactory;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.widget.ImageComponentButton;
 import com.mxxy.game.widget.Label;
 
@@ -71,6 +71,7 @@ final public class CreateRole extends AbstractPanelHandler<CreteRoleMolder>  {
 
 	public void createPlayer(ActionEvent e) {
 		source = (ImageComponentButton) e.getSource();
+		
 		if (current != source.getName()) {
 			String desc = propertiesConfigManager.get(source.getName());
 			playerDesc.setText(desc);
@@ -80,13 +81,14 @@ final public class CreateRole extends AbstractPanelHandler<CreteRoleMolder>  {
 			ImageIcon headImageIcon = new ImageIcon("res/componentsRes/createimage/" + source.getName() + ".png");
 			characterIndex.setIcon(headImageIcon);
 			characterIndex.setSize(headImageIcon.getIconWidth(), headImageIcon.getIconHeight());
-			person=new Players();
-			person.setCharacter(source.getName());
-			person.setShadow(false);
+			PlayerVO playerVO=new PlayerVO();
+			playerVO.setCharacter(source.getName());
 			mWeapon=new Weapon();
 			mWeapon.setWeaponIndex("58");
-			person.setWeapon(mWeapon);
-			person.setState("stand");
+			playerVO.setmWeapon(mWeapon);
+			playerVO.setState(Players.STATE_STAND);
+			person = dataStoreManager.createPlayer(playerVO);
+			person.setShadow(false);
 			current = source.getName();
 		}
 	}
@@ -178,23 +180,23 @@ final public class CreateRole extends AbstractPanelHandler<CreteRoleMolder>  {
 			uihelp.prompt(null, Constant.getString("PleaseClickRole"), 2000);
 			return;
 		}
-		person.setPersonName(trim);
-		person.setDirection(4);
-		if (person.getPersonName().length() <= 0) {
+		if (trim.length() <= 0) {
 			uihelp.prompt(null, Constant.getString("PleaseLeftEditText"), 2000);
 			return;
 		}
+		
 		Profile p = new Profile();
 		p.setFilename(newProfileName());
 		PlayerVO playerVO = new PlayerVO();
 		playerVO.setSceneLocation(new Point(69, 26));
-		playerVO.setName(person.getPersonName());// 设置姓名
+		playerVO.setName(trim);// 设置姓名
 		playerVO.setColorations(colorations);// 设置着色器
 		playerVO.setDirection(4);// 设置方向
 		playerVO.setCharacter(source.getName());// 文件id
 		playerVO.setmWeapon(mWeapon);
-		playerVO.setState("stand");// 设置人物站立
+		playerVO.setState(Players.STATE_STAND);// 设置人物站立
 		playerVO.setDescribe("护城小兵");// 设置人物称谓
+		playerVO.setHp(100);
 		playerVO.setMoeny(10000000);
 		playerVO.setSceneId(Constant.SCENE_DHW);
 		p.setPlayerVO(playerVO);

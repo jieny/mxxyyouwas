@@ -1,18 +1,17 @@
-package com.mxxy.game.handler;
+package com.mxxy.game.listener;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import com.mxxy.game.listener.AbstractBaseEventListener;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.ui.BattlePanel;
 
 /**
  * @author ZAB 邮箱 ：624284779@qq.com
  */
-public class BattlePanelController extends AbstractBaseEventListener<BattlePanel> {
+final public class BattlePaneListener extends AbstractBaseEventListener<BattlePanel> {
 
-	public BattlePanelController(BattlePanel gamePanel) {
+	public BattlePaneListener(BattlePanel gamePanel) {
 		mPanel = gamePanel;
 		mPanel.setListener(this);
 	}

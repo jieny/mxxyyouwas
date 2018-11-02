@@ -10,7 +10,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
 import com.mxxy.game.event.ComponentMove;
-import com.mxxy.game.utils.Constant;
+import com.mxxy.game.resources.Constant;
 
 /**
  * 提示框

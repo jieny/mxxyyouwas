@@ -2,6 +2,8 @@ package com.mxxy.game.config;
 
 import java.util.List;
 
+import com.mxxy.game.domain.Profile;
+
 /**
  * 存档管理
  * 

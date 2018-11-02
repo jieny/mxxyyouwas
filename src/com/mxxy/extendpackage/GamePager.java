@@ -1,10 +1,8 @@
 package com.mxxy.extendpackage;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,7 +52,6 @@ final public class GamePager extends AbstractPanelHandler implements ISetOnListe
 
 	@Override
 	protected void initView() {
-
 		if(context.getWindows().getPanel() instanceof BattlePanel){
 			for (int i = 0; i < getAllImageButtons().size(); i++) {
 				ImageComponentButton imageComponentButton= getAllImageButtons().get(i);
@@ -96,7 +93,7 @@ final public class GamePager extends AbstractPanelHandler implements ISetOnListe
 		AbstactPanel panel2 = (AbstactPanel) context.getWindows().getPanel();
 		sceneName = new Label(panel2.getSceneName(), null, Label.LEFT);
 		sceneName.setBounds(36, 15, 100, 15);
-		playerCharacter.init(SpriteFactory.loadSprite("res/wzife/photo/facesmall/" + player.getCharacter() + ".tcp"));
+		playerCharacter.init(SpriteFactory.loadSprite("res/wzife/photo/facesmall/" + player.getPalyVo().getCharacter() + ".tcp"));
 		sceneXY = new Label(null, null, Label.LEFT);
 		sceneXY.setBounds(25, 65, 100, 15);
 		panel.add(label, 0);
@@ -135,20 +132,6 @@ final public class GamePager extends AbstractPanelHandler implements ISetOnListe
 		Panel oldpanel = uihelp.getPanel(e);
 		oldpanel.setAttributes("screenId",context.getScene());
 		showOrHide(oldpanel);
-	}
-	
-	
-	/** 由于是覆盖在上面的 所以需要将事件传递给父容器 */
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		super.mouseClicked(e);
-		Container parent = panel.getParent();
-		Point p = e.getPoint();
-		int x = panel.getX();
-		int y = panel.getY();
-		MouseEvent event = new MouseEvent(parent, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(),
-				e.getModifiers(), x + p.x, y + p.y, e.getClickCount(), false);
-		parent.dispatchEvent(event);
 	}
 
 	@Override

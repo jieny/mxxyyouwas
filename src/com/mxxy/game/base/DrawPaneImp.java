@@ -17,12 +17,12 @@ import javax.swing.JPanel;
 import com.mxxy.game.config.Context;
 import com.mxxy.game.config.DataStoreManager;
 import com.mxxy.game.config.IPropertiseManager;
+import com.mxxy.game.resources.Constant;
+import com.mxxy.game.resources.ResourceStores;
 import com.mxxy.game.sprite.Cursor;
 import com.mxxy.game.sprite.Players;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.GraphicsUtils;
 import com.mxxy.game.utils.MP3Player;
-import com.mxxy.game.utils.ResourceStores;
 import com.mxxy.game.utils.UIHelp;
 import com.mxxy.game.was.Toolkit;
 

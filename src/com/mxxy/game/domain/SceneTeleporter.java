@@ -1,4 +1,4 @@
-package com.mxxy.game.resources;
+package com.mxxy.game.domain;
 
 /**
  * 地图传送点

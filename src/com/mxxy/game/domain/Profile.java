@@ -1,4 +1,4 @@
-package com.mxxy.game.config;
+package com.mxxy.game.domain;
 
 import java.util.Date;
 

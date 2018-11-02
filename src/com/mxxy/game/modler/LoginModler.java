@@ -3,8 +3,8 @@ package com.mxxy.game.modler;
 import java.io.IOException;
 
 import com.mxxy.game.config.IPropertiseManager;
-import com.mxxy.game.utils.Constant;
-import com.mxxy.game.utils.Constant.LoginStatus;
+import com.mxxy.game.resources.Constant;
+import com.mxxy.game.resources.Constant.LoginStatus;
 import com.mxxy.net.IClient;
 import com.mxxy.protocol.LoginMessage;
 

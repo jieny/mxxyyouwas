@@ -3,7 +3,7 @@ package com.mxxy.game.ui.battle;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mxxy.game.config.PlayerVO;
+import com.mxxy.game.domain.PlayerVO;
 import com.mxxy.game.sprite.Players;
 
 /**
@@ -19,7 +19,7 @@ public class Command implements Comparable {
 	
 	private Players target;
 	
-	private Map params = new HashMap();
+	private Map<String,Object> params = new HashMap<String,Object>();
 
 	public Command(String cmd, Players source) {
 		this(cmd, source, null, null);
@@ -31,7 +31,7 @@ public class Command implements Comparable {
 		this.target = target;
 	}
 
-	public Command(String cmd, Players source, Players target, Map params) {
+	public Command(String cmd, Players source, Players target, Map<String,Object> params) {
 		this(cmd, source, target);
 		this.params = params;
 	}
@@ -100,8 +100,8 @@ public class Command implements Comparable {
 	public int compareTo(Object o) {
 		if (o instanceof Command) {
 			Command cmd2 = (Command) o;
-			PlayerVO data1 = this.source.getData();
-			PlayerVO data2 = cmd2.getSource().getData();
+			PlayerVO data1 = this.source.getPalyVo();
+			PlayerVO data2 = cmd2.getSource().getPalyVo();
 			return data1.getSpeed() - data2.getSpeed();
 		}
 		return 0;

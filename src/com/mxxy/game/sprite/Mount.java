@@ -49,7 +49,7 @@ public class Mount extends AbsSprite {
 	@Override
 	public Sprite createSprite(Players players) {
 		if (players != null) {
-			super.sprite = SpriteFactory.loadSprite("res/shape/char/" + players.getRace() + "/" + this.mountCharacter
+			super.sprite = SpriteFactory.loadSprite("res/shape/char/" + players.getPalyVo().getRace() + "/" + this.mountCharacter
 					+ "/" + players.getState() + ".tcp");
 		}
 		return super.sprite;

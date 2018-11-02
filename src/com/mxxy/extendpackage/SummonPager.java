@@ -8,6 +8,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 
 import com.mxxy.game.base.Panel;
+import com.mxxy.game.domain.PlayerVO;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
 import com.mxxy.game.modler.SummonMolder;
@@ -68,11 +69,12 @@ final public class SummonPager extends AbstractPanelHandler<SummonMolder>
 		stateInex = 0;
 		summonIndex = index;
 		ArrayList<String> godPet = modler.getGodPet();
-		summonPlayers = new Players();
-		summonPlayers.setCharacter(godPet.get((int) index));
+		PlayerVO playerVO=new PlayerVO();
+		playerVO.setCharacter(godPet.get((int) index));
+		playerVO.setState(Players.STATE_STAND);
+		playerVO.setDirection(Sprite.DIRECTION_BOTTOM);
+		summonPlayers = dataStoreManager.createPlayer(playerVO);
 		summonPlayers.setShadow(true);
-		summonPlayers.setState("stand");
-		summonPlayers.setDirection(Sprite.DIRECTION_BOTTOM);
 		summonName.setText(value);
 	}
 

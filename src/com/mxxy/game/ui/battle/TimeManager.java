@@ -6,8 +6,8 @@ import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
 
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.ui.BattlePanel;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.SpriteFactory;
 import com.mxxy.game.widget.Label;
 
@@ -26,7 +26,7 @@ public class TimeManager {
 
 	private BattlePanel battlePanel;
 
-	private int countDownTime = 30;
+	private int countDownTime = 8;
 
 	public TimeManager(BattlePanel battlePanel) {
 		this.battlePanel = battlePanel;

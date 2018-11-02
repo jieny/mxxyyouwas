@@ -53,6 +53,5 @@ public interface IWindows {
 	void showPanel(IPanelDraw panelDraw);
 	
 	
-	
 	JFrame getFrame();
 }

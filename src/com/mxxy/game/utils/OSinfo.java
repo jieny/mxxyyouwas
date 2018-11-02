@@ -1,6 +1,7 @@
 package com.mxxy.game.utils;
 
-import com.mxxy.game.utils.Constant.EPlatform;
+import com.mxxy.game.resources.Constant;
+import com.mxxy.game.resources.Constant.EPlatform;
 
 /**
  * 当前系统判断

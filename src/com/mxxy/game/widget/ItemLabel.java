@@ -3,7 +3,7 @@ package com.mxxy.game.widget;
 import java.awt.Color;
 import java.awt.Font;
 
-import com.mxxy.game.resources.ItemInstance;
+import com.mxxy.game.domain.ItemInstance;
 import com.mxxy.game.utils.SpriteFactory;
 
 public class ItemLabel extends Label{

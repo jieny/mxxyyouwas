@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import com.mxxy.game.event.BattleEvent;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.ui.BattlePanel;
 
@@ -41,6 +42,7 @@ public class CommandManager {
 
 	/** 战斗开始 */
 	public void turnBattle() {
+		battlePanel.fireBattleEvent(new BattleEvent(battlePanel,BattleEvent.BATTLE_WIN));
 		battlePanel.getTimerManager().cleanCountDown();
 		turnBegin();
 		for (Command command : cmdQueue) {

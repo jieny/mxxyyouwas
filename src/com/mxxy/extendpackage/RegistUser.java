@@ -8,8 +8,8 @@ import javax.swing.JTextField;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
 import com.mxxy.game.modler.RegistUserModler;
-import com.mxxy.game.utils.Constant;
-import com.mxxy.game.utils.Constant.RegistStatus;
+import com.mxxy.game.resources.Constant;
+import com.mxxy.game.resources.Constant.RegistStatus;
 
 /**
  * RegistUser (注册用户)

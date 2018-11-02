@@ -9,8 +9,8 @@ import com.mxxy.game.modler.MagicModle.MagicConfig;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.sprite.Sprite;
 import com.mxxy.game.ui.BattlePanel;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.SpriteFactory;
+import com.mxxy.game.utils.StringUtils;
 import com.mxxy.game.was.Toolkit;
 
 public class CommandInterpreter {
@@ -36,7 +36,7 @@ public class CommandInterpreter {
 		Point location = source.getLocation();
 		MagicConfig magicConfig = (MagicConfig) command.get(MAGICINFIG_TAG);
 		if (magicConfig == null) {
-			battlePanel.setBattleMessage("#Y" + source.getPersonName() + "进行了攻击#18");
+			battlePanel.setBattleMessage("#Y" + source.getPalyVo().getName() + "进行了攻击#18");
 		}
 
 		Sprite s = SpriteFactory.loadSprite("res/shape/char/0001/attack.tcp");
@@ -51,10 +51,10 @@ public class CommandInterpreter {
 		source.playOnce(Players.STATE_ATTACK);
 
 		if (magicConfig != null) {
-			target.playEffect(magicConfig.getName(), false, source.getRace());
+			target.playEffect(magicConfig.getName(), false, source.getPalyVo().getRace());
 		}
 
-		target.playOnce(Players.STATA_HIT);
+		target.playOnce(Players.STATE_HIT);
 		battlePanel.showPoints(target, -99);
 		source.writFor();
 		target.setState(Players.STATE_STAND);
@@ -75,7 +75,7 @@ public class CommandInterpreter {
 			battlePanel.rush(source, location.x, location.y, Players.STATE_RUSHB);
 		}
 
-		String state = location.x > Constant.WINDOW_WIDTH / 2 ? Players.STATE_WRITBUTTLE : Players.STATE_STAND;
+		String state = StringUtils.isNotBlank(source.getPalyVo().getRace())?Players.STATE_WRITBUTTLE: Players.STATE_STAND;
 		source.setState(state);
 		battlePanel.setBattleMessage("");
 	}
@@ -87,7 +87,7 @@ public class CommandInterpreter {
 		Players source = command.getSource();
 		Players target = command.getTarget();
 		MagicConfig magicConfig = (MagicConfig) command.get(MAGICINFIG_TAG);
-		battlePanel.setBattleMessage("#Y" + source.getPersonName() + "施法法术 — " + magicConfig.getName());
+		battlePanel.setBattleMessage("#Y" + source.getPalyVo().getName() + "施法法术 — " + magicConfig.getName());
 		switch (magicConfig.getMagicId()) {
 		case MagicConfig.BIGMAGIC:
 			source.playOnce(Players.STATE_MAGIC);
@@ -98,12 +98,12 @@ public class CommandInterpreter {
 			List<Players> hostileTeam = battlePanel.getHostileTeam();
 			List<Players> magicHostileTeam = battlePanel.getMagicHostileTeam(target, hostileTeam);
 			for (int i = magicHostileTeam.size() - 1; i >= 0; i--) {
-				singleMagic(magicHostileTeam.get(i), magicConfig.getName(), source.getRace());
+				singleMagic(magicHostileTeam.get(i), magicConfig.getName(), source.getPalyVo().getRace());
 			}
 			break;
 		case MagicConfig.SINGLEMAGIC:
 			source.playOnce(Players.STATE_MAGIC);
-			singleMagic(target, magicConfig.getName(), source.getRace());
+			singleMagic(target, magicConfig.getName(), source.getPalyVo().getRace());
 			break;
 		case MagicConfig.REPEATMAGINC:
 			for (int i = 0; i < magicConfig.getRepeatCount(); i++) {
@@ -140,7 +140,7 @@ public class CommandInterpreter {
 		source.writFor();
 		battlePanel.playOnceMusic(true);
 		for (Players players : magic) {
-			players.playOnce(Players.STATA_HIT);
+			players.playOnce(Players.STATE_HIT);
 			battlePanel.showPoints(players, -10);
 		}
 		Toolkit.sleep(800);
@@ -162,7 +162,7 @@ public class CommandInterpreter {
 	public void singleMagic(Players target, String magicName, String string) {
 		new Thread() {
 			public void run() {
-				target.playOnce(Players.STATA_HIT);
+				target.playOnce(Players.STATE_HIT);
 				battlePanel.showPoints(target, -10);
 				target.playEffect(magicName, true, string);
 				target.waitForEffect();

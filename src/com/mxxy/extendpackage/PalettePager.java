@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JPanel;
 
+import com.mxxy.game.domain.PlayerVO;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
 import com.mxxy.game.sprite.Players;
@@ -24,12 +25,12 @@ final public class PalettePager extends AbstractPanelHandler {
 
 	@Override
 	protected void initView() {
-		person = new Players();
-		person.setColorations(player.getColorations(), true);
-		person.setCharacter(player.getCharacter());
+		PlayerVO palettePlayerVO = new PlayerVO();
+		palettePlayerVO.setCharacter(player.getPalyVo().getCharacter());
+		palettePlayerVO.setDirection(Sprite.DIRECTION_BOTTOM_RIGHT);
+		palettePlayerVO.setState(Players.STATE_STAND);
+		person = dataStoreManager.createPlayer(palettePlayerVO);
 		person.setShadow(true);
-		person.setDirection(Sprite.DIRECTION_BOTTOM);
-		person.setState(Players.STATE_STAND);
 	}
 
 	private ImageComponentButton changeindex;
@@ -38,9 +39,9 @@ final public class PalettePager extends AbstractPanelHandler {
 		changeindex = (ImageComponentButton) e.getSource();
 	}
 
-	int[] colorations = new int[3];
+	private int[] colorations = new int[3];
 
-	int index;
+	private int index;
 
 	public void changeColor(ActionEvent e) {
 		String name = changeindex == null ? "one" : changeindex.getName();
@@ -76,7 +77,7 @@ final public class PalettePager extends AbstractPanelHandler {
 		player.setColorations(colorations, true);
 	}
 
-	int direction = 0;
+	private int direction = 0;
 
 	public void changeDirection(ActionEvent e) {
 		person.setDirection(direction);

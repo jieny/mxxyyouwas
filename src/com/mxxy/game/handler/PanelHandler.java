@@ -12,14 +12,16 @@ import javax.swing.JPanel;
 import com.mxxy.game.base.Application;
 import com.mxxy.game.base.Panel;
 import com.mxxy.game.config.Context;
+import com.mxxy.game.config.DataStoreManager;
 import com.mxxy.game.event.BaseEvent;
 import com.mxxy.game.event.PanelEvent;
+import com.mxxy.game.listener.PanelEventListenerAdapter;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.ui.IWindows;
 import com.mxxy.game.utils.UIHelp;
 import com.mxxy.net.IClient;
 
-abstract public class PanelHandler extends PanelEventHandlerAdapter {
+abstract public class PanelHandler extends PanelEventListenerAdapter {
 
 	protected Panel panel;
 
@@ -28,7 +30,7 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 	protected UIHelp uihelp;
 
 	protected Object[] object;
-	
+
 	private Timer timer;
 	/** 数据更新频率 */
 	protected long period = 1000;
@@ -42,6 +44,8 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 	protected Context context;
 
 	protected IClient client;
+	
+	protected DataStoreManager dataStoreManager;
 
 	@Override
 	public void init(PanelEvent evt) {
@@ -49,6 +53,7 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 		uihelp = application.getUIHelp();
 		object = application.getObjects();
 		iWindows = application.getiWindows();
+		dataStoreManager = (DataStoreManager) object[0];
 		context = (Context) object[2];
 		client = context.getClient();
 		panel = (Panel) evt.getSource();
@@ -161,14 +166,16 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 			if (cmd.length() > 0)
 				this.invokeMethod(cmd, evt);
 		} catch (NoSuchMethodException e) {
-			System.err.println("\n[PanelHandler]该类找不到事件的处理方法：" + e.getMessage());
+			System.err
+					.println("\n[PanelHandler]该类找不到事件的处理方法：" + e.getMessage());
 		} catch (Exception e) {
 			System.err.println("\n[PanelHandler]执行事件时发生异常：" + evt);
 			e.printStackTrace();
 		}
 	}
 
-	protected Object invokeMethod(String mName, Object arg) throws IllegalArgumentException, IllegalAccessException,
+	protected Object invokeMethod(String mName, Object arg)
+			throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException, SecurityException, NoSuchMethodException {
 		Method m = this.getClass().getMethod(mName, arg.getClass());
 		return m.invoke(this, arg);
@@ -177,7 +184,7 @@ abstract public class PanelHandler extends PanelEventHandlerAdapter {
 	public boolean isAutoUpdate() {
 		return autoUpdate;
 	}
-	
+
 	public Panel getPanel() {
 		return panel;
 	}

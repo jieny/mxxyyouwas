@@ -8,7 +8,7 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-import com.mxxy.game.utils.Constant;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.utils.GameColor;
 import com.mxxy.game.utils.GraphicsUtils;
 import com.mxxy.game.utils.SpriteFactory;

@@ -1,4 +1,4 @@
-package com.mxxy.game.utils;
+package com.mxxy.game.resources;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
+
+import com.mxxy.game.utils.OSinfo;
 
 /**
  * 游戏常量

@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.util.Arrays;
 import java.util.EventObject;
 import java.util.List;
 import java.util.Queue;
@@ -17,12 +16,12 @@ import javax.swing.event.EventListenerList;
 import org.w3c.dom.events.EventException;
 
 import com.mxxy.game.astar.Searcher;
-import com.mxxy.game.config.PlayerVO;
+import com.mxxy.game.domain.PlayerVO;
 import com.mxxy.game.event.EventDispatcher;
 import com.mxxy.game.event.IEventTask;
 import com.mxxy.game.event.PlayerEvent;
 import com.mxxy.game.listener.IPlayerListener;
-import com.mxxy.game.utils.Constant;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.utils.MP3Player;
 import com.mxxy.game.utils.SpriteFactory;
 import com.mxxy.game.widget.Animation;
@@ -42,7 +41,7 @@ public class Players implements IEventTask {
 	/** 防御 */
 	public static final String STATE_DEFEND = "defend";
 	/** 被击中 */
-	public static final String STATA_HIT = "hit";
+	public static final String STATE_HIT = "hit";
 	/** 倒下 */
 	public static final String STATE_DIE = "die";
 	/** 移动 */
@@ -73,14 +72,9 @@ public class Players implements IEventTask {
 	private Sprite shadow;
 	/** 方向 */
 	private int direction;
-	/** 人物名字 */
-	private String personName;
-	/** 人物称谓 */
-	private String describe;
 
 	private String id;
-	/** 人物标识如0001(代表逍遥生) */
-	private String character;
+
 	/** 姓名字体 */
 	private Font nameFont;
 	/** 鼠标是否悬停 */
@@ -100,60 +94,24 @@ public class Players implements IEventTask {
 	/** 搜索路径 */
 	private Searcher searcher;
 	/** 人物数据 */
-	private PlayerVO data;
+	private PlayerVO palyVo;
 	/** 人物染色 */
-	private int[] colorations = null;
+	private int[] colorations;
 	/** 获取8个方向三角正切 */
 	private static double k1 = Math.tan(Math.PI / 8);
 
 	private static double k2 = 3 * k1;
-	/** 门派标识 1000人族,1001魔族,1002仙族 */
-	private String race;
+	
 	/** 坐骑 */
 	private Mount mMount;
 	/** 武器 */
 	private Weapon mWeapon;
 	/** 矩形绘制 */
 	public Rectangle rect;
-	/** 人物速度 */
-	private int speed;
 
-	private long moeny;
+	private Animation onceEffect;
 
-	private int hp;
-
-	private Animation onceEffect = null;
-
-	public void setCharacter(String character) {
-		this.character = character;
-		if (Integer.parseInt(character) >= 1 && Integer.parseInt(character) <= 4) {
-			this.setRace("1000");
-		} else if (Integer.parseInt(character) >= 5 && Integer.parseInt(character) <= 8) {
-			this.setRace("1001");
-		} else if (Integer.parseInt(character) >= 9 && Integer.parseInt(character) <= 12) {
-			this.setRace("1002");
-		}
-	}
-
-	public void setData(PlayerVO data) {
-		this.data = data;
-		this.setSpeed(data.getSpeed());
-		this.setCharacter(data.getCharacter());
-		this.setPersonName(data.getName());
-		this.setWeapon(data.getmWeapon());
-		this.setDescribe(data.getDescribe());
-		this.setDirection(data.getDirection());
-		this.setColorations(data.getColorations(), true);
-		this.setSceneLocation(data.getSceneLocation());
-		this.setState(data.getState());
-		this.setNameBackground(Constant.PLAYER_NAME_COLOR);
-		this.setMoeny(data.getMoeny());
-	}
-
-	public PlayerVO getData() {
-		return data;
-	}
-
+	private boolean isHideName;
 	/**
 	 * 获取人物坐标
 	 * 
@@ -203,6 +161,7 @@ public class Players implements IEventTask {
 	 * @param g
 	 */
 	public void draw(Graphics2D g, int x, int y) {
+		
 		g.setFont(nameFont);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		if (mMount != null)
@@ -218,20 +177,24 @@ public class Players implements IEventTask {
 		int textY = y + 25;
 		int texts = y + 43;
 		Graphics2D g2d = (Graphics2D) g.create();
-		if (personName != null && personName != null) {
-			int textX = x - g.getFontMetrics().stringWidth(personName) / 2;
-			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g2d.setColor(getNameBackground());
-			g2d.setColor(isHover ? Color.red : getNameBackground());
-			g2d.drawString(personName, textX, describe == null ? textY : texts);
-		}
+		
+		if(palyVo!=null){
+			
+			if (palyVo.getName() != null && palyVo.getName() != null && !this.isHideName) {
+				int textX = x - g.getFontMetrics().stringWidth(palyVo.getName()) / 2;
+				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g2d.setColor(getNameBackground());
+				g2d.setColor(isHover ? Color.red : getNameBackground());
+				g2d.drawString(palyVo.getName(), textX, palyVo.getDescribe() == null ? textY : texts);
+			}
 
-		if (describe != null && personName != null) {
-			int textsX = x - g.getFontMetrics().stringWidth(describe) / 2;
-			g2d.setColor(isHover ? Color.red : Constant.DESCRIBE_COLOR);
-			g2d.drawString(describe, textsX, textY);
+			if (palyVo.getDescribe() != null && palyVo.getName() != null  && !this.isHideName) {
+				int textsX = x - g.getFontMetrics().stringWidth(palyVo.getDescribe()) / 2;
+				g2d.setColor(isHover ? Color.red : Constant.DESCRIBE_COLOR);
+				g2d.drawString(palyVo.getDescribe(), textsX, textY);
+			}
 		}
-
+		
 		if (this.onceEffect != null) {
 			onceEffect.drawBitmap(g2d, x, y);
 		}
@@ -248,14 +211,13 @@ public class Players implements IEventTask {
 	private Sprite createPerson(String state) {
 		String mountIndex = mMount != null ? mMount.getMountCharacter() : "";
 		String value = mountIndex.length() > 0 ? mountIndex + "/" : "";
-		Sprite sprite = SpriteFactory.loadSprite("res/shape/char/" + this.character + "/" + value + state + ".tcp",
+		Sprite sprite = SpriteFactory.loadSprite("res/shape/char/" + this.palyVo.getCharacter() + "/" + value + state + ".tcp",
 				this.colorations);
 		return sprite;
 	}
 
-	public void setRace(String race) {
-		this.race = race;
-	}
+	
+
 
 	/**
 	 * 设置状态 实例 Person 对象
@@ -266,7 +228,7 @@ public class Players implements IEventTask {
 		if (state == null) {
 			 state = mMount != null ? STATE_MOUNT_STAND : STATE_STAND;
 		}
-		if (this.state != state) {
+		if (this.state != state && this.palyVo != null) {
 			this.state = state;
 			this.person = createPerson(state);
 			this.person.setDirection(this.direction);
@@ -818,14 +780,6 @@ public class Players implements IEventTask {
 		this.y += dy;
 	}
 
-	/**
-	 * 获取文件名如0001
-	 * 
-	 * @return
-	 */
-	public String getCharacter() {
-		return character;
-	}
 
 	public int getX() {
 		return x;
@@ -855,20 +809,8 @@ public class Players implements IEventTask {
 		return colorations;
 	}
 
-	public void setDescribe(String describe) {
-		this.describe = describe;
-	}
-
 	public String getState() {
 		return state;
-	}
-
-	public void setPersonName(String personName) {
-		this.personName = personName;
-	}
-
-	public String getDescribe() {
-		return describe;
 	}
 
 	public int getDirection() {
@@ -877,10 +819,6 @@ public class Players implements IEventTask {
 
 	public Mount getMount() {
 		return mMount;
-	}
-
-	public String getPersonName() {
-		return personName;
 	}
 
 	public void setSearcher(Searcher searcher) {
@@ -895,10 +833,6 @@ public class Players implements IEventTask {
 		return searcher;
 	}
 
-	public String getRace() {
-		return this.race;
-	}
-
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -907,20 +841,26 @@ public class Players implements IEventTask {
 		return id;
 	}
 
-	public int getSpeed() {
-		return speed;
+	public void setData(PlayerVO data) {
+		this.palyVo = data;
+		
+		if (data.getmWeapon() != null){
+			this.setWeapon(data.getmWeapon());
+		}
+		
+		if (data.getSceneLocation() != null) {
+			this.setSceneLocation(data.getSceneLocation());
+		}
+		
+		this.setDirection(data.getDirection());
+		this.setColorations(data.getColorations(), true);
+		this.setState(data.getState());
+		this.setNameBackground(Constant.PLAYER_NAME_COLOR);
 	}
-
-	public void setSpeed(int speed) {
-		this.speed = speed;
-	}
-
-	public void setHp(int hp) {
-		this.hp = hp;
-	}
-
-	public int getHp() {
-		return hp;
+	
+	
+	public PlayerVO getPalyVo() {
+		return palyVo;
 	}
 
 	public void setShadow(boolean isShadow) {
@@ -939,19 +879,9 @@ public class Players implements IEventTask {
 	public Weapon getWeapon() {
 		return mWeapon;
 	}
-
-	public long getMoeny() {
-		return moeny;
+	
+	public void setHideName(boolean isHideName) {
+		this.isHideName = isHideName;
 	}
 
-	public void setMoeny(long moeny) {
-		this.moeny = moeny;
-	}
-
-	@Override
-	public String toString() {
-		return "Players [state=" + state + ", x=" + x + ", y=" + y + ", 方向=" + direction + ",速度" + speed + ", 人物名字="
-				+ personName + ", describe=" + describe + ", character=" + character + ",sceneX=" + sceneX + ", sceneY="
-				+ sceneY + ", 改色方案=" + Arrays.toString(colorations) + "]" + " 种族  " + race + "余额" + this.moeny;
-	}
 }

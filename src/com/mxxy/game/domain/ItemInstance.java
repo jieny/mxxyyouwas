@@ -1,4 +1,4 @@
-package com.mxxy.game.config;
+package com.mxxy.game.domain;
 import com.mxxy.game.utils.StringUtils;
 
 public class ItemInstance{
@@ -7,7 +7,7 @@ public class ItemInstance{
 	
 	private int amount;  //数量
 	
-	private long itemId = -1;
+	private String itemId = "-1";
 	
 	private String name;
 	
@@ -41,7 +41,7 @@ public class ItemInstance{
 		this.amount = amount;
 	}
 	
-	public long getItemId() {
+	public String getItemId() {
 		return itemId;
 	}
 	/**
@@ -70,7 +70,7 @@ public class ItemInstance{
 	
 	//---------- delegated methods ---------------//
 	
-	public Long getId() {
+	public String getId() {
 		return itemId;
 	}
 	

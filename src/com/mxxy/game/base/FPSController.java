@@ -2,7 +2,7 @@ package com.mxxy.game.base;
 
 import java.text.DecimalFormat;
 
-import com.mxxy.game.utils.Constant;
+import com.mxxy.game.resources.Constant;
 
 /**
  * FPS控制器

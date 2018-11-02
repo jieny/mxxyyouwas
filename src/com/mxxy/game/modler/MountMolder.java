@@ -6,7 +6,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.JList;
 
 import com.mxxy.game.config.IPropertiseManager;
-import com.mxxy.game.utils.Constant;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.utils.FileUtils;
 import com.mxxy.game.widget.ScrollList;
 

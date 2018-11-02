@@ -1,4 +1,4 @@
-package com.mxxy.game.utils;
+package com.mxxy.game.resources;
 
 import java.util.HashMap;
 import java.util.Map;

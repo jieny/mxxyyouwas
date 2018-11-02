@@ -7,9 +7,13 @@ import com.mxxy.game.base.Panel;
 
 public class PaneListener extends AbstractBaseEventListener<Panel> {
 
-	public PaneListener(Panel panel) {
+	
+	private boolean isReightClose;
+	
+	public PaneListener(Panel panel, boolean isReightClose) {
 		mPanel = panel;
 		mPanel.setListener(this);
+		this.isReightClose = isReightClose;
 	}
 
 	/**
@@ -29,8 +33,8 @@ public class PaneListener extends AbstractBaseEventListener<Panel> {
 
 		newY = e.getYOnScreen();
 		// 设置bounds,将点下时记录的组件开始坐标与鼠标拖动的距离相加
-		if (mPanel.isMove())
-			cp.setBounds(startX + (newX - oldX), startY + (newY - oldY), cp.getWidth(), cp.getHeight());
+		cp.setBounds(startX + (newX - oldX), startY + (newY - oldY),
+				cp.getWidth(), cp.getHeight());
 	}
 
 	@Override
@@ -53,19 +57,17 @@ public class PaneListener extends AbstractBaseEventListener<Panel> {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (mPanel.isMove()) {
-			Component cp = (Component) e.getSource();
-			// 当鼠标点下的时候记录组件当前的坐标与鼠标当前在屏幕的位置
-			startX = cp.getX();
+		Component cp = (Component) e.getSource();
+		// 当鼠标点下的时候记录组件当前的坐标与鼠标当前在屏幕的位置
+		startX = cp.getX();
 
-			startY = cp.getY();
+		startY = cp.getY();
 
-			oldX = e.getXOnScreen();
+		oldX = e.getXOnScreen();
 
-			oldY = e.getYOnScreen();
-		}
+		oldY = e.getYOnScreen();
 
-		if (mPanel.isRightClickClose()) {
+		if (this.isReightClose) {
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				mPanel.close();
 			}

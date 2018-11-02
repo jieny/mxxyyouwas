@@ -26,8 +26,8 @@ final public class FishingPager extends AbstractPanelHandler {
 		Label label = findViewById("head");
 		fishingRod = findViewById("fishing_rod");
 		Label name = findViewById("name");
-		name.setText(player.getPersonName());
-		label.setAnim(SpriteFactory.loadAnimation("res/wzife/photo/facesmall/" + player.getCharacter() + ".tcp"));
+		name.setText(player.getPalyVo().getName());
+		label.setAnim(SpriteFactory.loadAnimation("res/wzife/photo/facesmall/" + player.getPalyVo().getCharacter() + ".tcp"));
 	}
 
 	public void grod(ActionEvent e) {

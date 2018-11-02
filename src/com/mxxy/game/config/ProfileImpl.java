@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.mxxy.game.domain.PlayerVO;
+import com.mxxy.game.domain.Profile;
 import com.mxxy.game.utils.FilterByJava;
 
 public class ProfileImpl implements IProfileManager {

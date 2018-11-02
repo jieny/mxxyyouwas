@@ -14,9 +14,9 @@ import com.mxxy.game.base.Panel;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
 import com.mxxy.game.modler.LoginModler;
+import com.mxxy.game.resources.Constant;
+import com.mxxy.game.resources.Constant.LoginStatus;
 import com.mxxy.game.utils.ComponentFactory;
-import com.mxxy.game.utils.Constant;
-import com.mxxy.game.utils.Constant.LoginStatus;
 import com.mxxy.game.was.Toolkit;
 
 /**

@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.mxxy.game.base.Panel;
 import com.mxxy.game.handler.AbstractPanelHandler;
-import com.mxxy.game.utils.Constant;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.utils.GameColor;
 import com.mxxy.game.utils.StringUtils;
 import com.mxxy.game.was.Toolkit;

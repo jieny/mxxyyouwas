@@ -1,6 +1,6 @@
 package com.mxxy.game.modler;
 
-import com.mxxy.game.utils.Constant;
+import com.mxxy.game.resources.Constant;
 
 public class MagicModle {
 

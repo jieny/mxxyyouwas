@@ -22,6 +22,6 @@ final public class PlayerPager extends AbstractPanelHandler {
 	@Override
 	protected void initView() {
 		head = findViewById("head");
-		head.init(SpriteFactory.loadSprite("res/wzife/photo/facebig/" + player.getCharacter() + ".tcp"));
+		head.init(SpriteFactory.loadSprite("res/wzife/photo/facebig/" + player.getPalyVo().getCharacter() + ".tcp"));
 	}
 }

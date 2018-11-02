@@ -17,18 +17,18 @@ import com.mxxy.game.astar.AStar;
 import com.mxxy.game.base.AbstactPanel;
 import com.mxxy.game.base.Application;
 import com.mxxy.game.config.MapConfigImpl;
+import com.mxxy.game.domain.JumpTrigger;
+import com.mxxy.game.domain.SceneNpc;
+import com.mxxy.game.domain.SceneTeleporter;
 import com.mxxy.game.event.PlayerEvent;
 import com.mxxy.game.event.PlayerListenerAdapter;
-import com.mxxy.game.handler.GamePanelController;
+import com.mxxy.game.listener.GamePaneListener;
 import com.mxxy.game.listener.ISetOnListener;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.resources.DefaultTileMapProvider;
-import com.mxxy.game.resources.JumpTrigger;
-import com.mxxy.game.resources.SceneNpc;
-import com.mxxy.game.resources.SceneTeleporter;
 import com.mxxy.game.sprite.Cursor;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.sprite.Sprite;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.SearchUtils;
 import com.mxxy.game.utils.StringUtils;
 import com.mxxy.game.was.Toolkit;
@@ -41,7 +41,7 @@ import com.mxxy.game.widget.TileMap;
  * @author ZAB 邮箱 ：624284779@qq.com
  */
 @SuppressWarnings("serial")
-public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelController> {
+public class GamePanel extends AbstactPanel implements ISetOnListener<GamePaneListener> {
 	private TileMap map;
 	private int sceneHeight;
 	private int sceneWidth;
@@ -70,7 +70,7 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 	 * 事件处理
 	 */
 	@Override
-	public void setListener(GamePanelController event) {
+	public void setListener(GamePaneListener event) {
 		this.addMouseMotionListener(event);
 		this.addMouseListener(event);
 	}
@@ -569,7 +569,7 @@ public class GamePanel extends AbstactPanel implements ISetOnListener<GamePanelC
 	}
 
 	@Override
-	public void removeListener(GamePanelController event) {
+	public void removeListener(GamePaneListener event) {
 		this.removeMouseMotionListener(event);
 		this.removeMouseListener(event);
 	}

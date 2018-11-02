@@ -14,6 +14,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeListener;
 
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.widget.GameSlider;
 import com.mxxy.game.widget.GameSliderUI;
 

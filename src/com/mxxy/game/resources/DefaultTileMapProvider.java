@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import com.mxxy.game.config.MapConfigImpl;
-import com.mxxy.game.utils.ResourceStores;
 import com.mxxy.game.widget.TileMap;
 
 /**

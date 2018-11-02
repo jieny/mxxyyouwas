@@ -5,17 +5,18 @@ import java.util.List;
 
 import com.mxxy.extendpackage.GamePager;
 import com.mxxy.game.config.DataStoreManager;
-import com.mxxy.game.config.PlayerVO;
 import com.mxxy.game.config.PropertiseConfigImpl;
-import com.mxxy.game.handler.BattlePanelController;
-import com.mxxy.game.handler.GamePanelController;
+import com.mxxy.game.domain.PlayerVO;
+import com.mxxy.game.handler.BattleRoundHandler;
+import com.mxxy.game.listener.BattlePaneListener;
+import com.mxxy.game.listener.GamePaneListener;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.ui.BattlePanel;
 import com.mxxy.game.ui.GameFrame;
 import com.mxxy.game.ui.GamePanel;
 import com.mxxy.game.ui.IWindows;
 import com.mxxy.game.ui.LoadingPanel;
 import com.mxxy.game.ui.LoginPanel;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.PanelManager;
 import com.mxxy.game.widget.TileMap;
 
@@ -24,14 +25,13 @@ public class SwingApplication extends Application {
 	private GameFrame gameFrame;
 
 	private LoadingPanel loadingPanel;
-	
+
 	private GamePanel gamePanel;
 
 	@Override
 	protected IWindows createWindows() {
 		gameFrame = new GameFrame();
 		gameFrame.initContent(context);
-		loadingPanel = new LoadingPanel(312, 104);
 		return gameFrame;
 	}
 
@@ -47,6 +47,7 @@ public class SwingApplication extends Application {
 
 	@Override
 	protected void loadingpanel() {
+		loadingPanel = new LoadingPanel(312, 104);
 		gameFrame.showPanel(loadingPanel);
 	}
 
@@ -84,16 +85,19 @@ public class SwingApplication extends Application {
 		gamePanel.setUIhelp(getUIHelp());
 		gamePanel.playMusic();
 		gameFrame.showPanel(gamePanel);
-		new GamePanelController(gamePanel);
+		new GamePaneListener(gamePanel);
 		getUIHelp().showPanel(GamePager.class.getSimpleName());
 	}
-	
+
+	private BattleRoundHandler battleRoundHandler;  //  战争结果管理
+
 	/**
 	 * 进入战争模块
 	 */
 	@Override
 	public void enterTheWar(Object[] args) {
 		getUIHelp().hidePanel(GamePager.class.getSimpleName());
+		battleRoundHandler = new BattleRoundHandler(getUIHelp());
 		IWindows windows = context.getWindows();
 		GamePanel gamePanel = (GamePanel) windows.getPanel();
 		this.gamePanel = gamePanel;
@@ -101,12 +105,13 @@ public class SwingApplication extends Application {
 		Point viewPosition = gamePanel.getViewPosition();
 		BattlePanel battlePanel = new BattlePanel(map, viewPosition, gamePanel);
 		battlePanel.setUIhelp(getUIHelp());
+		battlePanel.addBattleListener(battleRoundHandler);
 		battlePanel.setConfigManager(config);
 		battlePanel.setHostileTead((List) args[1]); // 设置敌方队伍
 		battlePanel.setOwnsideTeam((List) args[0]); // 设置己方队伍
 		battlePanel.playMusic();
 		gameFrame.showPanel(battlePanel);
-		new BattlePanelController(battlePanel);
+		new BattlePaneListener(battlePanel);
 		getUIHelp().showPanel(GamePager.class.getSimpleName());
 		battlePanel.initComponetn();
 	}
@@ -120,7 +125,7 @@ public class SwingApplication extends Application {
 		GamePanel gamePanel = this.gamePanel;
 		gamePanel.setPlayerLocation(context.getPlayer().getSceneLocation());
 		gamePanel.initGameDate();
-		((BattlePanel)gameFrame.getPanel()).getTimerManager().cleanTimer();
+		((BattlePanel) gameFrame.getPanel()).getTimerManager().cleanTimer();
 		gameFrame.showPanel(gamePanel);
 		getUIHelp().showPanel(GamePager.class.getSimpleName());
 		gamePanel.playMusic();

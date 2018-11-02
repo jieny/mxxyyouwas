@@ -1,17 +1,16 @@
-package com.mxxy.game.handler;
+package com.mxxy.game.listener;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
 import com.mxxy.game.event.PlayerEvent;
-import com.mxxy.game.listener.AbstractBaseEventListener;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.ui.GamePanel;
 
-public class GamePanelController extends AbstractBaseEventListener<GamePanel> {
+public class GamePaneListener extends AbstractBaseEventListener<GamePanel> {
 
-	public GamePanelController(GamePanel gamePanel) {
+	public GamePaneListener(GamePanel gamePanel) {
 		mPanel = gamePanel;
 		mPanel.setListener(this);
 	}

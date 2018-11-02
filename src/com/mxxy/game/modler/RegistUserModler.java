@@ -1,8 +1,8 @@
 package com.mxxy.game.modler;
 
 import com.mxxy.game.config.IPropertiseManager;
-import com.mxxy.game.utils.Constant;
-import com.mxxy.game.utils.Constant.RegistStatus;
+import com.mxxy.game.resources.Constant;
+import com.mxxy.game.resources.Constant.RegistStatus;
 
 /**
  * 注册数据处理

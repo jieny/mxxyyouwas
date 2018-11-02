@@ -2,8 +2,8 @@ package com.mxxy.extendpackage;
 
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.sprite.Sprite;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.SpriteFactory;
 import com.mxxy.game.widget.SpriteImage;
 

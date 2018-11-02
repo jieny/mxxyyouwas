@@ -8,11 +8,11 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.mxxy.game.domain.ItemInstance;
+import com.mxxy.game.domain.MedicineList;
 import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.handler.AbstractPanelHandler;
 import com.mxxy.game.modler.MedicineMolder;
-import com.mxxy.game.resources.ItemInstance;
-import com.mxxy.game.resources.MedicineList;
 import com.mxxy.game.utils.FileUtils;
 import com.mxxy.game.utils.JsonUtils;
 import com.mxxy.game.utils.SpriteFactory;
@@ -77,7 +77,7 @@ final public class ShoppingPager extends AbstractPanelHandler<MedicineMolder> im
 			}
 		}
 
-		moeny_lable.setText(String.valueOf(player.getMoeny()));
+		moeny_lable.setText(String.valueOf(player.getPalyVo().getMoeny()));
 
 		amount_tx.getDocument().addDocumentListener(this);
 		setAutoUpdate(true);

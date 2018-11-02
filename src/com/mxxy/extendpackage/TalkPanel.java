@@ -13,10 +13,10 @@ import com.mxxy.game.event.PanelEvent;
 import com.mxxy.game.event.PlayerEvent;
 import com.mxxy.game.event.PlayerListenerAdapter;
 import com.mxxy.game.handler.AbstractPanelHandler;
+import com.mxxy.game.resources.Constant;
 import com.mxxy.game.sprite.Players;
 import com.mxxy.game.sprite.Sprite;
 import com.mxxy.game.ui.ContainersPanel;
-import com.mxxy.game.utils.Constant;
 import com.mxxy.game.utils.PanelManager;
 import com.mxxy.game.utils.SpriteFactory;
 import com.mxxy.game.utils.UIHelp;
@@ -63,7 +63,7 @@ final public class TalkPanel extends AbstractPanelHandler {
 		@Override
 		public void talk(PlayerEvent evt) {
 			Players player = evt.getPlayer();
-			showTalkPanel(evt, player.getCharacter());
+			showTalkPanel(evt, player.getPalyVo().getCharacter());
 		}
 
 		public void showTalkPanel(PlayerEvent evt, String charcater) {
@@ -78,7 +78,12 @@ final public class TalkPanel extends AbstractPanelHandler {
 	@Override
 	public void dispose(PanelEvent evt) {
 		super.dispose(evt);
-		panel.remove(lblText);
+		
+		if (lblText != null) {
+			panel.remove(lblText);
+		}
+		
+		
 	}
 
 	private RichLabel lblText;
