@@ -7,9 +7,7 @@ README
 |---|---
 |E-mail|624284779@qq.com
 ****
-## 基本架构
-* MVP+Obsever+JavaCompiler
-* 采用MVP 模式进行解耦,JavaCompiler进行项目扩展
+
 
 ## 项目使用的开源Jar
 * jl    用于支持播放.mp3格式文件
